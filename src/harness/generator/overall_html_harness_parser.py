@@ -685,7 +685,7 @@ class GENERAL_API():
         self.template.write("#include <sys/personality.h> \n")
         self.template.write("#endif \n")
         self.template.write("int debug = 0; \n")
-        self.template.write("#define TARGET_LIBRARY \"" + foxit_loc + "/foxit_quick_pdf_library_1811_linux/Libs/libFoxitQPL1811-linux-x64.so\" \n")
+        self.template.write("#define TARGET_LIBRARY \"" + foxit_loc + "/Libs/libFoxitQPL1811-linux-x64.so\" \n")
         ############# END LOADING lIBRARY #####################
 
         ############# RANDOM STRING ############################
@@ -780,7 +780,7 @@ class GENERAL_API():
   ################## MAIN FUNCTION #####################################
         self.template.write("using namespace std; \n")
         self.template.write("int main(int argc, char** argv) { \n")
-        self.template.write("std::wstring const wide(L\"" + foxit_loc + "/foxit_quick_pdf_library_1811_linux/Libs/libFoxitQPL1811-linux-x64.so\"); \n")
+        self.template.write("std::wstring const wide(L\"" + foxit_loc + "/Libs/libFoxitQPL1811-linux-x64.so\"); \n")
         self.template.write("FoxitQPLLinuxCPP1811 * FQL = new FoxitQPLLinuxCPP1811(wide); \n")
         self.template.write("cout << FQL->UnlockKey(L\"jf33n75u9oj3nb9pn7mf5rt8y\") << endl; \n")
         self.template.write("if (!getenv(\"AFL_FRIDA_TEST_INPUT\")) { \n")
