@@ -64,7 +64,7 @@ then
 	# 1. compile .cpp to harness bin ~~~~~~~~~~
         for i in `ls $OUT_DIR | grep -v "harness_bin" | grep -v "pdf_gen"`
         do 
-        	$AFLpp_loc/afl-clang++ -g -O3 -funroll-loops -o $OUT_DIR/harness_bin/$i -Wno-format -Wno-pointer-sign -I. -fpermissive -fPIC $OUT_DIR/$i/html_to_PDF_text_harness_template.cpp $AFLpp_loc/afl-compiler-rt.o $AFLpp_loc/utils/afl_frida/libfrida-gum.a -ldl -lresolv -pthread -std=c++11
+        	$AFLpp_loc/afl-clang++ -g -O3 -funroll-loops -o $OUT_DIR/harness_bin/$i -Wno-format -Wno-pointer-sign -I. -fpermissive -fPIC $OUT_DIR/$i/html_to_PDF_text_harness_template.cpp $AFLpp_loc/afl-compiler-rt.o $SRC/src/harness/libfrida-gum.a -ldl -lresolv -pthread -std=c++11
         	
         done
 
@@ -143,7 +143,7 @@ else
 	        echo $top_rank
 
 		# 2. compile the best harness to binary
-	        $AFLpp_loc/afl-clang++ -g -O3 -funroll-loops -o $OUT_DIR/harness_bin/$top_rank -Wno-format -Wno-pointer-sign -I. -fpermissive -fPIC $OUT_DIR/$top_rank/html_to_PDF_text_harness_template.cpp $AFLpp_loc/afl-compiler-rt.o $AFLpp_loc/utils/afl_frida/libfrida-gum.a -ldl -lresolv -pthread -std=c++11
+	        $AFLpp_loc/afl-clang++ -g -O3 -funroll-loops -o $OUT_DIR/harness_bin/$top_rank -Wno-format -Wno-pointer-sign -I. -fpermissive -fPIC $OUT_DIR/$top_rank/html_to_PDF_text_harness_template.cpp $AFLpp_loc/afl-compiler-rt.o $SRC/src/harness/libfrida-gum.a -ldl -lresolv -pthread -std=c++11
 	        
 		# remove the best harness from rank_list
 		sed -i 1d $OUT_DIR/rank_list
