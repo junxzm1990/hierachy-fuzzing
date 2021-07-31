@@ -19,6 +19,8 @@ inside AFL++ docker :
 
 ## Run harness
 
+  update paths in src/var.config
+
   bash hierarchy_fuzzing/src/main.sh -i [INPUT] -o [OUTPUT] -d [DATE] -s [SRC] -q [QUEUE] -t [TIME]
 
 - INPUT(-i) : dir of HTMLs
