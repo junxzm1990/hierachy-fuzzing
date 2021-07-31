@@ -71,8 +71,44 @@ then
 	# 2. run harness mutation fuzzing ~~~~~~~~~~
 	top_rank=`ls $OUT_DIR/harness_bin/`
 	mkdir $OUT_DIR/harness$top_rank$DATE
-	LD_LIBRARY_PATH=$foxit_loc/Libs/ $AFLpp_loc/afl-fuzz -m none -t 1000000+ -i $AFLpp_loc/testcases/others/pdf/ -o $OUT_DIR -- $OUT_DIR/harness_bin/* @@
+	LD_LIBRARY_PATH=$foxit_loc/Libs/ $AFLpp_loc/afl-fuzz -m none -t 1000000+ -i $AFLpp_loc/testcases/others/pdf/ -o $OUT_DIR -- $OUT_DIR/harness_bin/* @@ &
 
+	pre_cnt=0
+	mkdir $QUEUE/$top_rank$DATE/
+	mkdir $QUEUE/$top_rank$DATE/queue/
+
+	while true
+	do
+		cur_cnt=`ls $OUT_DIR/pdf_gen/ | wc -l`
+		increment_bool=`expr $pre_cnt \< $cur_cnt`
+		
+		if [[ $increment_bool == 1 ]]; then
+			for i in $OUT_DIR/pdf_gen/*
+			do 
+				if grep -q "$i" $QUEUE/$top_rank$DATE/done_seeds
+				then
+					echo $i" has been migrated"
+				else
+					echo "NEW SEED : "$i
+					len=${#pre_cnt}
+					bond=`expr 5 - $len`
+					zero=0
+					
+					for z in $(seq $bond)
+					do 
+						zero=$zero"0"
+					done
+
+					base=`echo $(basename $i) | cut -d . -f 1`
+					
+					name="id:"$zero$pre_cnt","$base
+					mv $i $QUEUE/$top_rank$DATE/queue/$name
+					echo $i >> $QUEUE/$top_rank$DATE/done_seeds
+					let "pre=pre+1"
+				fi
+			done
+		fi
+	done
 
 
 # -------------- SCENTARIO B : NONE HTML PROVIDED --------------------------------------------------------
