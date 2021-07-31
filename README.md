@@ -8,18 +8,19 @@ Overiew of the src code :
 
 ```
 
-## Dependencies
+## Environment Set Up
 
 - pull AFL++ docker
-inside AFL++ docker : 
+inside AFL++ docker needs : 
 - python2.7
-- bs4 for python2 (update path of bs4 in src/harness/generator/overall_html_harness_parser.py:2) 
-- lxml
+- pip2
+- bs4 for python2 : pip2 install beautifulsoup4 (then, update path of bs4 in src/harness/generator/overall_html_harness_parser.py:2) 
+- lxml: pip2 install lxml
 - numpy for python2
 
-## Run harness
+## Run Harness
 
-  update paths in src/var.config
+  [update paths in src/var.config]
 
   bash hierarchy_fuzzing/src/main.sh -i [INPUT] -o [OUTPUT] -d [DATE] -s [SRC] -q [QUEUE] -t [TIME]
 
