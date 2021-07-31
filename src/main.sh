@@ -153,7 +153,7 @@ else
 						
 						name="id:"$zero$pre_cnt","$base
 						mv $i $QUEUE/$top_rank$DATE/queue/$name
-						echo $i >> $OUT_DIR/$top_rank$DATE/done_seeds
+						echo $i >> $QUEUE/$top_rank$DATE/done_seeds
 						let "pre=pre+1"
 					fi
 				done
