@@ -2,39 +2,40 @@ while getopts i:o:d:q:s:t: option
 do 
 	case "${option}"
 	in
-	i) IN_DIR=${OPTARG};;
-	o) OUT_DIR=${OPTARG};;
-	d) DATE=${OPTARG};;
+#	i) IN_DIR=${OPTARG};;
+#	o) OUT_DIR=${OPTARG};;
+#	d) DATE=${OPTARG};;
 	s) SRC=${OPTARG};;
-	q) QUEUE=${OPTARG};;
-	t) TIME=${OPTARG};;
+#	q) QUEUE=${OPTARG};;
+#	t) TIME=${OPTARG};;
 	esac
 done
-
-if [[ $IN_DIR == "" ]]; then
-        echo "Please provide the dir where stores HTMLs (-i)"
-        exit -1
-fi
-
-if [[ $OUT_DIR == "" ]]; then
-        echo "Please provide the directory where you want to output harness.cpp file(-o)"
-        exit -1
-fi
-
-if [[ $DATE == "" ]]; then
-        echo "Please provide the DATE(-d)"
-        exit -1
-fi
-
+#
+#if [[ $IN_DIR == "" ]]; then
+#        echo "Please provide the dir where stores HTMLs (-i)"
+#        exit -1
+#fi
+#
+#if [[ $OUT_DIR == "" ]]; then
+#        echo "Please provide the directory where you want to output harness.cpp file(-o)"
+#        exit -1
+#fi
+#
+#if [[ $DATE == "" ]]; then
+#        echo "Please provide the DATE(-d)"
+#        exit -1
+#fi
+#
 if [[ $SRC == "" ]]; then
         echo "Please provide the dir of hierarchy_fuzzing(-s)"
         exit -1
 fi
-
-if [[ $QUEUE == "" ]]; then
-        echo "Please provide AFL++ instances dir (for example, XXXXXX/afl_S_0, provide XXXXXX path here) (-q)"
-        exit -1
-fi
+#
+#if [[ $QUEUE == "" ]]; then
+#        echo "Please provide AFL++ instances dir (for example, XXXXXX/afl_S_0, provide XXXXXX path here) (-q)"
+#        exit -1
+#fi
+#
 
 # load config file
 . $SRC/src/var.config
