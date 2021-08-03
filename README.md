@@ -31,13 +31,28 @@ pip2 install lxml
 ```
 - numpy for python2
 
+#### re-using set-up docker image : 
+get the docker id :
+```shell 
+docker ps -a
+```
+restart the docker : 
+```shell
+docker restart <id>
+```
+re-attach on docker :
+```shell
+docker attach <id>
+```
+
+
 ## Run Harness
 
   1. Followsng the comments of each variable, updating paths locally in src/var.config
   2. Run following command line
 
 ```shell
-cd ~/hierachy-fuzzing/
+cd hierachy-fuzzing/
 bash ./src/main.sh
 ```
 
