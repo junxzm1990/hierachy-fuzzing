@@ -1,15 +1,22 @@
-#while getopts i:o:d:q:s:t: option
-#do 
-#	case "${option}"
-#	in
+while getopts c: option #i:o:d:q:s:t: option
+do 
+	case "${option}"
+	in
+	c) CONFIG=${OPTARG};;
 #	i) IN_DIR=${OPTARG};;
 #	o) OUT_DIR=${OPTARG};;
 #	d) DATE=${OPTARG};;
 #	s) SRC=${OPTARG};;
 #	q) QUEUE=${OPTARG};;
 #	t) TIME=${OPTARG};;
-#	esac
-#done
+	esac
+done
+
+if [[ $CONFIG == "" ]]; then
+        echo "Please provide CONFIG file (-c)"
+        exit -1
+fi
+
 #
 #if [[ $IN_DIR == "" ]]; then
 #        echo "Please provide the dir where stores HTMLs (-i)"
@@ -38,7 +45,7 @@
 #
 
 # load config file
-. ./src/var.config
+. $CONFIG
 
 echo $foxit_loc $AFLpp_loc
 
