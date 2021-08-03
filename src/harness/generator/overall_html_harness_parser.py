@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/usr/local/lib/python2.7/dist-packages")
+sys.path.append("usr/local/lib/python2.7/dist-packages")
 from bs4 import BeautifulSoup
 import os
 import string

@@ -1,15 +1,15 @@
-while getopts i:o:d:q:s:t: option
-do 
-	case "${option}"
-	in
+#while getopts i:o:d:q:s:t: option
+#do 
+#	case "${option}"
+#	in
 #	i) IN_DIR=${OPTARG};;
 #	o) OUT_DIR=${OPTARG};;
 #	d) DATE=${OPTARG};;
-	s) SRC=${OPTARG};;
+#	s) SRC=${OPTARG};;
 #	q) QUEUE=${OPTARG};;
 #	t) TIME=${OPTARG};;
-	esac
-done
+#	esac
+#done
 #
 #if [[ $IN_DIR == "" ]]; then
 #        echo "Please provide the dir where stores HTMLs (-i)"
@@ -26,10 +26,10 @@ done
 #        exit -1
 #fi
 #
-if [[ $SRC == "" ]]; then
-        echo "Please provide the dir of hierarchy_fuzzing(-s)"
-        exit -1
-fi
+#if [[ $SRC == "" ]]; then
+#        echo "Please provide the dir of hierarchy_fuzzing(-s)"
+#        exit -1
+#fi
 #
 #if [[ $QUEUE == "" ]]; then
 #        echo "Please provide AFL++ instances dir (for example, XXXXXX/afl_S_0, provide XXXXXX path here) (-q)"
@@ -38,7 +38,7 @@ fi
 #
 
 # load config file
-. $SRC/src/var.config
+. ./src/var.config
 
 echo $foxit_loc $AFLpp_loc
 
