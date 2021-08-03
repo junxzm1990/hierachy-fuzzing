@@ -10,26 +10,35 @@ Overiew of the src code :
 
 ## Environment Set Up
 
-- pull AFL++ docker
+- pull AFL++ docker 
+```shell
+docker pull aflplusplus/aflplusplus
+docker run -ti -v /location/of/your/target:/src aflplusplus/aflplusplus
+```
 
 #### inside AFL++ docker needs :
  
 - python2.7
 - pip2
-- bs4 for python2 : pip2 install beautifulsoup4 (Once bs4 installed, update path of bs4 in src/harness/generator/overall_html_harness_parser.py:2) 
-- lxml: pip2 install lxml
+- bs4 for python2 
+```shell
+pip2 install beautifulsoup4 
+```
+Once bs4 installed, update path of bs4 in src/harness/generator/overall_html_harness_parser.py:2
+- lxml 
+```shell
+pip2 install lxml
+```
 - numpy for python2
 
 ## Run Harness
 
-  Following the comments of each variable, updating paths locally in src/var.config
+  1. Followsng the comments of each variable, updating paths locally in src/var.config
+  2. Run following command line
 
-```console
-
-	cd ~/hierachy-fuzzing/
-
-  	bash ./src/main.sh
-
+```shell
+cd ~/hierachy-fuzzing/
+bash ./src/main.sh
 ```
 
 ## Testcases
