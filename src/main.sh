@@ -11,44 +11,39 @@ if [[ $CONFIG == "" ]]; then
         exit -1
 fi
 
-
 # load config file
 . $CONFIG
 
-echo $foxit_loc $AFLpp_loc
-
-
-mkdir $OUT_DIR/pdf_gen/
-
-mkdir $OUT_DIR/harness_bin/
-
-
-# --------------- .cpp GENERATION -----------------------------------------------------------
-for h in $IN_DIR/*
-do
-	python2 $SRC/src/harness/generator/overall_html_harness_parser.py $h $OUT_DIR $OUT_DIR/pdf_gen/ $foxit_loc $AFLpp_loc
-done
-
-# checking how many HTML PROCESSED
-cnt=`ls $OUT_DIR | grep -v "harness_bin" | grep -v "pdf_gen" | wc -l`
-
-
-if [[ $cnt == 0 ]] 
-then
-	echo "Please provide another Input dir. No HTML in current dir can be convert to PDF harness"
-
-
-# -------------- SCENTARIO C : 1+ HTML PROVIDED ---------------------------------------------------------
-else
-       
-	bash $SRC/src/harness/filter/filter_shell.sh -c $CONFIG 
-        
-
-	# harness compile, fuzzing, pdf files migration	
-	while [ -s $OUT_DIR/rank_list ]; do
-
-		bash $SRC/src/harness/harness_compile_fuzzing_migrate.sh -c $CONFIG -n $cnt
-		
-	done
-
+if [[ $foxit_loc == "" ]]; then
+        echo "please provide foxit_loc path in var.config"
+        exit -1
 fi
+
+if [[ $AFLpp_loc == "" ]]; then
+        echo "please provide AFLpp_loc path in var.config"
+        exit -1
+fi
+
+if [[ $IN_DIR == "" ]]; then
+        echo "please provide IN_DIR path in var.config"
+        exit -1
+fi
+
+if [[ $OUT_DIR == "" ]]; then
+        echo "please provide OUT_DIR path in var.config"
+        exit -1
+fi
+
+if [[ $SRC == "" ]]; then
+        echo "please provide SRC path in var.config"
+        exit -1
+fi
+
+if [[ $QUEUE == "" ]]; then
+        echo "please provide QUEUE path in var.config"
+        exit -1
+fi
+
+# handling harness generating, filtering, compiling, fuzzing and output migration
+bash $SRC/src/harness/harness_compile_fuzzing_migrate.sh -c $CONFIG
+		
