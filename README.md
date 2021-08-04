@@ -48,12 +48,12 @@ docker attach <id>
 
 ## Run Harness
 
-  1. Followsng the comments of each variable, updating paths locally in src/var.config
+  1. Followsng the comments of each variable, updating paths locally in src/var.config (example : src/sample_var.config)
   2. Run following command line
 
 ```shell
 cd hierachy-fuzzing/
-bash ./src/main.sh
+bash ./src/main.sh -c ./src/var.config
 ```
 
 ## Testcases
