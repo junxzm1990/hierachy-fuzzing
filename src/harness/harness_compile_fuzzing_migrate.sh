@@ -66,7 +66,7 @@ then
                                         name="id:"$zero$pre_cnt","$base
                                         mv $i $QUEUE/$top_rank$DATE/queue/$name
                                         echo $i >> $QUEUE/$top_rank$DATE/done_seeds
-                                        let "pre=pre+1"
+                                        let "pre_cnt=pre_cnt+1"
                                 fi
                         done
                 fi
@@ -122,11 +122,11 @@ else
 					done
 	
 					base=`echo $(basename $i) | cut -d . -f 1`
-					
+
 					name="id:"$zero$pre_cnt","$base
 					mv $i $QUEUE/$top_rank$DATE/queue/$name
 					echo $i >> $QUEUE/$top_rank$DATE/done_seeds
-					let "pre=pre+1"
+					let "pre_cnt=pre_cnt+1"
 				fi
 			done
 		fi
