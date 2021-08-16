@@ -1,0 +1,240 @@
+('@@@@@@@', 'body_div_headerhtml')
+['style']
+['head', ['style']]
+['p']
+['br']
+['h1']
+['p']
+['div', ['br'], ['h1'], ['p']]
+['p']
+['div', ['p']]
+['input']
+['br']
+['input']
+['br']
+['input']
+['br']
+['input']
+['br']
+['input']
+['br']
+['input']
+['br']
+['input']
+['br']
+['input']
+['br']
+['button']
+['br']
+['button']
+['br']
+['input']
+['br']
+['option']
+['option']
+['option']
+['option']
+['option']
+['datalist', ['option'], ['option'], ['option'], ['option'], ['option']]
+['form', ['input'], ['br'], ['input'], ['br'], ['input'], ['br'], ['input'], ['br'], ['input'], ['br'], ['input'], ['br'], ['input'], ['br'], ['input'], ['br'], ['button'], ['br'], ['button'], ['br'], ['input'], ['br'], ['datalist', ['option'], ['option'], ['option'], ['option'], ['option']]]
+['button']
+['input']
+['input']
+['input']
+['input']
+['div', ['input']]
+['canvas']
+['div', ['canvas']]
+['input']
+['div', ['input']]
+['button']
+['form', ['input'], ['input'], ['input'], ['div', ['input']], ['div', ['canvas']], ['div', ['input']], ['button']]
+['p']
+['option']
+['option']
+['option']
+['select', ['option'], ['option'], ['option']]
+['circle']
+['svg', ['circle']]
+['rect']
+['svg', ['rect']]
+['rect']
+['svg', ['rect']]
+['polygon']
+['svg', ['polygon']]
+['stop']
+['stop']
+['lineargradient', ['stop'], ['stop']]
+['defs', ['lineargradient', ['stop'], ['stop']]]
+['ellipse']
+['text']
+['svg', ['defs', ['lineargradient', ['stop'], ['stop']]], ['ellipse'], ['text']]
+['barcode']
+['barcode']
+['barcode']
+['barcode']
+['barcode']
+['barcode']
+['barcode']
+['barcode']
+['caption']
+['th']
+['th']
+['th']
+['th']
+['tr', ['th'], ['th'], ['th'], ['th']]
+['th']
+['th']
+['td']
+['td']
+['tr', ['th'], ['th'], ['td'], ['td']]
+['th']
+['td']
+['td']
+['tr', ['th'], ['td'], ['td']]
+['th']
+['th']
+['td']
+['td']
+['tr', ['th'], ['th'], ['td'], ['td']]
+['th']
+['td']
+['td']
+['tr', ['th'], ['td'], ['td']]
+['table', ['caption'], ['tr', ['th'], ['th'], ['th'], ['th']], ['tr', ['th'], ['th'], ['td'], ['td']], ['tr', ['th'], ['td'], ['td']], ['tr', ['th'], ['th'], ['td'], ['td']], ['tr', ['th'], ['td'], ['td']]]
+['form', ['p'], ['select', ['option'], ['option'], ['option']], ['svg', ['circle']], ['svg', ['rect']], ['svg', ['rect']], ['svg', ['polygon']], ['svg', ['defs', ['lineargradient', ['stop'], ['stop']]], ['ellipse'], ['text']], ['barcode'], ['barcode'], ['barcode'], ['barcode'], ['barcode'], ['barcode'], ['barcode'], ['barcode'], ['table', ['caption'], ['tr', ['th'], ['th'], ['th'], ['th']], ['tr', ['th'], ['th'], ['td'], ['td']], ['tr', ['th'], ['td'], ['td']], ['tr', ['th'], ['th'], ['td'], ['td']], ['tr', ['th'], ['td'], ['td']]]]
+['body', ['p'], ['div', ['br'], ['h1'], ['p']], ['div', ['p']], ['form', ['input'], ['br'], ['input'], ['br'], ['input'], ['br'], ['input'], ['br'], ['input'], ['br'], ['input'], ['br'], ['input'], ['br'], ['input'], ['br'], ['button'], ['br'], ['button'], ['br'], ['input'], ['br'], ['datalist', ['option'], ['option'], ['option'], ['option'], ['option']]], ['button'], ['form', ['input'], ['input'], ['input'], ['div', ['input']], ['div', ['canvas']], ['div', ['input']], ['button']], ['form', ['p'], ['select', ['option'], ['option'], ['option']], ['svg', ['circle']], ['svg', ['rect']], ['svg', ['rect']], ['svg', ['polygon']], ['svg', ['defs', ['lineargradient', ['stop'], ['stop']]], ['ellipse'], ['text']], ['barcode'], ['barcode'], ['barcode'], ['barcode'], ['barcode'], ['barcode'], ['barcode'], ['barcode'], ['table', ['caption'], ['tr', ['th'], ['th'], ['th'], ['th']], ['tr', ['th'], ['th'], ['td'], ['td']], ['tr', ['th'], ['td'], ['td']], ['tr', ['th'], ['th'], ['td'], ['td']], ['tr', ['th'], ['td'], ['td']]]]]
+['html', ['head', ['style']], ['body', ['p'], ['div', ['br'], ['h1'], ['p']], ['div', ['p']], ['form', ['input'], ['br'], ['input'], ['br'], ['input'], ['br'], ['input'], ['br'], ['input'], ['br'], ['input'], ['br'], ['input'], ['br'], ['input'], ['br'], ['button'], ['br'], ['button'], ['br'], ['input'], ['br'], ['datalist', ['option'], ['option'], ['option'], ['option'], ['option']]], ['button'], ['form', ['input'], ['input'], ['input'], ['div', ['input']], ['div', ['canvas']], ['div', ['input']], ['button']], ['form', ['p'], ['select', ['option'], ['option'], ['option']], ['svg', ['circle']], ['svg', ['rect']], ['svg', ['rect']], ['svg', ['polygon']], ['svg', ['defs', ['lineargradient', ['stop'], ['stop']]], ['ellipse'], ['text']], ['barcode'], ['barcode'], ['barcode'], ['barcode'], ['barcode'], ['barcode'], ['barcode'], ['barcode'], ['table', ['caption'], ['tr', ['th'], ['th'], ['th'], ['th']], ['tr', ['th'], ['th'], ['td'], ['td']], ['tr', ['th'], ['td'], ['td']], ['tr', ['th'], ['th'], ['td'], ['td']], ['tr', ['th'], ['td'], ['td']]]]]]
+('CNT', 0)
+('CNT', 1)
+('CNT', 2)
+('CNT', 2)
+('CNT', 3)
+(<class 'bs4.element.Tag'>, <p>\n\t\thappy\n\t</p>)
+('CNT', 4)
+%%%%%%%%%%%%%%%%%%%%%%%%%
+(<class 'bs4.element.ResultSet'>, [<br/>, <h1>\n                        HEAD\n                </h1>, <p>\n\t\t\t@@@@@@@@@@@@@\n\t\t</p>])
+('i', 0)
+('i', 1)
+('i', 2)
+OK@@@
+('CNT', 5)
+('CNT', 6)
+('CNT', 7)
+('CNT', 5)
+%%%%%%%%%%%%%%%%%%%%%%%%%
+(<class 'bs4.element.ResultSet'>, [<p>\n\t\t\tqqqq\n\t\t</p>])
+OK@@@
+('CNT', 6)
+('CNT', 6)
+{0: {0: 'text', 1: 'checkbox', 2: 'checkbox', 3: 'checkbox', 4: 'radio_gender1', 5: 'radio_gender2', 6: 'radio_gender3', 7: 'button', 9: 'choice_5'}}
+('FORM!!!!!!!!!!!!!!!!!', 0)
+('FORM!!!!!!!!!!!!!!!!!', 0)
+('FORM!!!!!!!!!!!!!!!!!', 0)
+('FORM!!!!!!!!!!!!!!!!!', 0)
+('FORM!!!!!!!!!!!!!!!!!', 0)
+('FORM!!!!!!!!!!!!!!!!!', 0)
+('FORM!!!!!!!!!!!!!!!!!', 'gender2')
+('FORM!!!!!!!!!!!!!!!!!', 'gender3')
+('FORM!!!!!!!!!!!!!!!!!', 'gender1')
+('CNT', 7)
+('CNT', 8)
+('CNT', 9)
+('CNT', 10)
+('CNT', 11)
+('CNT', 12)
+('CNT', 13)
+('CNT', 14)
+('CNT', 15)
+('CNT', 16)
+('CNT', 17)
+('CNT', 18)
+('CNT', 19)
+('CNT', 20)
+('CNT', 21)
+('CNT', 22)
+('CNT', 23)
+('CNT', 24)
+('CNT', 25)
+('CNT', 26)
+('CNT', 27)
+('CNT', 28)
+('CNT', 29)
+('CNT', 30)
+('CNT', 31)
+('CNT', 32)
+('CNT', 33)
+('CNT', 34)
+('CNT', 7)
+('CNT', 8)
+{0: {0: 'radio_gender', 1: 'radio_gender', 2: 'radio_gender', 5: 'signiture'}}
+('FORM!!!!!!!!!!!!!!!!!', 0)
+('FORM!!!!!!!!!!!!!!!!!', 'gender')
+('FORM!!!!!!!!!!!!!!!!!', 'gender')
+('FORM!!!!!!!!!!!!!!!!!', 'gender')
+('CNT', 9)
+('CNT', 10)
+('CNT', 11)
+('CNT', 12)
+('CNT', 13)
+('CNT', 13)
+('CNT', 14)
+('CNT', 14)
+('CNT', 15)
+('CNT', 15)
+('CNT', 9)
+{0: {0: 'choice_3'}}
+('FORM!!!!!!!!!!!!!!!!!', 0)
+('CNT', 10)
+('CNT', 11)
+('CNT', 12)
+('CNT', 13)
+('CNT', 14)
+('CNT', 12)
+('CNT', 13)
+('CNT', 13)
+('CNT', 14)
+('CNT', 14)
+('CNT', 15)
+('CNT', 15)
+('CNT', 16)
+('CNT', 16)
+('CNT', 17)
+('CNT', 18)
+('CNT', 19)
+('CNT', 20)
+('CNT', 18)
+('CNT', 19)
+('CNT', 17)
+('CNT', 18)
+('CNT', 19)
+('CNT', 20)
+('CNT', 21)
+('CNT', 22)
+('CNT', 23)
+('CNT', 24)
+('CNT', 25)
+('CNT', 26)
+('CNT', 27)
+('CNT', 28)
+('CNT', 29)
+('CNT', 30)
+('CNT', 31)
+('CNT', 28)
+('CNT', 29)
+('CNT', 30)
+('CNT', 31)
+('CNT', 32)
+('CNT', 29)
+('CNT', 30)
+('CNT', 31)
+('CNT', 32)
+('CNT', 30)
+('CNT', 31)
+('CNT', 32)
+('CNT', 33)
+('CNT', 34)
+('CNT', 31)
+('CNT', 32)
+('CNT', 33)
+('CNT', 34)
