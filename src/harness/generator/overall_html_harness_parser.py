@@ -1,6 +1,6 @@
 import sys
 sys.path.append("usr/local/lib/python2.7/dist-packages")
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString, Tag
 import os
 import string
 #from random import seed
@@ -13,7 +13,7 @@ import vector_graphic as VG
 import form as FM
 import table as TAB
 import text as TX
-    
+import page_stru as PS    
 
 class GENERAL_API():
     def __init__(self, template):
@@ -253,7 +253,81 @@ class GENERAL_API():
         ############# FRIDA end #################################
 
 
+# NEW : Building the HTML strucure tree
+def traverse(soup) :
+    if soup is not None :
+        if soup.name is not None:
+           stru = [soup.name]
+           for child in soup.children :
+               if child.name is not None :
+                   stru.append(traverse(child))
+           print (stru)
+           return stru
 
+# iterate the tree strues, call corresponding tag's(or cluster of tags') classes
+def iter_tree(soup,stru,cur_root,out_f,cnt) :
+    if stru is not None :
+        for i in stru :
+            # iteratively walking on the tree
+            if isinstance(i, list) :
+                iter_tree(soup, i, cur_root, out_f, cnt)
+            # parsing and mapping the node features
+            else :
+               if cur_root == 'body' :
+                   if i == 'div' :
+                       pages = soup.find(i)
+                       PS.HTML_PAGE_STRU(soup.find('div'), out_f, cnt).div_parse()
+                       pages.decompose()
+                   elif i in ['p', 'span', 'br', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'blockquote', 'code', 'ul', 'ol', 'dl', 'mark', 'ins', 'del', 'sup', 'sub', 'i', 'b'] :
+                       texts = soup.find(i)
+                       if len(texts) != 0 :
+                            maga_info = TX.HTML_TEXT_STRU(texts).text_parse()
+                            if len(maga_info) > 0 :
+                                TX.PDF_TEXT_API_MAP(maga_info, out_f, cnt).api_order()
+                       texts.decompose()
+                   elif i == 'svg' :
+                       VGs = soup.find(i)
+                       if len(VGs) != 0 :
+                           maga_info_vg = VG.HTML_VGs_STRU(VGs).VG_parse()
+                           if len(maga_info_vg) > 0 :
+                               VG.PDF_VGs_API_MAP(maga_info_vg, out_f, cnt).api_order()
+                       VGs.decompose()
+                   elif i == 'img' :
+                       IMGs = soup.find(i)
+                       if len(IMGs) != 0 :
+                           maga_info_img = VG.HTML_IMGs_STRU(IMGs).IMG_parse()
+                           if len(maga_info_img) > 0 :
+                               VG.PDF_IMGs_API_MAP(maga_info_img, out_f, cnt).api_order()
+                       IMGs.decompose()
+                   elif i == 'style' :
+                       STYLEs = soup.find(i)
+                       if len(STYLEs) != 0 :
+                           maga_info_style = VG.HTML_STYLEs_STRU(STYLEs).STYLE_parse()
+                           if len(maga_info_style) > 0 :
+                                VG.PDF_STYLEs_API_MAP(maga_info_style, out_f, cnt).api_order()
+                       STYLEs.decompose()
+                   elif i == 'form' :
+                       forms = soup.find(i)
+                       if len(forms) != 0 :
+                           maga_info = FM.HTML_FORM_STRU(forms).form_parse()
+                           if len(maga_info) > 0 :
+                               FM.PDF_FORM_API_MAP(maga_info, out_f, cnt).api_order()
+                       forms.decompose()
+                   elif i == 'table' :
+                       tables = soup.find(i)
+                       styles = soup.find('style')
+                       if len(tables) > 0 :
+                           maga_info = TAB.HTML_TAB_STRU(tables, styles).tab_parse()
+                           if len(maga_info) > 0 and len(maga_info) < 20:
+                               tableID = 0
+                               for tab in maga_info:
+                               
+                                   # if file contains table, map its structure to PDF API
+                                   TAB.PDF_TAB_API_MAP(maga_info, out_f, tableID, cnt).api_order()
+                                   tableID += 1
+                       tables.decompose()
+            cnt += 1
+            cur_root = stru[0]
 
 def main(argv) :
     html_file = argv[0]
@@ -267,73 +341,90 @@ def main(argv) :
     in_f = open(html_file, 'r').read()
     soup = BeautifulSoup(in_f, 'lxml')
 
-    # TEXTs
-    texts = soup.find_all(['p', 'span', 'br', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'blockquote', 'code', 'ul', 'ol', 'dl', 'mark', 'ins', 'del', 'sup', 'sub', 'i', 'b'])
-    # VGs
-    VGs = soup.find_all('svg')
-    # IMGs
-    IMGs = soup.find_all('img')
-    # STYLEs
-    STYLEs = soup.find_all('style')
-    #FORM
-    forms = soup.find_all('form')
-    # TABLE
-    tables = soup.find_all('table')
-    styles = soup.find_all('style')
+    # NEW : build DOC TREE structure
+    stru_tree = traverse(soup.find('html'))
 
-
-    if len(texts) != 0 or len(VGs) != 0 or len(IMGs) != 0 or len(STYLEs) != 0 or len(forms) != 0 or len(tables) > 0 : 
+    if stru_tree != {} :
         os.makedirs(output_dir + "/" + file_name)
-        out_f = open( output_dir + "/" + file_name + "/html_to_PDF_text_harness_template.cpp", "a")
+        out_f = open( output_dir + "/" + file_name + "/html_to_PDF_text_template.cpp", "a")
         # Write General bein API lines in template
         GENERAL_API(out_f).begin_line(foxit_loc, AFLpp_loc)
- 
-        if len(texts) != 0 : 
-            maga_info = TX.HTML_TEXT_STRU(texts).text_parse()
-            if len(maga_info) > 0 :
-                TX.PDF_TEXT_API_MAP(maga_info, out_f).api_order()
-        else :
-            print (file_name + " does not contain TEXTs")
 
-        if len(VGs) != 0 : 
-            maga_info_vg = VG.HTML_VGs_STRU(VGs).VG_parse()
-            if len(maga_info_vg) > 0 :
-                VG.PDF_VGs_API_MAP(maga_info_vg, out_f).api_order()
-        else :
-            print (file_name + " does not contain VGs")
+        # parsing and mapping based on DOC TREE structure
+        cnt = 0
+        iter_tree(soup.find('html'), stru_tree, '', out_f, cnt)
 
-        if len(IMGs) != 0:
-            maga_info_img = VG.HTML_IMGs_STRU(IMGs).IMG_parse()
-            if len(maga_info_img) > 0 :
-                VG.PDF_IMGs_API_MAP(maga_info_img, out_f).api_order()
-        else :
-            print (file_name + " does not contain IMGs")
-
-        if len(STYLEs) != 0:
-            maga_info_style = VG.HTML_STYLEs_STRU(STYLEs).STYLE_parse()
-            if len(maga_info_style) > 0 :
-                VG.PDF_STYLEs_API_MAP(maga_info_style, out_f).api_order()
-        else :
-            print (file_name + " does not contain STYLEs")
-        
-        if len(forms) != 0 :
-            maga_info = FM.HTML_FORM_STRU(forms).form_parse()
-            if len(maga_info) > 0 :
-                FM.PDF_FORM_API_MAP(maga_info, out_f).api_order()
-        else :
-            print (file_name + " does not contain FORMs")
-
-        if len(tables) != 0 :
-            maga_info = TAB.HTML_TAB_STRU(tables, styles).tab_parse()
-            if len(maga_info) > 0 and len(maga_info) < 20: 
-                tableID = 0
-                for tab in maga_info:
-                    TAB.PDF_TAB_API_MAP(maga_info, out_f, tableID).api_order()
-                    tableID += 1
-
-
-        # write general end lines in template
         GENERAL_API(out_f).end_line(pdf_opt_dir)
+    else :
+        print ("NOTHING CAN BE PARSED !")
+
+#    # TEXTs
+#    texts = soup.find_all(['p', 'span', 'br', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'blockquote', 'code', 'ul', 'ol', 'dl', 'mark', 'ins', 'del', 'sup', 'sub', 'i', 'b'])
+#    # VGs
+#    VGs = soup.find_all('svg')
+#    # IMGs
+#    IMGs = soup.find_all('img')
+#    # STYLEs
+#    STYLEs = soup.find_all('style')
+#    #FORM
+#    forms = soup.find_all('form')
+#    # TABLE
+#    tables = soup.find_all('table')
+#    styles = soup.find_all('style')
+#
+#
+#    if len(texts) != 0 or len(VGs) != 0 or len(IMGs) != 0 or len(STYLEs) != 0 or len(forms) != 0 or len(tables) > 0 : 
+#        os.makedirs(output_dir + "/" + file_name)
+#        out_f = open( output_dir + "/" + file_name + "/html_to_PDF_text_harness_template.cpp", "a")
+#        # Write General bein API lines in template
+#        GENERAL_API(out_f).begin_line(foxit_loc, AFLpp_loc)
+# 
+#        if len(texts) != 0 : 
+#            maga_info = TX.HTML_TEXT_STRU(texts).text_parse()
+#            if len(maga_info) > 0 :
+#                TX.PDF_TEXT_API_MAP(maga_info, out_f).api_order()
+#        else :
+#            print (file_name + " does not contain TEXTs")
+#
+#        if len(VGs) != 0 : 
+#            maga_info_vg = VG.HTML_VGs_STRU(VGs).VG_parse()
+#            if len(maga_info_vg) > 0 :
+#                VG.PDF_VGs_API_MAP(maga_info_vg, out_f).api_order()
+#        else :
+#            print (file_name + " does not contain VGs")
+#
+#        if len(IMGs) != 0:
+#            maga_info_img = VG.HTML_IMGs_STRU(IMGs).IMG_parse()
+#            if len(maga_info_img) > 0 :
+#                VG.PDF_IMGs_API_MAP(maga_info_img, out_f).api_order()
+#        else :
+#            print (file_name + " does not contain IMGs")
+#
+#        if len(STYLEs) != 0:
+#            maga_info_style = VG.HTML_STYLEs_STRU(STYLEs).STYLE_parse()
+#            if len(maga_info_style) > 0 :
+#                VG.PDF_STYLEs_API_MAP(maga_info_style, out_f).api_order()
+#        else :
+#            print (file_name + " does not contain STYLEs")
+#        
+#        if len(forms) != 0 :
+#            maga_info = FM.HTML_FORM_STRU(forms).form_parse()
+#            if len(maga_info) > 0 :
+#                FM.PDF_FORM_API_MAP(maga_info, out_f).api_order()
+#        else :
+#            print (file_name + " does not contain FORMs")
+#
+#        if len(tables) != 0 :
+#            maga_info = TAB.HTML_TAB_STRU(tables, styles).tab_parse()
+#            if len(maga_info) > 0 and len(maga_info) < 20: 
+#                tableID = 0
+#                for tab in maga_info:
+#                    TAB.PDF_TAB_API_MAP(maga_info, out_f, tableID).api_order()
+#                    tableID += 1
+#
+#
+#        # write general end lines in template
+#        GENERAL_API(out_f).end_line(pdf_opt_dir)
  
 
 

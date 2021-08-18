@@ -1,4 +1,4 @@
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString, Tag
 import sys
 import os
 import string
@@ -76,9 +76,12 @@ class HTML_VGs_STRU() :
             shape_attributes = dict()
     def VG_parse(self) : 
         vgID = 0
-        for svg in self.VGs:
-            self.VG_type(svg, vgID)
-            vgID += 1
+        if isinstance(self.VGs, Tag) :
+            self.VG_type(self.VGs, vgID)
+        else :
+            for svg in self.VGs:
+                self.VG_type(svg, vgID)
+                vgID += 1
         print(self.maga_info)
         return self.maga_info
 
@@ -93,10 +96,12 @@ class HTML_IMGs_STRU() :
             self.maga_info[img_id]={"QR":img["height"]}
     def IMG_parse(self) :
         imgID = 0
-        for img in self.IMGs:
+        if isinstance(self.IMGs, Tag) :
             self.IMG_type(img, imgID)
-            imgID += 1
-        print (self.maga_info)
+        else :
+            for img in self.IMGs:
+                self.IMG_type(img, imgID)
+                imgID += 1
         return self.maga_info 
 
 class HTML_STYLEs_STRU() :
@@ -119,9 +124,10 @@ class HTML_STYLEs_STRU() :
        
 
 class PDF_VGs_API_MAP() :
-    def __init__(self, maga_info, template) :
+    def __init__(self, maga_info, template, tag_cnt) :
         self.maga_info = maga_info
         self.template = template
+        self.tag_cnt = tag_cnt
 
     def arg_val(self, arg_name, arg_type, constrain, upper, lower):
         self.template.write(arg_type + " "+ arg_name + "=(" + arg_type + ")0; \n")
@@ -146,10 +152,10 @@ class PDF_VGs_API_MAP() :
     
     def draw_circle(self, vgID, cnt) : 
         # API : DrawCircle(XPos, YPos, Radius, DrawOptions)
-        DrawCircle_arg_1 = "DrawCircle_XPos" + str(vgID)+str(cnt)
-        DrawCircle_arg_2 = "DrawCircle_YPos" + str(vgID)+str(cnt)
-        DrawCircle_arg_3 = "DrawCircle_Radius" + str(vgID)+str(cnt)
-        DrawCircle_arg_4 = "DrawCircle_DrawOptions" + str(vgID)+str(cnt)
+        DrawCircle_arg_1 = "DrawCircle_XPos" + str(vgID)+str(cnt)+str(self.tag_cnt)
+        DrawCircle_arg_2 = "DrawCircle_YPos" + str(vgID)+str(cnt)+str(self.tag_cnt)
+        DrawCircle_arg_3 = "DrawCircle_Radius" + str(vgID)+str(cnt)+str(self.tag_cnt)
+        DrawCircle_arg_4 = "DrawCircle_DrawOptions" + str(vgID)+str(cnt)+str(self.tag_cnt)
         DrawCircle_constrain_1 = "if (" + DrawCircle_arg_1 + " <0.001 || " + DrawCircle_arg_1 + " > 800.001) { \n"
         DrawCircle_constrain_2 = "if (" + DrawCircle_arg_2 + " <0.001 || " + DrawCircle_arg_2 + " > 800.001) { \n"
         DrawCircle_constrain_3 = "if (" + DrawCircle_arg_3 + " <0.001 || " + DrawCircle_arg_3 + " > 800.001) { \n"
@@ -158,14 +164,14 @@ class PDF_VGs_API_MAP() :
         self.arg_val(DrawCircle_arg_2, "double", DrawCircle_constrain_2, "800.001", "0.001")
         self.arg_val(DrawCircle_arg_3, "double", DrawCircle_constrain_3, "800.001", "0.001")
         self.arg_val(DrawCircle_arg_4, "int", DrawCircle_constrain_4, "2", "0")
-        self.template.write("int circle"+str(vgID)+str(cnt)+" = FQL->DrawCircle("+DrawCircle_arg_1+", "+DrawCircle_arg_2+","+DrawCircle_arg_3+", " +DrawCircle_arg_4 + " ); \n")    
+        self.template.write("int circle"+str(vgID)+str(cnt)+str(self.tag_cnt)+" = FQL->DrawCircle("+DrawCircle_arg_1+", "+DrawCircle_arg_2+","+DrawCircle_arg_3+", " +DrawCircle_arg_4 + " ); \n")    
     def draw_box(self, vgID, cnt) :
         # API : DrawBox(Left, Top, Width, Height, DrawOption)
-        DrawBox_arg_1 = "DrawBox_Left" + str(vgID) + str(cnt)
-        DrawBox_arg_2 = "DrawBox_Top" + str(vgID) + str(cnt)
-        DrawBox_arg_3 = "DrawBox_Width" + str(vgID) + str(cnt)
-        DrawBox_arg_4 = "DrawBox_Height" + str(vgID) + str(cnt)
-        DrawBox_arg_5 = "DrawBox_DrawOptions" + str(vgID) + str(cnt)
+        DrawBox_arg_1 = "DrawBox_Left" + str(vgID) + str(cnt)+str(self.tag_cnt)
+        DrawBox_arg_2 = "DrawBox_Top" + str(vgID) + str(cnt)+str(self.tag_cnt)
+        DrawBox_arg_3 = "DrawBox_Width" + str(vgID) + str(cnt)+str(self.tag_cnt)
+        DrawBox_arg_4 = "DrawBox_Height" + str(vgID) + str(cnt)+str(self.tag_cnt)
+        DrawBox_arg_5 = "DrawBox_DrawOptions" + str(vgID) + str(cnt)+str(self.tag_cnt)
         DrawBox_constrain_1 = "if (" + DrawBox_arg_1 + " < 0.001 || " + DrawBox_arg_1 + " > 800.001) {\n"
         DrawBox_constrain_2 = "if (" + DrawBox_arg_2 + " < 0.001 || " + DrawBox_arg_2 + " > 800.001) {\n"
         DrawBox_constrain_3 = "if (" + DrawBox_arg_3 + " < 0.001 || " + DrawBox_arg_3 + " > 800.001) {\n"
@@ -176,16 +182,15 @@ class PDF_VGs_API_MAP() :
         self.arg_val(DrawBox_arg_3, "double", DrawBox_constrain_3, "800.001", "0.001")
         self.arg_val(DrawBox_arg_4, "double", DrawBox_constrain_4, "800.001", "0.001")
         self.arg_val(DrawBox_arg_5, "int", DrawBox_constrain_5, "2", "0")
-        
-        self.template.write("int rect" +str(vgID) +str(cnt) + " = FQL->DrawBox(" + DrawBox_arg_1  + ", " + DrawBox_arg_2 + ", "+DrawBox_arg_3+", "+DrawBox_arg_4+", "+DrawBox_arg_5+");\n")
+        self.template.write("int rect" +str(vgID) +str(cnt) + str(self.tag_cnt) + " = FQL->DrawBox(" + DrawBox_arg_1  + ", " + DrawBox_arg_2 + ", "+DrawBox_arg_3+", "+DrawBox_arg_4+", "+DrawBox_arg_5+");\n")
     def draw_round_box(self, vgID, cnt) :
         # API : DrawRoundedBox(Left, Top, Width, Height, Radius, DrawOptions)
-        DrawRoundedBox_arg_1 = "DrawRoundedBox_Left" + str(vgID) + str(cnt)
-        DrawRoundedBox_arg_2 = "DrawRoundedBox_Top" + str(vgID) + str(cnt)
-        DrawRoundedBox_arg_3 = "DrawRoundedBox_Width" + str(vgID) + str(cnt)
-        DrawRoundedBox_arg_4 = "DrawRoundedBox_Height" + str(vgID) + str(cnt)
-        DrawRoundedBox_arg_5 = "DrawRoundedBox_Radius" + str(vgID) + str(cnt)
-        DrawRoundedBox_arg_6 = "DrawRoundedBox_DrawOptions" + str(vgID) + str(cnt)
+        DrawRoundedBox_arg_1 = "DrawRoundedBox_Left" + str(vgID) + str(cnt)+str(self.tag_cnt)
+        DrawRoundedBox_arg_2 = "DrawRoundedBox_Top" + str(vgID) + str(cnt)+str(self.tag_cnt)
+        DrawRoundedBox_arg_3 = "DrawRoundedBox_Width" + str(vgID) + str(cnt)+str(self.tag_cnt)
+        DrawRoundedBox_arg_4 = "DrawRoundedBox_Height" + str(vgID) + str(cnt)+str(self.tag_cnt)
+        DrawRoundedBox_arg_5 = "DrawRoundedBox_Radius" + str(vgID) + str(cnt)+str(self.tag_cnt)
+        DrawRoundedBox_arg_6 = "DrawRoundedBox_DrawOptions" + str(vgID) + str(cnt)+str(self.tag_cnt)
         DrawRoundedBox_constrain_1 = "if ("+DrawRoundedBox_arg_1+" < 0.001 || " + DrawRoundedBox_arg_1 + " > 800.001 ){ \n"
         DrawRoundedBox_constrain_2 = "if ("+DrawRoundedBox_arg_2+" < 0.001 || " + DrawRoundedBox_arg_2 + " > 800.001 ){ \n"
         DrawRoundedBox_constrain_3 = "if ("+DrawRoundedBox_arg_3+" < 0.001 || " + DrawRoundedBox_arg_3 + " > 800.001 ){ \n"
@@ -198,7 +203,7 @@ class PDF_VGs_API_MAP() :
         self.arg_val(DrawRoundedBox_arg_4, "double", DrawRoundedBox_constrain_4, "800.001", "0.001")
         self.arg_val(DrawRoundedBox_arg_5, "double", DrawRoundedBox_constrain_5, "800.001", "0.001")
         self.arg_val(DrawRoundedBox_arg_6, "int", DrawRoundedBox_constrain_6, "2", "0")
-        self.template.write("int rect_round" +str(vgID) + str(cnt)+ " = FQL->DrawRoundedBox("+DrawRoundedBox_arg_1+", "+DrawRoundedBox_arg_2+", "+DrawRoundedBox_arg_3+","+DrawRoundedBox_arg_4+", "+DrawRoundedBox_arg_5+","+DrawRoundedBox_arg_6+" ); \n ")
+        self.template.write("int rect_round" +str(vgID) + str(cnt)+str(self.tag_cnt)+ " = FQL->DrawRoundedBox("+DrawRoundedBox_arg_1+", "+DrawRoundedBox_arg_2+", "+DrawRoundedBox_arg_3+","+DrawRoundedBox_arg_4+", "+DrawRoundedBox_arg_5+","+DrawRoundedBox_arg_6+" ); \n ")
     def draw_polygon(self, vgID, cnt) :
         for i in self.maga_info[vgID][cnt].values():
             StartX = i[0].split(",")[0]
@@ -210,11 +215,11 @@ class PDF_VGs_API_MAP() :
             self.template.write("FQL->DrawLine("+StartX+", "+StartY+","+EndX+", "+EndY+"); \n")
     def draw_ellipse(self, vgID, cnt) :
         # API : DrawEllipse(XPos, YPos, Width, Height, DrawOptions)
-        DrawEllipse_arg_1 = "DrawEllipse_XPos" + str(vgID) + str(cnt)
-        DrawEllipse_arg_2 = "DrawEllipse_YPos" + str(vgID) + str(cnt)
-        DrawEllipse_arg_3 = "DrawEllipse_Width" + str(vgID) + str(cnt)
-        DrawEllipse_arg_4 = "DrawEllipse_Height" + str(vgID) + str(cnt)
-        DrawEllipse_arg_5 = "DrawEllipse_DrawOptions" + str(vgID) + str(cnt)
+        DrawEllipse_arg_1 = "DrawEllipse_XPos" + str(vgID) + str(cnt)+str(self.tag_cnt)
+        DrawEllipse_arg_2 = "DrawEllipse_YPos" + str(vgID) + str(cnt)+str(self.tag_cnt)
+        DrawEllipse_arg_3 = "DrawEllipse_Width" + str(vgID) + str(cnt)+str(self.tag_cnt)
+        DrawEllipse_arg_4 = "DrawEllipse_Height" + str(vgID) + str(cnt)+str(self.tag_cnt)
+        DrawEllipse_arg_5 = "DrawEllipse_DrawOptions" + str(vgID) + str(cnt)+str(self.tag_cnt)
         DrawEllipse_constrain_1 = "if (" + DrawEllipse_arg_1 + " < 0.001 || " + DrawEllipse_arg_1 + " > 800.001) {\n"
         DrawEllipse_constrain_2 = "if (" + DrawEllipse_arg_2 + " < 0.001 || " + DrawEllipse_arg_2 + " > 800.001) {\n"
         DrawEllipse_constrain_3 = "if (" + DrawEllipse_arg_3 + " < 0.001 || " + DrawEllipse_arg_3 + " > 800.001) {\n"
@@ -225,7 +230,7 @@ class PDF_VGs_API_MAP() :
         self.arg_val(DrawEllipse_arg_3, "double", DrawEllipse_constrain_3, "800.001", "0.001")
         self.arg_val(DrawEllipse_arg_4, "double", DrawEllipse_constrain_4, "800.001", "0.001")
         self.arg_val(DrawEllipse_arg_5, "int", DrawEllipse_constrain_5, "2", "0")
-        self.template.write("int ellipse" +str(vgID) +str(cnt) + " = FQL->DrawEllipse("+DrawEllipse_arg_1+", "+DrawEllipse_arg_2+", "+DrawEllipse_arg_3+", "+DrawEllipse_arg_4+", "+DrawEllipse_arg_5+"); \n")    
+        self.template.write("int ellipse" +str(vgID) +str(cnt) +str(self.tag_cnt)+ " = FQL->DrawEllipse("+DrawEllipse_arg_1+", "+DrawEllipse_arg_2+", "+DrawEllipse_arg_3+", "+DrawEllipse_arg_4+", "+DrawEllipse_arg_5+"); \n")    
     def color_setting(self, Red, Green, Blue) :
         self.template.write("FQL->SetFillColor("+str(Red)+","+str(Green)+","+str(Blue)+"); \n")
  
@@ -249,9 +254,10 @@ class PDF_VGs_API_MAP() :
                     self.draw_polygon(svg, shape)
 
 class PDF_IMGs_API_MAP() : 
-    def __init__(self, maga_info, template) :
+    def __init__(self, maga_info, template, tag_cnt) :
         self.maga_info = maga_info
         self.template = template
+        self.tag_cnt = tag_cnt
     def arg_val(self, arg_name, arg_type, constrain, upper, lower):
         self.template.write(arg_type + " "+ arg_name + "=(" + arg_type + ")0; \n")
         self.template.write("if (bytes_read - index >= sizeof(" + arg_type + ")) { \n")
@@ -275,11 +281,11 @@ class PDF_IMGs_API_MAP() :
         letters = string.ascii_lowercase
         text_rand = ''.join(choice(letters) for i in range(35))
 
-        DrawQRCode_arg_1 = "DrawQRCode_Left" + str(img_id)
-        DrawQRCode_arg_2 = "DrawQRCode_Top" + str(img_id)
-        DrawQRCode_arg_3 = "DrawQRCode_SymbolSize" + str(img_id)
-        DrawQRCode_arg_4 = "DrawQRCode_EncodeOptions" + str(img_id)
-        DrawQRCode_arg_5 = "DrawQRCode_DrawOptions" + str(img_id)
+        DrawQRCode_arg_1 = "DrawQRCode_Left" + str(img_id) + str(self.tag_cnt)
+        DrawQRCode_arg_2 = "DrawQRCode_Top" + str(img_id)+ str(self.tag_cnt)
+        DrawQRCode_arg_3 = "DrawQRCode_SymbolSize" + str(img_id) + str(self.tag_cnt)
+        DrawQRCode_arg_4 = "DrawQRCode_EncodeOptions" + str(img_id) + str(self.tag_cnt)
+        DrawQRCode_arg_5 = "DrawQRCode_DrawOptions" + str(img_id) + str(self.tag_cnt)
         DrawQRCode_constrain_1 = "if("+DrawQRCode_arg_1+" < 0.001 || "+DrawQRCode_arg_1+" > 800.001) { \n"
         DrawQRCode_constrain_2 = "if("+DrawQRCode_arg_2+" < 0.001 || "+DrawQRCode_arg_2+" > 800.001) { \n"
         DrawQRCode_constrain_3 = "if("+DrawQRCode_arg_3+" < 0.001 || "+DrawQRCode_arg_3+" > 800.001) { \n"
@@ -299,9 +305,10 @@ class PDF_IMGs_API_MAP() :
                 self.draw_qrcode(img_id)
 
 class PDF_STYLEs_API_MAP() :
-    def __init__(self, maga_info, template) :
+    def __init__(self, maga_info, template, tag_cnt) :
         self.maga_info = maga_info
         self.template = template
+        self.tag_cnt = tag_cnt
     def arg_val(self, arg_name, arg_type, constrain, upper, lower):
         self.template.write(arg_type + " "+ arg_name + "=(" + arg_type + ")0; \n")
         self.template.write("if (bytes_read - index >= sizeof(" + arg_type + ")) { \n")
@@ -324,12 +331,12 @@ class PDF_STYLEs_API_MAP() :
         # DrawBarcode(Left, Top, Width, Height, Text, Barcode, Options)
         letters = string.ascii_lowercase
         text_rand = ''.join(choice(letters) for i in range(35))
-        DrawBarcode_arg_1 = "DrawBarcode_Left" + str(style_id)
-        DrawBarcode_arg_2 = "DrawBarcode_Top" + str(style_id)
-        DrawBarcode_arg_3 = "DrawBarcode_Width" + str(style_id)
-        DrawBarcode_arg_4 = "DrawBarcode_Height" + str(style_id)
-        DrawBarcode_arg_5 = "DrawBarcode_Barcode" + str(style_id)
-        DrawBarcode_arg_6 = "DrawBarcode_Option" + str(style_id)
+        DrawBarcode_arg_1 = "DrawBarcode_Left" + str(style_id) + str(self.tag_cnt)
+        DrawBarcode_arg_2 = "DrawBarcode_Top" + str(style_id)+ str(self.tag_cnt)
+        DrawBarcode_arg_3 = "DrawBarcode_Width" + str(style_id)+ str(self.tag_cnt)
+        DrawBarcode_arg_4 = "DrawBarcode_Height" + str(style_id)+ str(self.tag_cnt)
+        DrawBarcode_arg_5 = "DrawBarcode_Barcode" + str(style_id)+ str(self.tag_cnt)
+        DrawBarcode_arg_6 = "DrawBarcode_Option" + str(style_id)+ str(self.tag_cnt)
         DrawBarcode_constrain_1 = "if("+DrawBarcode_arg_1+" < 0.001 || "+DrawBarcode_arg_1+" > 800.001) { \n"
         DrawBarcode_constrain_2 = "if("+DrawBarcode_arg_2+" < 0.001 || "+DrawBarcode_arg_2+" > 800.001) { \n"
         DrawBarcode_constrain_3 = "if("+DrawBarcode_arg_3+" < 0.001 || "+DrawBarcode_arg_3+" > 800.001) { \n"
