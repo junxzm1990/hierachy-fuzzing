@@ -335,7 +335,7 @@ def main(argv) :
     pdf_opt_dir = argv[2]
     foxit_loc = argv[3]
     AFLpp_loc = argv[4]
-    file_name = str(html_file.split("/")[-1]).replace(" ","").replace(",", "").replace(".", "")
+    file_name = str(html_file.split("/")[-1]).replace(" ","").replace(",", "").replace(".", "").replace("\\","")
     print ("@@@@@@@", file_name)
     # load in html content to soup
     in_f = open(html_file, 'r').read()

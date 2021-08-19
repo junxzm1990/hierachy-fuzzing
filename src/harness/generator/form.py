@@ -131,7 +131,7 @@ class PDF_FORM_API_MAP() :
         if len(FieldType) == 1 : 
             if FieldType != "4":
                 self.template.write("int formID" + str(formID) + str(cnt) + str(self.tag_cnt) + " = FQL->NewFormField( L\""+Title_rand +"\", " + FieldType + "); \n")
-        else :
+        elif len(FieldType) != 0 :
             self.template.write("int formID" + str(formID) + str(cnt) + str(self.tag_cnt) + " = FQL->NewFormField( L\""+Title_rand +"\", " + FieldType[0] + "); \n")
             # API SetFormFieldChoiceType(formID, ChoiceType(0-4))
             SetFormFieldChoiceType_arg_1 = "SetFormFieldChoiceType_ChoiceType" + str(formID) + str(cnt) + str(self.tag_cnt)

@@ -93,7 +93,10 @@ class HTML_IMGs_STRU() :
         self.maga_info = dict()
     def IMG_type(self, img, img_id) :
         if ("qr" in str(img)) or ("QR" in str(img)) :
-            self.maga_info[img_id]={"QR":img["height"]}
+            if img.has_attr("height") :
+                self.maga_info[img_id]={"QR":img["height"]}
+            else :
+                self.maga_info[img_id]={"QR":"16"}
     def IMG_parse(self) :
         imgID = 0
         if isinstance(self.IMGs, Tag) :
@@ -111,8 +114,17 @@ class HTML_STYLEs_STRU() :
         # {style ID : obj}
         self.maga_info = dict()
     def STYLE_type(self, style, style_id) :
-        if ("barcode" in str(style)) or ("Barcode" in str(style)) : 
-            self.maga_info[style_id] = "BC"
+        try :
+            str(style)
+            if ("barcode" in str(style)) or ("Barcode" in str(style)) :
+                self.maga_info[style_id] = "BC"
+        except :
+            style = style.encode("utf-8")
+            if ("barcode" in str(style)) or ("Barcode" in str(style)) :
+                self.maga_info[style_id] = "BC"
+
+#        if ("barcode" in str(style)) or ("Barcode" in str(style)) : 
+#            self.maga_info[style_id] = "BC"
     def STYLE_parse(self) : 
         styleID = 0 
         for style in self.STYLEs:
@@ -206,13 +218,25 @@ class PDF_VGs_API_MAP() :
         self.template.write("int rect_round" +str(vgID) + str(cnt)+str(self.tag_cnt)+ " = FQL->DrawRoundedBox("+DrawRoundedBox_arg_1+", "+DrawRoundedBox_arg_2+", "+DrawRoundedBox_arg_3+","+DrawRoundedBox_arg_4+", "+DrawRoundedBox_arg_5+","+DrawRoundedBox_arg_6+" ); \n ")
     def draw_polygon(self, vgID, cnt) :
         for i in self.maga_info[vgID][cnt].values():
-            StartX = i[0].split(",")[0]
-            StartY = i[0].split(",")[1]
-            self.template.write("FQL->StartPath("+StartX+", " + StartY+"); \n")
-            EndX = i[1].split(",")[0]
-            EndY = i[1].split(",")[1]
-            self.template.write("FQL->AddLineToPath("+EndX+", "+EndY+"); \n")
-            self.template.write("FQL->DrawLine("+StartX+", "+StartY+","+EndX+", "+EndY+"); \n")
+            StartX = str()
+            StartY = str()
+            EndX = str()
+            EndY = str()
+            if "," in i[0] :
+                StartX = i[0].split(",")[0].strip()
+                StartY = i[0].split(",")[1].strip()
+            else :
+                StartX = "0"
+                StartY = "0"
+            if "," in i[1] :
+                EndX = i[1].split(",")[0].strip()
+                EndY = i[1].split(",")[1].strip()
+            else :
+                EndX = "0"
+                EndY = "0"
+            self.template.write("FQL->StartPath("+str(StartX)+", " + str(StartY)+"); \n")
+            self.template.write("FQL->AddLineToPath("+str(EndX)+", "+str(EndY)+"); \n")
+            self.template.write("FQL->DrawLine("+str(StartX)+", "+str(StartY)+","+str(EndX)+", "+str(EndY)+"); \n")
     def draw_ellipse(self, vgID, cnt) :
         # API : DrawEllipse(XPos, YPos, Width, Height, DrawOptions)
         DrawEllipse_arg_1 = "DrawEllipse_XPos" + str(vgID) + str(cnt)+str(self.tag_cnt)

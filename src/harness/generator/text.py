@@ -458,7 +458,7 @@ class PDF_TEXT_API_MAP() :
             self.arg_val(DrawTextBoxMatrix_arg_7, "double", DrawTextBoxMatrix_constrain_7, "200.001", "0.001")
             self.arg_val(DrawTextBoxMatrix_arg_8, "double", DrawTextBoxMatrix_constrain_8, "200.001", "0.001")
             self.arg_val(DrawTextBoxMatrix_arg_9, "double", DrawTextBoxMatrix_constrain_9, "200.001", "0.001")
-            self.template.write("FQL->DrawTextBoxMatrix(" + DrawTextBoxMatrix_arg_1 + ", " + DrawTextBoxMatrix_arg_2 + " , L\""+text_content+"\", " + DrawTextBoxMatrix_arg_3 + ", " + DrwTextBoxMatrix_arg_4 + "," + DrawTextBoxMatrix_arg_5 + "," + DrawTextBoxMatrix_arg_6 + "," + DrawTextBoxMatrix_arg_7 + "," + DrawTextBoxMatrix_arg_8 + ", "+DrawTextBoxMatrix_arg_9+"); \n")
+            self.template.write("FQL->DrawTextBoxMatrix(" + DrawTextBoxMatrix_arg_1 + ", " + DrawTextBoxMatrix_arg_2 + " , L\""+text_content+"\", " + DrawTextBoxMatrix_arg_3 + ", " + DrawTextBoxMatrix_arg_4 + "," + DrawTextBoxMatrix_arg_5 + "," + DrawTextBoxMatrix_arg_6 + "," + DrawTextBoxMatrix_arg_7 + "," + DrawTextBoxMatrix_arg_8 + ", "+DrawTextBoxMatrix_arg_9+"); \n")
         if 'padding' in self.maga_info[text_id][tag].keys() :
             # API DrawSpacedText(XPos, YPos, Spacing, Text)
             DrawSpacedText_arg_1 = "DrawSpacedText_XPos" + str(text_id)+ str(self.tag_cnt) + li_tag.replace('<','').replace('>','')
