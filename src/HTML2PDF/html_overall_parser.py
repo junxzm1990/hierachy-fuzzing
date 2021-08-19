@@ -39,75 +39,76 @@ class GENERAL_API():
 
 # Building the HTML strucure tree
 def traverse(soup) :
-    if soup.name is not None:
-       stru = [soup.name]
-       for child in soup.children :
-           if child.name is not None :
-               stru.append(traverse(child))
-       print (stru)
-       return stru
+    if soup is not None :
+        if soup.name is not None:
+           stru = [soup.name]
+           for child in soup.children :
+               if child.name is not None :
+                   stru.append(traverse(child))
+           print (stru)
+           return stru
 
 # iterate the tree strues, call corresponding tag's(or cluster of tags') classes
 def iter_tree(soup,stru,cur_root,out_f,cnt) :
-    print ("CNT", cnt) 
-    for i in stru :
-        # iteratively walking on the tree
-        if isinstance(i, list) : 
-            iter_tree(soup, i, cur_root, out_f, cnt)
-        # parsing and mapping the node features
-        else :
-           if cur_root == 'body' :
-               if i == 'div' :
-                   print ("%%%%%%%%%%%%%%%%%%%%%%%%%")
-                   pages = soup.find(i)
-                   PS.HTML_PAGE_STRU(soup.find('div'), out_f, cnt).div_parse()
-                   pages.decompose()
-               elif i in ['p', 'span', 'br', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'blockquote', 'code', 'ul', 'ol', 'dl', 'mark', 'ins', 'del', 'sup', 'sub', 'i', 'b'] :
-                   texts = soup.find(i)
-                   if len(texts) != 0 :
-                        maga_info = TX.HTML_TEXT_STRU(texts).text_parse()
-                        if len(maga_info) > 0 :
-                            TX.PDF_TEXT_API_MAP(maga_info, out_f, cnt).api_order()
-                   texts.decompose()
-               elif i == 'svg' : 
-                   VGs = soup.find(i)
-                   if len(VGs) != 0 :
-                       maga_info_vg = VG.HTML_VGs_STRU(VGs).VG_parse()
-                       if len(maga_info_vg) > 0 :
-                           VG.PDF_VGs_API_MAP(maga_info_vg, out_f, cnt).api_order()
-                   VGs.decompose()
-               elif i == 'img' :
-                   IMGs = soup.find(i)
-                   if len(IMGs) != 0 :
-                       maga_info_img = VG.HTML_IMGs_STRU(IMGs).IMG_parse()
-                       if len(maga_info_img) > 0 :
-                           VG.PDF_IMGs_API_MAP(maga_info_img, out_f, cnt).api_order()
-                   IMGs.decompose()
-               elif i == 'style' :
-                   STYLEs = soup.find(i)
-                   if len(STYLEs) != 0 :
-                       maga_info_style = VG.HTML_STYLEs_STRU(STYLEs).STYLE_parse()
-                       if len(maga_info_style) > 0 :
-                            VG.PDF_STYLEs_API_MAP(maga_info_style, out_f, cnt).api_order()
-                   STYLEs.decompose()
-               elif i == 'form' :
-                   forms = soup.find(i)
-                   if len(forms) != 0 :
-                       maga_info = FM.HTML_FORM_STRU(forms).form_parse()
-                       if len(maga_info) > 0 :
-                           FM.PDF_FORM_API_MAP(maga_info, out_f, cnt).api_order()
-                   forms.decompose()
-               elif i == 'table' : 
-                   tables = soup.find(i)
-                   styles = soup.find('style')
-                   if len(tables) > 0 :
-                       maga_info = TAB.HTML_TAB_STRU(tables, styles).tab_parse()
-                       if len(maga_info) > 0 and len(maga_info) < 10:
-                       # if file contains table, map its structure to PDF API
-                           TAB.PDF_TAB_API_MAP(maga_info, out_fi, cnt).api_order()
-                   tables.decompose()
-        cnt += 1
-        cur_root = stru[0]
+    if stru is not None : 
+        for i in stru :
+            # iteratively walking on the tree
+            if isinstance(i, list) : 
+                iter_tree(soup, i, cur_root, out_f, cnt)
+            # parsing and mapping the node features
+            else :
+               if cur_root == 'body' :
+                   if i == 'div' :
+                       print ("%%%%%%%%%%%%%%%%%%%%%%%%%")
+                       pages = soup.find(i)
+                       PS.HTML_PAGE_STRU(soup.find('div'), out_f, cnt).div_parse()
+                       pages.decompose()
+                   elif i in ['p', 'span', 'br', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'blockquote', 'code', 'ul', 'ol', 'dl', 'mark', 'ins', 'del', 'sup', 'sub', 'i', 'b'] :
+                       texts = soup.find(i)
+                       if len(texts) != 0 :
+                            maga_info = TX.HTML_TEXT_STRU(texts).text_parse()
+                            if len(maga_info) > 0 :
+                                TX.PDF_TEXT_API_MAP(maga_info, out_f, cnt).api_order()
+                       texts.decompose()
+                   elif i == 'svg' : 
+                       VGs = soup.find(i)
+                       if len(VGs) != 0 :
+                           maga_info_vg = VG.HTML_VGs_STRU(VGs).VG_parse()
+                           if len(maga_info_vg) > 0 :
+                               VG.PDF_VGs_API_MAP(maga_info_vg, out_f, cnt).api_order()
+                       VGs.decompose()
+                   elif i == 'img' :
+                       IMGs = soup.find(i)
+                       if len(IMGs) != 0 :
+                           maga_info_img = VG.HTML_IMGs_STRU(IMGs).IMG_parse()
+                           if len(maga_info_img) > 0 :
+                               VG.PDF_IMGs_API_MAP(maga_info_img, out_f, cnt).api_order()
+                       IMGs.decompose()
+                   elif i == 'style' :
+                       STYLEs = soup.find(i)
+                       if len(STYLEs) != 0 :
+                           maga_info_style = VG.HTML_STYLEs_STRU(STYLEs).STYLE_parse()
+                           if len(maga_info_style) > 0 :
+                                VG.PDF_STYLEs_API_MAP(maga_info_style, out_f, cnt).api_order()
+                       STYLEs.decompose()
+                   elif i == 'form' :
+                       forms = soup.find(i)
+                       if len(forms) != 0 :
+                           maga_info = FM.HTML_FORM_STRU(forms).form_parse()
+                           if len(maga_info) > 0 :
+                               FM.PDF_FORM_API_MAP(maga_info, out_f, cnt).api_order()
+                       forms.decompose()
+                   elif i == 'table' : 
+                       tables = soup.find(i)
+                       styles = soup.find('style')
+                       if len(tables) > 0 :
+                           maga_info = TAB.HTML_TAB_STRU(tables, styles).tab_parse()
+                           if len(maga_info) > 0 and len(maga_info) < 10:
+                           # if file contains table, map its structure to PDF API
+                               TAB.PDF_TAB_API_MAP(maga_info, out_f, cnt).api_order()
+                       tables.decompose()
+            cnt += 1
+            cur_root = stru[0]
 
 def main(argv) :
     html_file = argv[0]

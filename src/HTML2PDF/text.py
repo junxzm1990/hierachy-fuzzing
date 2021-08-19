@@ -169,7 +169,7 @@ class HTML_TEXT_STRU() :
         # how many texts in file
         print (type(self.texts), self.texts)
         num_text = len(self.texts)
-        if num_text == 1 :
+        if isinstance(self.texts, Tag) :
             # update maga_info with textID
             self.maga_info[0] = dict()
             # update maga_info with text type and text content
@@ -177,10 +177,10 @@ class HTML_TEXT_STRU() :
                 self.p_text(self.texts, 0)
             elif str(self.texts)[0:5] == '<span' :
                 self.span_text(self.texts, 0)
-            elif str(self.texts)[0:2] == '<h' and str(self.texts[i])[3] == ">" :
+            elif str(self.texts)[0:2] == '<h' and str(self.texts)[3] == ">" :
                 self.h_text(self.texts, 0)
             elif str(self.texts)[0:7] == '<strong' :
-                self.strong_text(self.texts[i], i)
+                self.strong_text(self.texts, 0)
             elif str(self.texts)[0:3] == '<em' :
                 self.em_text(self.texts, 0)
             elif str(self.texts)[0:11] == '<blockquote' :
@@ -208,7 +208,7 @@ class HTML_TEXT_STRU() :
             elif str(self.texts)[0:2] == '<b' :
                 self.b_text(self.texts, 0)
 
-        elif num_text > 1 :
+        else :
             for i in range(0, num_text) :
                 print ("i", i)
                 # update maga_info with textID
@@ -275,7 +275,7 @@ class PDF_TEXT_API_MAP() :
         self.template.write("int textID"+str(text_id)+str(self.tag_cnt) + "= FQL->DrawText(100, 100, L\""+content+"\"); \n")
     def draw_html_text(self, text_len, text_id) :
         content = self.rand_str_gen(text_len)
-        self.template.write("int textID"+str(text_id)+str(self.tag_cnt) + "= FQL->DrawHTMLText(150, 150, 150, L\""+content+"\"); \n")
+        self.template.write("int textHID"+str(text_id)+str(self.tag_cnt) + "= FQL->DrawHTMLText(150, 150, 150, L\""+content+"\"); \n")
     def set_html_bold_font(self, text_id) :
         self.template.write("FQL->SetHTMLBoldFont(L\"Default\", 2); \n")
     def set_html_italic_font(self, text_id) :
@@ -305,7 +305,7 @@ class PDF_TEXT_API_MAP() :
         if 'display' in self.maga_info[text_id][tag].keys() :
             self.template.write("FQL->DrawTextBox(5.5, 2.2, 3.3, 6.6, L\""+text_content+"\",3 ); \n")
         if 'text-transform' in self.maga_info[text_id][tag].keys() :
-            self.template.write("FQL->DrawTextBoxMatrix(2.5,3.5, L\""+text_content+"\", 0.5,0.7,1.1,1.5,2.8,7.7); \n")
+            self.template.write("FQL->DrawTextBoxMatrix(2.5,3.5, L\""+text_content+"\",1, 0.5,0.7,1.1,1.5,2.8,7.7); \n")
         if 'padding' in self.maga_info[text_id][tag].keys() :
             self.template.write("FQL->DrawSpacedText(3.9, 5.1, 0.8, L\""+text_content+"\"); \n")
         if 'align-' in self.maga_info[text_id][tag].keys() :
@@ -411,29 +411,33 @@ class PDF_TEXT_API_MAP() :
                     self.set_text_size()
                     for li_tag in self.maga_info[text_id]['<ul>'] :
                         if li_tag[0:4] == '<li>' :
+                            rd_str=self.rand_str_gen(5)
                             self.style_checking(text_id, '<ul>', self.maga_info[text_id]['<ul>'][li_tag]['text_len'])
-                            self.draw_text(self.maga_info[text_id]['<ul>'][li_tag]['text_len'], str(text_id)+str(self.tag_cnt) + li_tag.replace('<','').replace('>',''))
+                            self.draw_text(self.maga_info[text_id]['<ul>'][li_tag]['text_len'], str(text_id)+str(self.tag_cnt) + rd_str + li_tag.replace('<','').replace('>',''))
                     self.append_space()
                     self.set_text_char_spacing()
                 elif tag == '<ol>' :
                     self.set_text_size()
                     for li_tag in self.maga_info[text_id]['<ol>'] :
                         if li_tag[0:4] == '<li>' :
+                            rd_str=self.rand_str_gen(5)
                             self.style_checking(text_id, '<ol>', self.maga_info[text_id]['<ol>'][li_tag]['text_len'])
-                            self.draw_text(self.maga_info[text_id]['<ol>'][li_tag]['text_len'], str(text_id)+str(self.tag_cnt) + li_tag.replace('<','').replace('>',''))
+                            self.draw_text(self.maga_info[text_id]['<ol>'][li_tag]['text_len'], str(text_id)+str(self.tag_cnt) + rd_str +li_tag.replace('<','').replace('>',''))
                             self.append_space()
                             self.set_text_char_spacing()
                 elif tag == '<dl>' :
                     self.set_text_size()
                     for li_tag in self.maga_info[text_id]['<dl>'] :
                         if li_tag[0:4] == '<dt>' :
+                            rd_str=self.rand_str_gen(5)
                             self.style_checking(text_id, '<dl>', self.maga_info[text_id]['<dl>'][li_tag]['text_len'])
-                            self.draw_text(self.maga_info[text_id]['<dl>'][li_tag]['text_len'], str(text_id)+str(self.tag_cnt) + li_tag.replace('<','').replace('>',''))
+                            self.draw_text(self.maga_info[text_id]['<dl>'][li_tag]['text_len'], str(text_id)+str(self.tag_cnt) +  rd_str +li_tag.replace('<','').replace('>',''))
                             self.append_space()
                             self.set_text_char_spacing()
                         if li_tag[0:4] == '<dd>' :
+                            rd_str=self.rand_str_gen(5)
                             self.style_checking(text_id, '<dl>', self.maga_info[text_id]['<dl>'][li_tag]['text_len'])
-                            self.draw_text(self.maga_info[text_id]['<dl>'][li_tag]['text_len'], str(text_id)+str(self.tag_cnt) + li_tag.replace('<','').replace('>',''))
+                            self.draw_text(self.maga_info[text_id]['<dl>'][li_tag]['text_len'], str(text_id)+str(self.tag_cnt) +  rd_str +li_tag.replace('<','').replace('>',''))
                             self.append_space()
                             self.set_text_char_spacing()
                 elif tag == '<mark>' :

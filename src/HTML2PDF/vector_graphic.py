@@ -27,13 +27,23 @@ class HTML_VGs_STRU() :
         for c in svg.find_all("circle") :
             if c.has_attr("cx") :
                 shape_attributes["cx"] = c["cx"]
+            else :
+                shape_attributes["cx"] = 0
+
             if c.has_attr("cy") :
                 shape_attributes["cy"] = c["cy"]
+            else :
+                shape_attributes["cy"] = 0
+                
             if c.has_attr("r") :
                 shape_attributes["r"] = c["r"]
+            else :
+                shape_attributes["r"] = 0
+                
             self.maga_info[vgID]["circle"+ str(vgID) + str(cnt_circle)] = shape_attributes
             cnt_circle += 1
             shape_attributes = dict()
+
         # parse rectangular
         for r in svg.find_all("rect") :
             if r.has_attr("x") :
@@ -46,12 +56,20 @@ class HTML_VGs_STRU() :
                 shape_attributes["y"] = 0
             if r.has_attr("rx") :
                 shape_attributes["rx"] = r["rx"]
+            else :
+                shape_attributes["rx"] = 0
             if r.has_attr("ry") :
                 shape_attributes["ry"] = r["ry"]
+            else :
+                shape_attributes["ry"] = 0 
             if r.has_attr("width") :
                 shape_attributes["width"] = r["width"]
+            else :
+                shape_attributes["width"] = 1
             if r.has_attr("height") :
                 shape_attributes["height"] = r["height"]
+            else :
+                shape_attributes["height"] = 1
             self.maga_info[vgID]["rect" + str(vgID) + str(cnt_rect)] = shape_attributes
             cnt_rect += 1
             shape_attributes = dict()
@@ -59,8 +77,14 @@ class HTML_VGs_STRU() :
         for e in svg.find_all("ellipse") :
             if e.has_attr("cx") :
                 shape_attributes["e_height"] = e["cy"]
+            else :
+                shape_attributes["e_height"] = 0
+                
             if e.has_attr("cy") :
                 shape_attributes["e_width"] = e["cx"]
+            else :
+                shape_attributes["e_width"] = 0
+
             self.maga_info[vgID]["ellipse" + str(vgID) + str(cnt_ellipse)] = shape_attributes
             cnt_ellipse += 1
             shape_attributes = dict()
@@ -68,8 +92,6 @@ class HTML_VGs_STRU() :
         for p in svg.find_all("polygon") :
             if p.has_attr("points") :
                 for i in range(0, len(p["points"].split(" "))-1):
-                    print("THE JIUSHI IIIIIIII", i)
-                    print("THE JIUSHI LEN", len(p["points"].split(" ")))
                     shape_attributes[i] = (p["points"].split(" ")[i], p["points"].split(" ")[i+1])
                     if i+1 == len(p["points"].split(" "))-1 :
                         shape_attributes[i+1] = (p["points"].split(" ")[i+1], p["points"].split(" ")[0])
@@ -98,12 +120,19 @@ class HTML_IMGs_STRU() :
         self.maga_info = dict()
     def IMG_type(self, img, img_id) :
         if ("qr" in str(img)) or ("QR" in str(img)) :
-            self.maga_info[img_id]={"QR":img["height"]}
+            if img.has_attr("height") :
+                self.maga_info[img_id]={"QR":img["height"]}
+                print ("THIS IS TYPE : ", type(img["height"]))
+            else :
+                self.maga_info[img_id]={"QR":"16"}
     def IMG_parse(self) :
         imgID = 0
-        for img in self.IMGs:
+        if isinstance(self.IMGs, Tag) :
             self.IMG_type(img, imgID)
-            imgID += 1
+        else :
+            for img in self.IMGs:
+                self.IMG_type(img, imgID)
+                imgID += 1
         return self.maga_info 
 
 class HTML_STYLEs_STRU() :
@@ -113,8 +142,14 @@ class HTML_STYLEs_STRU() :
         # {style ID : obj}
         self.maga_info = dict()
     def STYLE_type(self, style, style_id) :
-        if ("barcode" in str(style)) or ("Barcode" in str(style)) : 
-            self.maga_info[style_id] = "BC"
+        try :
+            str(style)
+            if ("barcode" in str(style)) or ("Barcode" in str(style)) : 
+                self.maga_info[style_id] = "BC"
+        except :
+            style = style.encode("utf-8")
+            if ("barcode" in str(style)) or ("Barcode" in str(style)) :
+                self.maga_info[style_id] = "BC"
     def STYLE_parse(self) : 
         styleID = 0 
         for style in self.STYLEs:
@@ -133,7 +168,15 @@ class PDF_VGs_API_MAP() :
     
     def draw_circle(self, vgID, cnt) : 
         XPos = self.maga_info[vgID][cnt]["cx"]
+        try :
+            float(XPos)
+        except :
+            XPos = 10 
         YPos = self.maga_info[vgID][cnt]["cy"]
+        try :
+            float(YPos)
+        except :
+            YPos = 10 
         Radius = self.maga_info[vgID][cnt]["r"]
         self.template.write("int circle"+str(vgID)+str(cnt)+str(self.tag_cnt) + " = FQL->DrawCircle("+str(XPos)+", "+str(YPos)+","+str(Radius)+", 2 ); \n")    
     def draw_box(self, vgID, cnt) :
@@ -145,19 +188,39 @@ class PDF_VGs_API_MAP() :
     def draw_round_box(self, vgID, cnt) :
         Left = self.maga_info[vgID][cnt]["x"]
         Top = self.maga_info[vgID][cnt]["y"]
-        Width = self.maga_info[vgID][cnt]["width"]
-        Height = self.maga_info[vgID][cnt]["height"]
-        Radius = (int(self.maga_info[vgID][cnt]["rx"]) + int(self.maga_info[vgID][cnt]["ry"]))/2
-        self.template.write("int rect_round" +str(vgID) + str(cnt)+str(self.tag_cnt) +  " = FQL->DrawRoundedBox("+str(Left)+", "+str(Top)+", "+str(Width)+","+str(Height)+", "+ str(Radius)+", 2); \n ")
+        Width =  self.maga_info[vgID][cnt]["width"]
+        try :
+            float(Width)
+        except :
+            Width = 10 
+        Height =  self.maga_info[vgID][cnt]["height"]
+        try :
+            float(Height)
+        except :
+            Height = 10
+        Radius = (int(float(self.maga_info[vgID][cnt]["rx"])) + int(float(self.maga_info[vgID][cnt]["ry"])))/2
+        self.template.write("int rect_round" +str(vgID) + str(cnt)+str(self.tag_cnt) +  " = FQL->DrawRoundedBox("+str(Left)+", "+str(Top)+", "+str(Width)+", "+str(Height)+", "+ str(Radius)+", 2); \n ")
     def draw_polygon(self, vgID, cnt) :
         for i in self.maga_info[vgID][cnt].values():
-            StartX = i[0].split(",")[0]
-            StartY = i[0].split(",")[1]
-            self.template.write("FQL->StartPath("+StartX+", " + StartY+"); \n")
-            EndX = i[1].split(",")[0]
-            EndY = i[1].split(",")[1]
-            self.template.write("FQL->AddLineToPath("+EndX+", "+EndY+"); \n")
-            self.template.write("FQL->DrawLine("+StartX+", "+StartY+","+EndX+", "+EndY+"); \n")
+            StartX = str()
+            StartY = str()
+            EndX = str()
+            EndY = str()
+            if "," in i[0] : 
+                StartX = i[0].split(",")[0].strip()
+                StartY = i[0].split(",")[1].strip()
+            else :
+                StartX = "0"
+                StartY = "0"
+            if "," in i[1] :
+                EndX = i[1].split(",")[0].strip()
+                EndY = i[1].split(",")[1].strip()
+            else :
+                EndX = "0"
+                EndY = "0"
+            self.template.write("FQL->StartPath("+str(StartX)+", " + str(StartY)+"); \n")
+            self.template.write("FQL->AddLineToPath("+str(EndX)+", "+str(EndY)+"); \n")
+            self.template.write("FQL->DrawLine("+str(StartX)+", "+str(StartY)+","+str(EndX)+", "+str(EndY)+"); \n")
     def draw_ellipse(self, vgID, cnt) :
         Width = self.maga_info[vgID][cnt]["e_width"]
         Height = self.maga_info[vgID][cnt]["e_height"]

@@ -34,7 +34,10 @@ class HTML_FORM_STRU() :
                 elif inpt["type"] in button_types :
                     self.form_type_ret[form_id][cnt] = "button" 
                 elif inpt["type"] == "radio" :
-                    self.form_type_ret[form_id][cnt] = "radio_"+str(inpt["name"])
+                    if inpt.has_attr("name") : 
+                        self.form_type_ret[form_id][cnt] = "radio_"+str(inpt["name"])
+                    else :
+                        self.form_type_ret[form_id][cnt] = "radio"
                 elif inpt["type"] == "checkbox" :
                     self.form_type_ret[form_id][cnt] = "checkbox"
             cnt += 1
@@ -131,7 +134,7 @@ class PDF_FORM_API_MAP() :
         print ("FORM!!!!!!!!!!!!!!!!!", formID)
         self.template.write("FQL->SetFormFieldBounds(formID"+str(formID)+str(cnt)+str(self.tag_cnt)+", 20 ,"+ str(cnt * 20) +", 100, 20); \n")
     def set_form_align(self, formID, cnt) :
-        self.template.write("FQL->SetFormFieldAlignment(formID"+str(formID)+str(cnt)+str(self.tag_cnt)+", 2 ); \n")
+        self.template.write("FQL->SetFormFieldAlignment(formID"+str(formID)+str(cnt)+str(self.tag_cnt)+", 2); \n")
 
     # 3rd Necessay ----------------------------------------------
     def set_form_color(self, formID, cnt) :

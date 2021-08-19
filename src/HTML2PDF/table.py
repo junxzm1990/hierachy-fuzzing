@@ -111,9 +111,7 @@ class HTML_TAB_STRU():
     # entry of this class
     def tab_parse(self) : 
         # how many tables in file
-        print ("*****************", type(self.tables))
         num_tab = len(self.tables)
-        print ("LOOK HERE ~~~~~~~~~~~~~~~~~~~~~~",num_tab)
         # update maga_info with TableID
         if isinstance(self.tables, Tag) :
             self.maga_info[0] = dict()
@@ -195,6 +193,7 @@ class PDF_TAB_API_MAP():
         if self.maga_info[tableID]['tab_padding'] == 1 :
             self.template.write("FQL->SetTableCellPadding(TableID" + str(tableID) + str(self.tag_cnt) + ", 1, 1, FQL->GetTableRowCount(TableID" + str(tableID) + str(self.tag_cnt) + "), FQL->GetTableColumnCount(TableID" + str(tableID) + str(self.tag_cnt) + "), 1, 10 ); \n")
     def merge_cell(self, tableID) :
+        print ("tableID : ", tableID)
         if self.maga_info[tableID]['merged_cell'] != [] :
             for cell in self.maga_info[tableID]['merged_cell']:
                 if cell[0] == 'row' : 
