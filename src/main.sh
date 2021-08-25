@@ -46,4 +46,7 @@ fi
 
 # handling harness generating, filtering, compiling, fuzzing and output migration
 bash $SRC/src/harness/harness_compile_fuzzing_migrate.sh -c $CONFIG
+
+# handling objects exhanging based on object types
+
 		

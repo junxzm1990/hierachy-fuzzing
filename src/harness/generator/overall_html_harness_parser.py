@@ -346,7 +346,7 @@ def main(argv) :
 
     if stru_tree != {} :
         os.makedirs(output_dir + "/" + file_name)
-        out_f = open( output_dir + "/" + file_name + "/html_to_PDF_text_template.cpp", "a")
+        out_f = open( output_dir + "/" + file_name + "/html_to_PDF_harness_template.cpp", "a")
         # Write General bein API lines in template
         GENERAL_API(out_f).begin_line(foxit_loc, AFLpp_loc)
 
