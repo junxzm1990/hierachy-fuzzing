@@ -39,7 +39,7 @@ fi
 # load config file
 . $CONFIG
 
-
+for i in 
 
 
 # ------------------------------------
