@@ -301,6 +301,7 @@ def main (argv) :
     all_OBJ = argv[0]
     # file name and individual file's objects number 
     target_path = argv[1]
+    # where to output the files 
     output_path =argv[2]
   
     # all overall objs classify in 8 types
