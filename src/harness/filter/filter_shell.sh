@@ -26,6 +26,6 @@ do
 done
 
 # ranking harnesses by # of API and # of Args ~~~~~~~~~~~~
-python2 $SRC/src/harness/filter/ranking_harness_without_time.py $OUT_DIR/api_list $OUT_DIR/rank_list
+python2.7 $SRC/src/harness/filter/ranking_harness_without_time.py $OUT_DIR/api_list $OUT_DIR/rank_list
         rm -rf $OUT_DIR/api_list        
 

@@ -39,14 +39,44 @@ if [[ $SRC == "" ]]; then
         exit -1
 fi
 
-if [[ $QUEUE == "" ]]; then
+if [[ $EVAL_BIN == "" ]]; then
         echo "please provide QUEUE path in var.config"
         exit -1
 fi
 
+if [[ $TIME == "" ]]; then
+        echo "please provide how long you want to run on each harness in var.config"
+        exit -1
+fi
+
+if [[ $DATE == "" ]]; then
+        echo "please provide today's date in var.config"
+        exit -1
+fi
+
+if [[ $NUM == "" ]]; then
+        echo "please provide how many AFL++ instance you want to run in var.config"
+        exit -1
+fi
+
+if [[ $MAIN_GO == "" ]]; then
+        echo "please provide main.go path in var.config"
+        exit -1
+fi
+
+if [[ $COMMAND == "" ]]; then
+        echo "please provide COMMAND you want to run in AFL++ fuzzing in var.config"
+        exit -1
+fi
+
+
+# run AFL++ fuzzing
+/home/yifan/go/bin/go run $MAIN_GO -afl $AFLpp_loc/afl-fuzz -i $EVAL_BIN/bin/seed/ -no-master -name afl -m none -t 100000 -o $EVAL_BIN/result/test_run_$DATE -n $NUM -- $COMMAND
+
 # handling harness generating, filtering, compiling, fuzzing and output migration
-bash $SRC/src/harness/harness_compile_fuzzing_migrate.sh -c $CONFIG
+#bash $SRC/src/harness/harness_compile_fuzzing_migrate.sh -c $CONFIG
 
 # handling objects exhanging based on object types
+#bash $SRC/src/OBJ_mutation/OBJ_exchang/collect_exchange_migrate.sh -c $CONFIG
 
-		
+
