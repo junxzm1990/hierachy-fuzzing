@@ -261,7 +261,6 @@ def traverse(soup) :
            for child in soup.children :
                if child.name is not None :
                    stru.append(traverse(child))
-           print (stru)
            return stru
 
 # iterate the tree strues, call corresponding tag's(or cluster of tags') classes

@@ -523,7 +523,6 @@ class PDF_TEXT_API_MAP() :
         self.arg_val(SetTextSize_arg_1, "double", SetTextSize_constrain_1, "200.001", "0.001")
         self.template.write("FQL->SetTextSize(" + SetTextSize_arg_1 + "); \n")
     def api_order(self) :
-        print(self.maga_info)
         for text_id in self.maga_info :
             self.adding_all_fonts(text_id)
            # self.set_text_size(text_id
