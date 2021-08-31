@@ -16,13 +16,13 @@ fi
 . $CONFIG
 
 # create object exchange mutation queue, parallal with afl_S_X/queue and harness/queue
-mkdir $QUEUE/obj_exchange/
-mkdir $QUEUE/obj_exchange/queue/
+mkdir $EVAL_BIN/result/test_run_$DATE/obj_exchange/
+mkdir $EVAL_BIN/result/test_run_$DATE/obj_exchange/queue/
 
 echo ">>>>>>>>>>>>>>>> NOW collecting OBJs from ALL <<<<<<<<<<<<<<<<<<<<<<<<"
 
 # collecting all objects from all PDF files generated from harness
-for queue in `find $QUEUE -name "queue" | grep -v -e "afl_" -e "obj_"`; do 
+for queue in `find $EVAL_BIN/result/test_run_$DATE -name "queue" | grep -v -e "afl_" -e "obj_"`; do 
 
 	harness_queue_path=`dirname $queue`
 
@@ -47,9 +47,9 @@ for queue in `find $QUEUE -name "queue" | grep -v -e "afl_" -e "obj_"`; do
 	done
 done
 
-pre_cnt=`ls $QUEUE/obj_exchange/queue/ | wc -l`
+pre_cnt=`ls $EVAL_BIN/result/test_run_$DATE/obj_exchange/queue/ | wc -l`
 
-for queue in `find $QUEUE -name "queue" | grep -v -e "afl_" -e "obj_"`; do
+for queue in `find $EVAL_BIN/result/test_run_$DATE -name "queue" | grep -v -e "afl_" -e "obj_"`; do
 
 	harness_queue_path=`dirname $queue`
 
@@ -81,7 +81,7 @@ for queue in `find $QUEUE -name "queue" | grep -v -e "afl_" -e "obj_"`; do
 
                         name="id:"$zero$pre_cnt","$base","$tp
                 	
-			mv $new $QUEUE/obj_exchange/queue/$name
+			mv $new $EVAL_BIN/result/test_run_$DATE/obj_exchange/queue/$name
   	
 			echo "[-] OUTPUT "$new
 
