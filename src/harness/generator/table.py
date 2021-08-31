@@ -150,7 +150,6 @@ class HTML_TAB_STRU():
                 self.maga_info[i]['merged_cell']=self.tab_merged_cell[i]
                 self.maga_info[i]['text_font']=self.tab_cell_font[i]
                 # cell setting
-            #print(self.maga_info)
         return self.maga_info
             
 class PDF_TAB_API_MAP():
@@ -439,7 +438,6 @@ class PDF_TAB_API_MAP():
             # Call API
             self.template.write("FQL->SetTableCellPadding(TableID" + str(tableID) + str(self.tag_cnt) + ","+SetTableCellPadding_arg_1+","+SetTableCellPadding_arg_2+","+SetTableCellPadding_arg_3+","+SetTableCellPadding_arg_4+","+SetTableCellPadding_arg_5+","+SetTableCellPadding_arg_6+"); \n")
     def merge_cell(self, tableID) :
-        print ("tableID : ", tableID)
         if self.maga_info[tableID]['merged_cell'] != [] :
         ## API : MergeTableCells(TableID, FirstRow, FirstColumn, LastRow, LastColumn)
  

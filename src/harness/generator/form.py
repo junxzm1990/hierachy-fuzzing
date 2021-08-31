@@ -308,7 +308,6 @@ class PDF_FORM_API_MAP() :
 
 
     def api_order(self) :
-        print(self.maga_info)
         self.set_form_format_mode()
         for form in self.maga_info :
             for cnt in self.maga_info[form] :

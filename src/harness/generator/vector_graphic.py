@@ -82,7 +82,6 @@ class HTML_VGs_STRU() :
             for svg in self.VGs:
                 self.VG_type(svg, vgID)
                 vgID += 1
-        print(self.maga_info)
         return self.maga_info
 
 class HTML_IMGs_STRU() :
@@ -130,7 +129,6 @@ class HTML_STYLEs_STRU() :
         for style in self.STYLEs:
             self.STYLE_type(style, styleID)
             styleID += 1
-        print (self.maga_info)
         return self.maga_info
         
        
