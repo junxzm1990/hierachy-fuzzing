@@ -44,4 +44,44 @@ if [[ $EVAL_BIN == "" ]]; then
 		        exit -1
 fi
 
-for seed in $EVAL_BIN/
+mkdir $EVAL_BIN/result/test_run_$DATE/obj_entry_mutation/
+mkdir $EVAL_BIN/result/test_run_$DATE/obj_entry_mutation/queue
+mkdir $OUT_DIR/entry_gen/
+while true; do 
+	pre_cnt=`ls $EVAL_BIN/result/test_run_$DATE/obj_entry_mutation/queue |wc -l`
+	for queue in `find $EVAL_BIN/result/test_run_$DATE/ -name "queue" | grep -v -e "afl_" -e "obj_"`; do 
+	
+		harness_queue_path=`dirname $queue`
+	
+		for seed in $harness_queue_path/queue/*; do
+	
+			diff -y -a $EVAL_BIN/bin/init/pdf_org.pdf $seed > $OUT_DIR/org_diff
+	
+			python2.7 $SRC/src/OBJ_mutation/OBJ_entry/grammar_reserved_mutation.py $OUT_DIR/org_diff $seed $OUT_DIR/entry_gen/
+			for i in $OUT_DIR/entry_gen/*; do 
+				len=${#pre_cnt}
+				bond=`expr 5 - $len`
+				zero=0
+	
+	                        for z in $(seq $bond)
+				do
+					zero=$zero"0"
+				done
+	
+				base=`echo $(basename $seed) | cut -d , -f 2`
+	
+				tp=$(basename $i)
+	
+				name="id:"$zero$pre_cnt","$base","$tp
+	
+				mv $i $EVAL_BIN/result/test_run_$DATE/obj_entry_mutation/queue/$name
+				let "pre_cnt=pre_cnt+1"
+			done
+	
+			rm -rf $OUT_DIR/org_diff
+	
+			rm -rf $OUT_DIR/entry_gen/*
+	
+		done
+	done
+done	

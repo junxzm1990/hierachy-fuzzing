@@ -18,13 +18,13 @@ class GENERAL_API():
         self.pdf_opt_dir = pdf_opt_dir
 
     def begin_line(self) :
-        self.template.write("#include \"/home/yifan/foxit_quick_pdf_library_1811_linux/Import/CPlusPlus/FoxitQPLLinuxCPP1811.h\" \n")
-        self.template.write("#include \"/home/yifan/foxit_quick_pdf_library_1811_linux/Import/CPlusPlus/FoxitQPLLinuxCPP1811.cpp\" \n")
+        self.template.write("#include \"/new-home/ywang291/foxit_quick_pdf_library_1811_linux/Import/CPlusPlus/FoxitQPLLinuxCPP1811.h\" \n")
+        self.template.write("#include \"/new-home/ywang291/foxit_quick_pdf_library_1811_linux/Import/CPlusPlus/FoxitQPLLinuxCPP1811.cpp\" \n")
         self.template.write("#include <iostream> \n")
         self.template.write("#include <string> \n")
         self.template.write("using namespace std; \n")
         self.template.write("int main(int argc, char** argv) { \n")
-        self.template.write("std::wstring const wide(L\"/home/yifan/foxit_quick_pdf_library_1811_linux/Libs/libFoxitQPL1811-linux-x64.so\"); \n")
+        self.template.write("std::wstring const wide(L\"/new-home/ywang291/foxit_quick_pdf_library_1811_linux/Libs/libFoxitQPL1811-linux-x64.so\"); \n")
         self.template.write("FoxitQPLLinuxCPP1811 * FQL = new FoxitQPLLinuxCPP1811(wide); \n")
         self.template.write("cout << FQL->UnlockKey(L\"jf33n75u9oj3nb9pn7mf5rt8y\") << endl; \n")
         self.template.write("FQL->SetGlobalOrigin(5); \n")

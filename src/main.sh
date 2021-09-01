@@ -70,13 +70,16 @@ if [[ $COMMAND == "" ]]; then
 fi
 
 
-# run AFL++ fuzzing
-/new-home/ywang291/go/bin/go run $MAIN_GO -afl $AFLpp_loc/afl-fuzz -i $EVAL_BIN/bin/seed/ -no-master -name afl -m none -t 100000 -o $EVAL_BIN/result/test_run_$DATE -n $NUM -- $COMMAND 
+# run  harness AFL++ fuzzing
+/new-home/ywang291/go/bin/go run $MAIN_GO -afl $AFLpp_loc/afl-fuzz -i $EVAL_BIN/bin/seed/ -no-master -name afl -m none -t 100000 -o $EVAL_BIN/result/test_run_$DATE -n $NUM -- $COMMAND
+
+# run villnia AFL++ fuzzing
+v_NUM=`expr $NUM + 1`
+/new-home/ywang291/go/bin/go run $MAIN_GO -afl $AFLpp_loc/afl-fuzz -i $EVAL_BIN/bin/vanilla_seed/ -no-master -name afl -m none -t 100000 -o $EVAL_BIN/result/vanilla_test_run_$DATE -n $v_NUM -- $COMMAND
 
 # handling harness generating, filtering, compiling, fuzzing and output migration
 bash $SRC/src/harness/harness_compile_fuzzing_migrate.sh -c $CONFIG
 
 # handling objects exhanging based on object types
 #bash $SRC/src/OBJ_mutation/OBJ_exchang/collect_exchange_migrate.sh -c $CONFIG
-
 
