@@ -1,7 +1,6 @@
 import sys
 import random 
 
-
 def bool_output_to_file(target_path, output_path_in_type, output_path_cross_type, class_obj) :
 
     fw_in = open (output_path_in_type, 'w')
@@ -13,22 +12,36 @@ def bool_output_to_file(target_path, output_path_in_type, output_path_cross_type
 
         for line in fr :
             
-        # 8 basic types of objects : booleans /ints and real nums / strings / names / arrays / dictionaries(handle in other func) / streams (handle in other func) / 
+        # type of objects : booleans  
             if "0 obj" in line :
                 obj_bool = 1
-                [fw.write(line + '\n')]
+                [fw_in.write(line + '\n')]
+                [fw_cross.write(line + '\n')]
             elif "endobj" in line :
                 obj_bool = 0
-                [fw.write(line + '\n')]
+                [fw_in.write(line + '\n')]
+                [fw_cross.write(line + '\n')]
             elif obj_bool == 1 :
                 # BOOLEAN :
                 if 'true' in line or 'false' in line :
+                   # -------------------- in type --------------------------------
                    pool = list(set(class_obj['Boolean']).difference(set(line)))
                    nw_idx = random.randrange(len(pool))
                    nw_ln = pool[nw_idx]
-                   [fw.write(nw_ln + '\n')]
+                   [fw_in.write(nw_ln + '\n')]
+                   # --------------------- cross type ---------------------------
+                   pool_cross = class_obj.keys()
+                   pool_cross.remove('Boolean')
+		   nw_idx_cross = random.choice(pool_cross)
+                   nw_ln_cross = random.choice(class_obj[nw_idx_cross])
+                   if type(nw_ln_cross) == str :
+                       [fw_cross.write(nw_ln_cross + '\n')]
+                   elif type(nw_ln_cross) == list :
+                       for i in nw_ln_cross :
+                           [fw_cross.write(i + '\n')]
             else :
-                [fw.write(line + '\n')]
+                [fw_in.write(line + '\n')]
+                [fw_cross.write(line + '\n')]
 
 def string_output_to_file(target_path, output_path_in_type, output_path_cross_type, class_obj) :
 
@@ -43,24 +56,49 @@ def string_output_to_file(target_path, output_path_in_type, output_path_cross_ty
         # 8 basic types of objects : booleans / ints and real nums / strings / names / arrays / dictionaries(handle in other func) / streams (handle in other func) / 
             if "0 obj" in line :
                 obj_bool = 1
-                [fw.write(line + '\n')]
+                [fw_in.write(line + '\n')]
+                [fw_cross.write(line + '\n')]
             elif "endobj" in line :
                 obj_bool = 0
-                [fw.write(line + '\n')]
+                [fw_in.write(line + '\n')]
+                [fw_cross.write(line + '\n')]
             elif obj_bool == 1 :
                 # STRING :
                 if '<' in line and '>' in line :
                    pool = list(set(class_obj['String']).difference(set(line[line.index('<'):line.index('>')+1])))
                    nw_idx = random.randrange(len(pool))
                    nw_ln = line[0:line.index('<')] + pool[nw_idx] + line[(line.index('>') + 1) : ]
-                   [fw.write(nw_ln + '\n')]
+                   [fw_in.write(nw_ln + '\n')]
+                   # --------------------- cross type ---------------------------
+                   pool_cross = class_obj.keys()
+                   pool_cross.remove('String')
+		   nw_idx_cross = random.choice(pool_cross)
+                   nw_ln_cross = random.choice(class_obj[nw_idx_cross])
+                   if type(nw_ln_cross) == str :
+                       [fw_cross.write(nw_ln_cross + '\n')]
+                   elif type(nw_ln_cross) == list :
+                       for i in nw_ln_cross :
+                           [fw_cross.write(i + '\n')]
+                                                  
+                   
                 if '(' in line and ')' in line :
                    pool = list(set(class_obj['String']).difference(set(line[line.index('('):line.index(')')+1])))
                    nw_idx = random.randrange(len(pool))
                    nw_ln = line[0:line.index('(')] + pool[nw_idx] + line[(line.index(')') + 1) : ]
-                   [fw.write(nw_ln + '\n')]
+                   [fw_in.write(nw_ln + '\n')]
+                   # --------------------- cross type ---------------------------
+                   pool_cross = class_obj.keys()
+                   pool_cross.remove('String')
+		   nw_idx_cross = random.choice(pool_cross)
+                   nw_ln_cross = random.choice(class_obj[nw_idx_cross])
+                   if type(nw_ln_cross) == str :
+                       [fw_cross.write(nw_ln_cross + '\n')]
+                   elif type(nw_ln_cross) == list :
+                       for i in nw_ln_cross :
+                           [fw_cross.write(i + '\n')]
             else :
-                [fw.write(line + '\n')]
+                [fw_in.write(line + '\n')]
+                [fw_cross.write(line + '\n')]
 
 def name_output_to_file(target_path, output_path_in_type, output_path_cross_type, class_obj) :
 
@@ -76,19 +114,32 @@ def name_output_to_file(target_path, output_path_in_type, output_path_cross_type
         # 8 basic types of objects : booleans /ints and real nums / strings / names / arrays / dictionaries(handle in other func) / streams (handle in other func) / 
             if "0 obj" in line :
                 obj_bool = 1
-                [fw.write(line + '\n')]
+                [fw_in.write(line + '\n')]
+                [fw_cross.write(line + '\n')]
             elif "endobj" in line :
                 obj_bool = 0
-                [fw.write(line + '\n')]
+                [fw_in.write(line + '\n')]
+                [fw_cross.write(line + '\n')]
             elif obj_bool == 1 :
                 # NAME :
                 if '/' in line :
                    pool = list(set(class_obj['Name']).difference(set(line)))
                    nw_idx = random.randrange(len(pool))
                    nw_ln = pool[nw_idx]
-                   [fw.write(nw_ln + '\n')]
+                   [fw_in.write(nw_ln + '\n')]
+                   # --------------------- cross type ---------------------------
+                   pool_cross = class_obj.keys()
+                   pool_cross.remove('Name')
+		   nw_idx_cross = random.choice(pool_cross)
+                   nw_ln_cross = random.choice(class_obj[nw_idx_cross])
+                   if type(nw_ln_cross) == str :
+                       [fw_cross.write(nw_ln_cross + '\n')]
+                   elif type(nw_ln_cross) == list :
+                       for i in nw_ln_cross :
+                           [fw_cross.write(i + '\n')]
             else :
-                [fw.write(line + '\n')]
+                [fw_in.write(line + '\n')]
+                [fw_cross.write(line + '\n')]
 
 
 def array_output_to_file(target_path, output_path_in_type, output_path_cross_type, class_obj) :
@@ -105,19 +156,32 @@ def array_output_to_file(target_path, output_path_in_type, output_path_cross_typ
         # 8 basic types of objects : booleans /ints and real nums / strings / names / arrays / dictionaries(handle in other func) / streams (handle in other func) / 
             if "0 obj" in line :
                 obj_bool = 1
-                [fw.write(line + '\n')]
+                [fw_in.write(line + '\n')]
+                [fw_cross.write(line + '\n')]
             elif "endobj" in line :
                 obj_bool = 0
-                [fw.write(line + '\n')]
+                [fw_in.write(line + '\n')]
+                [fw_cross.write(line + '\n')]
             elif obj_bool == 1 :
                 # ARRAY :
                 if '[' in line and ']' in line :
                    pool = list(set(class_obj['Array']).difference(set(line[line.index('['):line.index(']')+1])))
                    nw_idx = random.randrange(len(pool))
                    nw_ln = line[0:line.index('[')] + pool[nw_idx] + line[(line.index(']') + 1) : ]
-                   [fw.write(nw_ln + '\n')]
+                   [fw_in.write(nw_ln + '\n')]
+                   # --------------------- cross type ---------------------------
+                   pool_cross = class_obj.keys()
+                   pool_cross.remove('Array')
+		   nw_idx_cross = random.choice(pool_cross)
+                   nw_ln_cross = random.choice(class_obj[nw_idx_cross])
+                   if type(nw_ln_cross) == str :
+                       [fw_cross.write(nw_ln_cross + '\n')]
+                   elif type(nw_ln_cross) == list :
+                       for i in nw_ln_cross :
+                           [fw_cross.write(i + '\n')]
             else :
-                [fw.write(line + '\n')]
+                [fw_in.write(line + '\n')]
+                [fw_cross.write(line + '\n')]
 
 
 def number_output_to_file(target_path, output_path_in_type, output_path_cross_type, class_obj) :
@@ -138,26 +202,43 @@ def number_output_to_file(target_path, output_path_in_type, output_path_cross_ty
         # 8 basic types of objects : booleans /ints and real nums / strings / names / arrays / dictionaries(handle in other func) / streams (handle in other func) / 
             if "0 obj" in line :
                 obj_bool = 1
-                [fw.write(line + '\n')]
+                [fw_in.write(line + '\n')]
+                [fw_cross.write(line + '\n')]
             elif "endobj" in line :
                 obj_bool = 0
-                [fw.write(line + '\n')]
+                [fw_in.write(line + '\n')]
+                [fw_cross.write(line + '\n')]
             elif obj_bool == 1 :
                 # NUMBER :
                 nw_ln = line.strip("\n")
+                num_bool = 0 
                 for i in line.strip("\n").split(" ") :
                     try :
                         float(i)
                         if "R" not in line :
+                            # indicating that this is a numeric type
+                            num_bool = 1
                             pool = list(set(class_obj['Number']).difference(set(i)))
                             nw_idx = random.randrange(len(pool))
                             nw = pool[nw_idx]
                             nw_ln = nw_ln.replace(i, nw)
                     except :
                         continue
-                [fw.write(nw_ln + '\n')]
+                [fw_in.write(nw_ln + '\n')]
+                # --------------------- cross type ---------------------------
+                if num_bool == 1 :
+                    pool_cross = class_obj.keys()
+                    pool_cross.remove('Number')
+	            nw_idx_cross = random.choice(pool_cross)
+                    nw_ln_cross = random.choice(class_obj[nw_idx_cross])
+                    if type(nw_ln_cross) == str :
+                        [fw_cross.write(nw_ln_cross + '\n')]
+                    elif type(nw_ln_cross) == list :
+                        for i in nw_ln_cross :
+                            [fw_cross.write(i + '\n')]
             else :
-                [fw.write(line + '\n')]
+                [fw_in.write(line + '\n')]
+                [fw_cross.write(line + '\n')]
 
 
 
@@ -176,20 +257,30 @@ def dictionary_output_to_file(target_path, output_path_in_type, output_path_cros
         # 8 basic types of objects : booleans /ints and real nums / strings / names / arrays / dictionaries(handle in other func) / streams (handle in other func) / 
             # DICTIONARY :
             if "<<" == line.strip() :
-            #    [fw.write(line + '\n')]
+                # ---------- in type ----------------------------------
                 dic_bool = 1
                 pool = class_obj['Dictionary']
                 nw_idx = random.randrange(len(pool))
                 nw = pool[nw_idx]
                 for nw_ln in nw :
-                    [fw.write(nw_ln + '\n')]
+                    [fw_in.write(nw_ln + '\n')]
+                # ---------- cross type -------------------------------
+                pool_cross = class_obj.keys()
+                pool_cross.remove('Dictionary')
+	        nw_idx_cross = random.choice(pool_cross)
+                nw_ln_cross = random.choice(class_obj[nw_idx_cross])
+                if type(nw_ln_cross) == str :
+                    [fw_cross.write(nw_ln_cross + '\n')]
+                elif type(nw_ln_cross) == list :
+                    for i in nw_ln_cross :
+                        [fw_cross.write(i + '\n')]
             elif ">>" == line.strip() :
                 dic_bool = 0
-            #    [fw.write(line + '\n')]
             elif dic_bool == 1 :
                 continue
             else :
-                [fw.write(line + '\n')]
+                [fw_in.write(line + '\n')]
+                [fw_cross.write(line + '\n')]
   
 
 def stream_output_to_file(target_path, output_path_in_type, output_path_cross_type, class_obj) :
@@ -216,14 +307,25 @@ def stream_output_to_file(target_path, output_path_in_type, output_path_cross_ty
                 nw_idx = random.randrange(len(pool))
                 nw = pool[nw_idx]
                 for nw_ln in nw :
-                    [fw.write(nw_ln + '\n')]
+                    [fw_in.write(nw_ln + '\n')]
+                # ---------- cross type -------------------------------
+                pool_cross = class_obj.keys()
+                pool_cross.remove('Stream')
+	        nw_idx_cross = random.choice(pool_cross)
+                nw_ln_cross = random.choice(class_obj[nw_idx_cross])
+                if type(nw_ln_cross) == str :
+                    [fw_cross.write(nw_ln_cross + '\n')]
+                elif type(nw_ln_cross) == list :
+                    for i in nw_ln_cross :
+                        [fw_cross.write(i + '\n')]
             elif line.strip() == "endstream" :
                 stream_bool = 0 
             #    [fw.write(line + '\n')]
             elif stream_bool == 1 :
                 continue
             else :
-                [fw.write(line + '\n')]
+                [fw_in.write(line + '\n')]
+                [fw_cross.write(line + '\n')]
 
 
 
@@ -332,25 +434,25 @@ def main (argv) :
     # write to file :
     # output Boolean object exchanged 
     if 'Boolean' in class_obj :
-        bool_output_to_file(target_path, output_path+'bool', class_obj)
+        bool_output_to_file(target_path, output_path+'bool_in', output_path+'bool_cross', class_obj)
     # output String object exchanged 
     if 'String' in class_obj :
-        string_output_to_file(target_path, output_path+'string', class_obj)
+        string_output_to_file(target_path, output_path+'string_in', output_path+'string_cross',class_obj)
     # output Array object exchanged 
     if 'Array' in class_obj :
-        array_output_to_file(target_path, output_path+'array', class_obj)
+        array_output_to_file(target_path, output_path+'array_in', output_path+'array_cross', class_obj)
     # output Number object exchanged 
     if 'Number' in class_obj :
-        number_output_to_file(target_path, output_path+'number', class_obj)
+        number_output_to_file(target_path, output_path+'number_in', output_path+'number_cross', class_obj)
     # output Name object exchanged 
     if 'Name' in class_obj :
-        name_output_to_file(target_path, output_path+'name', class_obj)
+        name_output_to_file(target_path, output_path+'name_in', output_path+'name_cross', class_obj)
     # output Dictionary object exchanged 
     if 'Dictionary' in class_obj :
-        dictionary_output_to_file(target_path, output_path+'dictionary', class_obj)
+        dictionary_output_to_file(target_path, output_path+'dictionary_in',output_path+'dictionary_cross',  class_obj)
     # output Stream object exchanged 
     if 'Stream' in class_obj :
-        stream_output_to_file(target_path, output_path+'stream', class_obj)
+        stream_output_to_file(target_path, output_path+'stream_in',output_path+'stream_cross',  class_obj)
    # if 'Null' in class_obj :
    #     null_output_to_file(target_path, output_path+'null', class_obj)
         
