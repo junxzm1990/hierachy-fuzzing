@@ -58,6 +58,16 @@ then
                                         echo $i" has been migrated" 
                                 else
                                         echo "NEW SEED : "$i 
+                                        ## 2.2.1 TRIM PDF files : before migrating the pdf_gen/XX.pdf to queue/id:000XX, reduce its size
+
+                                        mkdir $OUT_DIR/pdf_gen/trim/
+
+                                        mv $i $OUT_DIR/pdf_gen/trim/
+                                        
+                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen/trim/ -b $COMMAND -s $AFL/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen/ 
+                                        rm -rf $OUT_DIR/pdf_gen/trim/
+
+                                        ## 2.2.2 RENAME : renaming the reduced size PDFs
                                         len=${#pre_cnt} 
                                         bond=`expr 5 - $len` 
                                         zero=0 
@@ -127,8 +137,20 @@ else
 						then
 							echo $i" has been migrated" 
 						else
-							echo "NEW SEED : "$i 
-							len=${#pre_cnt} 
+							echo "NEW SEED : "$i
+
+                                                        ## 3.2.1 TRIM PDF files : before migrating the pdf_gen/XX.pdf to queue/id:000XX, reduce its size
+
+                                                        mkdir $OUT_DIR/pdf_gen/trim/
+
+                                                        mv $i $OUT_DIR/pdf_gen/trim/
+                                                        
+                                                        python3.5 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen/trim/ -b $COMMAND -s $AFL/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen/ 
+                                                        rm -rf $OUT_DIR/pdf_gen/trim/
+
+                                                        ## 3.2.2 RENAMING : rename reduced size PDFs
+
+							len=${#pre_cnt}
 							bond=`expr 5 - $len` 
 							zero=0 
 							
