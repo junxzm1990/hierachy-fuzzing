@@ -69,13 +69,17 @@ if [[ $COMMAND == "" ]]; then
         exit -1
 fi
 
+if [[ $GO == "" ]]; then
+        echo "please provide path of go in var.config"
+        exit -1
+fi
 
 # run  harness AFL++ fuzzing
-/new-home/ywang291/go/bin/go run $MAIN_GO -afl $AFLpp_loc/afl-fuzz -i $EVAL_BIN/bin/seed/ -no-master -name afl -m none -t 100000 -o $EVAL_BIN/result/test_run_$DATE -n $NUM -- $COMMAND
+$GO run $MAIN_GO -afl $AFL/afl-fuzz -i $EVAL_BIN/bin/seed/ -no-master -name afl -m none -t 100000 -o $EVAL_BIN/result/test_run_$DATE -n $NUM -- $COMMAND
 
 # run villnia AFL++ fuzzing
-v_NUM=`expr $NUM + 1`
-/new-home/ywang291/go/bin/go run $MAIN_GO -afl $AFLpp_loc/afl-fuzz -i $EVAL_BIN/bin/vanilla_seed/ -no-master -name afl -m none -t 100000 -o $EVAL_BIN/result/vanilla_test_run_$DATE -n $v_NUM -- $COMMAND
+v_NUM=`expr $NUM + 3` # running vanilla with 3 more, since harness
+$GO run $MAIN_GO -afl $AFL/afl-fuzz -i $EVAL_BIN/bin/vanilla_seed/ -no-master -name afl -m none -t 100000 -o $EVAL_BIN/result/vanilla_test_run_$DATE -n $v_NUM -- $COMMAND
 
 # handling harness generating, filtering, compiling, fuzzing and output migration
 bash $SRC/src/harness/harness_compile_fuzzing_migrate.sh -c $CONFIG
