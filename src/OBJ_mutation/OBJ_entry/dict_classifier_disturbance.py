@@ -22,6 +22,7 @@ def RepresentsStr(s) :
 
 def token_classifer (raw_token_dict) :
     class_token_dict = dict()
+    print (raw_token_dict)
     # CLASSIFYING OBJECTS ENTRIES depending on each token's content type
     for i in raw_token_dict : 
         # Class 1 : read-in objects. eg : 3 0 R

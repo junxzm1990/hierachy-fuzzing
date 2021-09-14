@@ -54,11 +54,22 @@ while true; do
 		harness_queue_path=`dirname $queue`
 	
 		for seed in $harness_queue_path/queue/*; do
+
+                        echo ")))))))))))))))))))))))))))))) processing $seed "
 	
 			diff -y -a $EVAL_BIN/bin/init/pdf_org.pdf $seed > $OUT_DIR/org_diff
 	
 			python2.7 $SRC/src/OBJ_mutation/OBJ_entry/grammar_reserved_mutation.py $OUT_DIR/org_diff $seed $OUT_DIR/entry_gen/
-			for i in $OUT_DIR/entry_gen/*; do 
+			for i in $OUT_DIR/entry_gen/*; do
+                                # TRIM PDFs : trim PDFs before renaming
+                                mkdir $OUT_DIR/entry_gen/trim/
+
+                                mv $i $OUT_DIR/entry_gen/trim/
+
+                                python3.5 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/entry_gen/trim/ -b $COMMAND -s $AFL/afl-showmap -m none -t 100000 -o $OUT_DIR/entry_gen/
+                                rm -rf $OUT_DIR/entry_gen/trim/
+                                
+                                # RENAMing : renaming 
 				len=${#pre_cnt}
 				bond=`expr 5 - $len`
 				zero=0

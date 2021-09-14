@@ -12,6 +12,7 @@ import sys
     # - SYMBOLs : << >>  
 def recur_find_pre_token (tag_content, breakable_objs , content, rd_cnt) :
     pre_token_idx = breakable_objs.index(content) - rd_cnt
+    #if len(breakable_objs[pre_token_idx].split(' ')) > 0
     pre_token_name = breakable_objs[pre_token_idx].split(' ')[0]
     if pre_token_name in tag_content :
         update_content = content.split(" ")
@@ -38,7 +39,6 @@ def obj_stru_reserve(breakable_objs) :
                    tag_content[i.split(' ')[0]] = []
         else :
             # some content takes more than line (second line not start with "/")
-            
             if "00000 n" not in i and "obj" not in i and ">>" not in i and "<<" not in i:
                 recur_find_pre_token(tag_content, breakable_objs, i, 1) 
             # some content has no "/" because it belongs to xref
@@ -61,6 +61,7 @@ def main(argv) :
     with open (diff_raw_path) as fr :
         stream = False
         for line in fr :
+
             if 'stream' in line.strip() and "end" not in line.strip():
                 stream = True
                 continue
@@ -70,8 +71,14 @@ def main(argv) :
             elif stream == True: 
                 breakable_stream.append(line)
             # Collecting breakable entries 
-            if "      >" in line and line not in breakable_stream :
-                breakable_objs.append(line.strip().replace('>\t', ''))
+            if "      >\t" in line and line not in breakable_stream :
+                # NO SPACE PARSER:
+                if '/' in line.strip() :
+                    for i in line.strip().replace('>\t','')split('/') :
+                        breakable_objs.append(i)
+                    
+    
+               # breakable_objs.append(line.strip().replace('>\t', ''))
             # Collecting unbreakable entries
             elif line != ">>":
                 unbreakable_token.append(line.strip().split('\t')[0])
