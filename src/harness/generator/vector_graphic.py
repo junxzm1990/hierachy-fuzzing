@@ -215,26 +215,55 @@ class PDF_VGs_API_MAP() :
         self.arg_val(DrawRoundedBox_arg_6, "int", DrawRoundedBox_constrain_6, "2", "0")
         self.template.write("int rect_round" +str(vgID) + str(cnt)+str(self.tag_cnt)+ " = FQL->DrawRoundedBox("+DrawRoundedBox_arg_1+", "+DrawRoundedBox_arg_2+", "+DrawRoundedBox_arg_3+","+DrawRoundedBox_arg_4+", "+DrawRoundedBox_arg_5+","+DrawRoundedBox_arg_6+" ); \n ")
     def draw_polygon(self, vgID, cnt) :
-        for i in self.maga_info[vgID][cnt].values():
-            StartX = str()
-            StartY = str()
-            EndX = str()
-            EndY = str()
-            if "," in i[0] :
-                StartX = i[0].split(",")[0].strip()
-                StartY = i[0].split(",")[1].strip()
-            else :
-                StartX = "0"
-                StartY = "0"
-            if "," in i[1] :
-                EndX = i[1].split(",")[0].strip()
-                EndY = i[1].split(",")[1].strip()
-            else :
-                EndX = "0"
-                EndY = "0"
-            self.template.write("FQL->StartPath("+str(StartX)+", " + str(StartY)+"); \n")
-            self.template.write("FQL->AddLineToPath("+str(EndX)+", "+str(EndY)+"); \n")
-            self.template.write("FQL->DrawLine("+str(StartX)+", "+str(StartY)+","+str(EndX)+", "+str(EndY)+"); \n")
+       # for i in self.maga_info[vgID][cnt].values():
+        
+          #  StartX = str()
+          #  StartY = str()
+          #  EndX = str()
+          #  EndY = str()
+          #  if "," in i[0] :
+          #      StartX = i[0].split(",")[0].strip()
+          #      StartY = i[0].split(",")[1].strip()
+          #  else :
+          #      StartX = "0"
+          #      StartY = "0"
+          #  if "," in i[1] :
+          #      EndX = i[1].split(",")[0].strip()
+          #      EndY = i[1].split(",")[1].strip()
+          #  else :
+          #      EndX = "0"
+          #      EndY = "0"
+        StartPath_arg_1 = "StartPath_StartX"+ str(vgID) + str(cnt) + str(self.tag_cnt)
+        StartPath_arg_2 = "StartPath_StartY"+ str(vgID) + str(cnt) + str(self.tag_cnt)
+        StartPath_constrain_1 = "if ("+StartPath_arg_1+" < 0.001 || " + StartPath_arg_1 + " > 800.001 ){ \n"
+        StartPath_constrain_2 = "if ("+StartPath_arg_2+" < 0.001 || " + StartPath_arg_2 + " > 800.001 ){ \n"
+        self.arg_val(StartPath_arg_1, "double", StartPath_constrain_1, "800.001", "0.001")
+        self.arg_val(StartPath_arg_2, "double", StartPath_constrain_2, "800.001", "0.001")
+        self.template.write("FQL->StartPath("+StartPath_arg_1+", " + StartPath_arg_1+"); \n")
+
+        AddLineToPath_arg_1 = "AddLineToPath_EndX"+ str(vgID) + str(cnt) + str(self.tag_cnt)
+        AddLineToPath_arg_2 = "AddLineToPath_EndY"+ str(vgID) + str(cnt) + str(self.tag_cnt)
+        AddLineToPath_constrain_1 = "if ("+AddLineToPath_arg_1+" < 0.001 || " + AddLineToPath_arg_1 + " > 800.001 ){ \n"
+        AddLineToPath_constrain_2 = "if ("+AddLineToPath_arg_2+" < 0.001 || " + AddLineToPath_arg_2 + " > 800.001 ){ \n"
+        self.arg_val(AddLineToPath_arg_1, "double", AddLineToPath_constrain_1, "800.001", "0.001")
+        self.arg_val(AddLineToPath_arg_2, "double", AddLineToPath_constrain_2, "800.001", "0.001")
+        self.template.write("FQL->AddLineToPath("+AddLineToPath_arg_1+", "+AddLineToPath_arg_2+"); \n")
+
+
+        DrawLine_arg_1 = "DrawLine_StartX"+ str(vgID) + str(cnt) + str(self.tag_cnt)
+        DrawLine_arg_2 = "DrawLine_StartY"+ str(vgID) + str(cnt) + str(self.tag_cnt)
+        DrawLine_arg_3 = "PathDrawLine_EndX"+ str(vgID) + str(cnt) + str(self.tag_cnt)
+        DrawLine_arg_4 = "PathDrawLine_EndY"+ str(vgID) + str(cnt) + str(self.tag_cnt)
+        DrawLine_constrain_1 = "if ("+DrawLine_arg_1+" < 0.001 || " + DrawLine_arg_1 + " > 800.001 ){ \n"
+        DrawLine_constrain_2 = "if ("+DrawLine_arg_2+" < 0.001 || " + DrawLine_arg_2 + " > 800.001 ){ \n"
+        DrawLine_constrain_3 = "if ("+DrawLine_arg_3+" < 0.001 || " + DrawLine_arg_3 + " > 800.001 ){ \n"
+        DrawLine_constrain_4 = "if ("+DrawLine_arg_4+" < 0.001 || " + DrawLine_arg_4 + " > 800.001 ){ \n"
+        self.arg_val(DrawLine_arg_1, "double", DrawLine_constrain_1, "800.001", "0.001")
+        self.arg_val(DrawLine_arg_2, "double", DrawLine_constrain_2, "800.001", "0.001")
+        self.arg_val(DrawLine_arg_3, "double", DrawLine_constrain_3, "800.001", "0.001")
+        self.arg_val(DrawLine_arg_4, "double", DrawLine_constrain_4, "800.001", "0.001")
+
+        self.template.write("FQL->DrawLine("+DrawLine_arg_1+", "+DrawLine_arg_2+","+DrawLine_arg_3+", "+DrawLine_arg_4+"); \n")
     def draw_ellipse(self, vgID, cnt) :
         # API : DrawEllipse(XPos, YPos, Width, Height, DrawOptions)
         DrawEllipse_arg_1 = "DrawEllipse_XPos" + str(vgID) + str(cnt)+str(self.tag_cnt)
