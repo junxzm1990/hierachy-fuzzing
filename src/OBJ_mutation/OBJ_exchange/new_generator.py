@@ -440,11 +440,6 @@ def main (argv) :
     all_OBJ = argv[0]
     f = open(all_OBJ, )
     class_obj = json.load(f)
-    #print (set(class_obj['Dictionary']))
-   # for i in class_obj.keys() :
-   #     print (i , "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-   #     print (len(class_obj[i]))
-   
     # target pdf file path 
     tg_dir = argv[1]
     # where to output the files 
