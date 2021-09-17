@@ -60,27 +60,52 @@ then
                                         echo "NEW SEED : "$i 
                                         ## 2.2.1 TRIM PDF files : before migrating the pdf_gen/XX.pdf to queue/id:000XX, reduce its size
 
-                                        mkdir $OUT_DIR/pdf_gen/trim/
+                                        mkdir $OUT_DIR/pdf_gen_trim_in/
+                                        mkdir $OUT_DIR/pdf_gen_trim_out/
 
-                                        mv $i $OUT_DIR/pdf_gen/trim/
+                                        mv $i $OUT_DIR/pdf_gen_trim_in/
                                         
-                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen/trim/ -b $COMMAND -s $AFL/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen/ 
-                                        rm -rf $OUT_DIR/pdf_gen/trim/
+                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen_trim_in/ -b $COMMAND -s $AFL/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen_trim_out/
+					# Compare trimed and untrimed, which one is smaller
+					I=`wc -c $OUT_DIR/pdf_gen_trim_in/* | cut -d ' ' -f 1`
+					O=`wc -c $OUT_DIR/pdf_gen_trim_out/* | cut -d ' ' -f 1`
+					if [ "$I" -gt "$O" ]; then
+                                        	## 3.2.2 RENAMING : rename reduced size PDFs
+						len=${#pre_cnt}
+						bond=`expr 5 - $len` 
+						zero=0 
+						
+						for z in $(seq $bond)
+						do 
+							zero=$zero"0" 
+						done
+			
+						base=`echo $(basename $i) | cut -d . -f 1` 
+	
+						name="id:"$zero$pre_cnt","$base 
 
-                                        ## 2.2.2 RENAME : renaming the reduced size PDFs
-                                        len=${#pre_cnt} 
-                                        bond=`expr 5 - $len` 
-                                        zero=0 
+						mv $OUT_DIR/pdf_gen_trim_out/* $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/queue/$name
+					else 
+                                        	## 3.2.2 RENAMING : rename reduced size PDFs
+						len=${#pre_cnt}
+						bond=`expr 5 - $len` 
+						zero=0 
+						
+						for z in $(seq $bond)
+						do 
+							zero=$zero"0" 
+						done
+			
+						base=`echo $(basename $i) | cut -d . -f 1` 
+	
+						name="id:"$zero$pre_cnt","$base 
 
-                                        for z in $(seq $bond)
-                                        do
-                                                zero=$zero"0" 
-                                        done
+						mv $OUT_DIR/pdf_gen_trim_in/* $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/queue/$name
 
-                                        base=`echo $(basename $i) | cut -d . -f 1` 
+					fi
+					rm -rf $OUT_DIR/pdf_gen_trim_in/
+					rm -rf $OUT_DIR/pdf_gen_trim_out/
 
-                                        name="id:"$zero$pre_cnt","$base 
-                                        mv $i $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/queue/$name 
                                         echo $i >> $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/done_seeds 
                                         let "pre_cnt=pre_cnt+1" 
                                 fi
@@ -141,28 +166,52 @@ else
 
                                                         ## 3.2.1 TRIM PDF files : before migrating the pdf_gen/XX.pdf to queue/id:000XX, reduce its size
 
-                                                        mkdir $OUT_DIR/pdf_gen/trim/
+                                                        mkdir $OUT_DIR/pdf_gen_trim_in/
+                                                        mkdir $OUT_DIR/pdf_gen_trim_out/
 
-                                                        mv $i $OUT_DIR/pdf_gen/trim/
+                                                        cp $i $OUT_DIR/pdf_gen_trim_in/
                                                         
-                                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen/trim/ -b $COMMAND -s $AFL/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen/ 
-                                                        rm -rf $OUT_DIR/pdf_gen/trim/
-
-                                                        ## 3.2.2 RENAMING : rename reduced size PDFs
-
-							len=${#pre_cnt}
-							bond=`expr 5 - $len` 
-							zero=0 
-							
-							for z in $(seq $bond)
-							do 
-								zero=$zero"0" 
-							done
+                                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen_trim_in/ -b $COMMAND -s $AFL/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen_trim_out/
+							I=`wc -c $OUT_DIR/pdf_gen_trim_in/* | cut -d ' ' -f 1`
+							O=`wc -c $OUT_DIR/pdf_gen_trim_out/* | cut -d ' ' -f 1`
+							if [ "$I" -gt "$O" ]; then
+                                                        	## 3.2.2 RENAMING : rename reduced size PDFs
+								len=${#pre_cnt}
+								bond=`expr 5 - $len` 
+								zero=0 
+								
+								for z in $(seq $bond)
+								do 
+									zero=$zero"0" 
+								done
 			
-							base=`echo $(basename $i) | cut -d . -f 1` 
+								base=`echo $(basename $i) | cut -d . -f 1` 
 	
-							name="id:"$zero$pre_cnt","$base 
-							mv $i $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/queue/$name 
+								name="id:"$zero$pre_cnt","$base 
+
+								mv $OUT_DIR/pdf_gen_trim_out/* $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/queue/$name
+							else 
+                                                        	## 3.2.2 RENAMING : rename reduced size PDFs
+								len=${#pre_cnt}
+								bond=`expr 5 - $len` 
+								zero=0 
+								
+								for z in $(seq $bond)
+								do 
+									zero=$zero"0" 
+								done
+			
+								base=`echo $(basename $i) | cut -d . -f 1` 
+	
+								name="id:"$zero$pre_cnt","$base 
+
+								mv $OUT_DIR/pdf_gen_trim_in/* $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/queue/$name
+
+							fi
+							rm -rf $OUT_DIR/pdf_gen_trim_in/
+							rm -rf $OUT_DIR/pdf_gen_trim_out/
+
+
 							echo $i >> $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/done_seeds 
 							let "pre_cnt=pre_cnt+1" 
 						fi
