@@ -70,17 +70,13 @@ def main(argv) :
                 continue 
             elif stream == True: 
                 breakable_stream.append(line)
-            # Collecting breakable entries
-            if "      >" in line and line not in breakable_stream :
-                breakable_objs.append(line.strip().replace('>\t', ''))
-
- 
-#            if "      >\t" in line and line not in breakable_stream :
-#                # NO SPACE PARSER:
-#                if '/' in line.strip() :
-#                    for i in line.strip().replace('>\t','').split('/') :
-#                        breakable_objs.append(i)
-#                    
+            # Collecting breakable entries 
+            if "      >\t" in line and line not in breakable_stream :
+                # NO SPACE PARSER:
+                if '/' in line.strip() :
+                    for i in line.strip().replace('>\t','').split('/') :
+                        breakable_objs.append(i)
+                    
     
                # breakable_objs.append(line.strip().replace('>\t', ''))
             # Collecting unbreakable entries
