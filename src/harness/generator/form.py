@@ -295,7 +295,7 @@ class PDF_FORM_API_MAP() :
                 self.template.write("int formID"+name+ "main"+str(self.tag_cnt) +" = FQL->NewFormField(L\""+Title_rand+"\", 4); \n")
                 for j in range(0, sub_cnt):
                     # add sub form to main
-                    self.template.write("int formID"+name+ str(j)+str(self.tag_cnt) +" = FQL->AddFormFieldSub(formID"+name+"main" +str(self.tag_cnt)+ ", L\""+Title_rand+str(j)+str(self.tag_cnt) + "\"); \n")
+                    self.template.write("int formID"+name+ "_" + str(j) + "_" + str(self.tag_cnt) +" = FQL->AddFormFieldSub(formID"+name+"main" +str(self.tag_cnt)+ ", L\""+Title_rand+str(j)+str(self.tag_cnt) + "\"); \n")
                     # set form bounds (on sub)
                     self.set_form_bounds(name, j)
                     self.set_form_caption(name, j)
