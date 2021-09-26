@@ -20,6 +20,10 @@ mkdir $OUT_DIR/pdf_gen/
 
 mkdir $OUT_DIR/harness_bin/ 
 
+mkdir $EVAL_BIN/result/test_run_$DATE/harness_gen/
+
+mkdir $EVAL_BIN/result/test_run_$DATE/harness_gen/queue/
+
 # --------------- .cpp GENERATION -----------------------------------------------------------
 for h in $IN_DIR/*
 do
@@ -41,8 +45,8 @@ then
         LD_LIBRARY_PATH=$foxit_loc/Libs/ $AFLpp_loc/afl-fuzz -m none -t 1000000+ -i $AFLpp_loc/testcases/others/pdf/ -o $OUT_DIR -- $OUT_DIR/harness_bin/$top_rank @@ &
 
         pre_cnt=0
-        mkdir $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/ 
-        mkdir $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/queue/ 
+       # mkdir $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/ 
+       # mkdir $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/queue/ 
 
         # migrating pdf files from pdf_gen/ to harness queue 
         while true
@@ -53,7 +57,7 @@ then
                 if [[ $increment_bool == 1 ]]; then
                         for i in $OUT_DIR/pdf_gen/*
                         do
-                                if grep -q "$i" $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/done_seeds
+                                if grep -q "$i" $EVAL_BIN/result/test_run_$DATE/harness_gen/done_seeds
                                 then
                                         echo $i" has been migrated" 
                                 else
@@ -63,9 +67,9 @@ then
                                         mkdir $OUT_DIR/pdf_gen_trim_in/
                                         mkdir $OUT_DIR/pdf_gen_trim_out/
 
-                                        mv $i $OUT_DIR/pdf_gen_trim_in/
+                                        cp $i $OUT_DIR/pdf_gen_trim_in/
                                         
-                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen_trim_in/ -b $COMMAND -s $AFL/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen_trim_out/
+                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen_trim_in/ -b $COMMAND -s $AFLpp_loc/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen_trim_out/
 					# Compare trimed and untrimed, which one is smaller
 					I=`wc -c $OUT_DIR/pdf_gen_trim_in/* | cut -d ' ' -f 1`
 					O=`wc -c $OUT_DIR/pdf_gen_trim_out/* | cut -d ' ' -f 1`
@@ -84,7 +88,7 @@ then
 	
 						name="id:"$zero$pre_cnt","$base 
 
-						mv $OUT_DIR/pdf_gen_trim_out/* $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/queue/$name
+						mv $OUT_DIR/pdf_gen_trim_out/* $EVAL_BIN/result/test_run_$DATE/harness_gen/queue/$name
 					else 
                                         	## 3.2.2 RENAMING : rename reduced size PDFs
 						len=${#pre_cnt}
@@ -100,13 +104,13 @@ then
 	
 						name="id:"$zero$pre_cnt","$base 
 
-						mv $OUT_DIR/pdf_gen_trim_in/* $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/queue/$name
+						mv $OUT_DIR/pdf_gen_trim_in/* $EVAL_BIN/result/test_run_$DATE/harness_gen/queue/$name
 
 					fi
 					rm -rf $OUT_DIR/pdf_gen_trim_in/
 					rm -rf $OUT_DIR/pdf_gen_trim_out/
 
-                                        echo $i >> $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/done_seeds 
+                                        echo $i >> $EVAL_BIN/result/test_run_$DATE/harness_gen/done_seeds 
                                         let "pre_cnt=pre_cnt+1" 
                                 fi
                         done
@@ -140,11 +144,12 @@ else
 			# 3. run harness mutation fuzzing + PDF seeds migration
 			# 3.1 : run harness fuzzing
 			mkdir $OUT_DIR/harness$top_rank$DATE 
+
 			LD_LIBRARY_PATH=$foxit_loc/Libs/ $AFLpp_loc/afl-fuzz -m none -t 1000000+ -i $AFLpp_loc/testcases/others/pdf/ -o $OUT_DIR/harness$top_rank$DATE -- $OUT_DIR/harness_bin/$top_rank @@ &
 			
 			# 3.2 : while harness is being fuzzing, migrating pdf_gen/XX.pdf to queue/id:0000XX
-			mkdir $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/ 
-			mkdir $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/queue/ 
+		#	mkdir $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/ 
+		#	mkdir $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/queue/ 
 			# fuzzing running for 5m, 10m, 15m ...
 			runtime="$TIME minute" 
 			endtime=$(date -ud "$runtime" +%s) 
@@ -158,7 +163,7 @@ else
 				if [[ $increment_bool == 1 ]]; then
 					for i in $OUT_DIR/pdf_gen/* 
 					do 
-						if grep -q "$i" $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/done_seeds
+						if grep -q "$i" $EVAL_BIN/result/test_run_$DATE/harness_gen/done_seeds
 						then
 							echo $i" has been migrated" 
 						else
@@ -171,7 +176,7 @@ else
 
                                                         cp $i $OUT_DIR/pdf_gen_trim_in/
                                                         
-                                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen_trim_in/ -b $COMMAND -s $AFL/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen_trim_out/
+                                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen_trim_in/ -b $COMMAND -s $AFLpp_loc/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen_trim_out/
 							I=`wc -c $OUT_DIR/pdf_gen_trim_in/* | cut -d ' ' -f 1`
 							O=`wc -c $OUT_DIR/pdf_gen_trim_out/* | cut -d ' ' -f 1`
 							if [ "$I" -gt "$O" ]; then
@@ -189,7 +194,7 @@ else
 	
 								name="id:"$zero$pre_cnt","$base 
 
-								mv $OUT_DIR/pdf_gen_trim_out/* $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/queue/$name
+								mv $OUT_DIR/pdf_gen_trim_out/* $EVAL_BIN/result/test_run_$DATE/harness_gen/queue/$name
 							else 
                                                         	## 3.2.2 RENAMING : rename reduced size PDFs
 								len=${#pre_cnt}
@@ -205,14 +210,14 @@ else
 	
 								name="id:"$zero$pre_cnt","$base 
 
-								mv $OUT_DIR/pdf_gen_trim_in/* $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/queue/$name
+								mv $OUT_DIR/pdf_gen_trim_in/* $EVAL_BIN/result/test_run_$DATE/harness_gen/queue/$name
 
 							fi
 							rm -rf $OUT_DIR/pdf_gen_trim_in/
 							rm -rf $OUT_DIR/pdf_gen_trim_out/
 
 
-							echo $i >> $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/done_seeds 
+							echo $i >> $EVAL_BIN/result/test_run_$DATE/harness_gen/done_seeds 
 							let "pre_cnt=pre_cnt+1" 
 						fi
 					done

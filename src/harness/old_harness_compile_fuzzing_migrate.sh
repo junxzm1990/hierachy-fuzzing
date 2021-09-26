@@ -41,8 +41,8 @@ then
         LD_LIBRARY_PATH=$foxit_loc/Libs/ $AFLpp_loc/afl-fuzz -m none -t 1000000+ -i $AFLpp_loc/testcases/others/pdf/ -o $OUT_DIR -- $OUT_DIR/harness_bin/$top_rank @@ &
 
         pre_cnt=0
-        mkdir $EVAL_BIN/result/group1_with_split_16_$DATE/$top_rank$DATE/ 
-        mkdir $EVAL_BIN/result/group1_with_split_16_$DATE/$top_rank$DATE/queue/ 
+        mkdir $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/ 
+        mkdir $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/queue/ 
 
         # migrating pdf files from pdf_gen/ to harness queue 
         while true
@@ -53,38 +53,20 @@ then
                 if [[ $increment_bool == 1 ]]; then
                         for i in $OUT_DIR/pdf_gen/*
                         do
-                                if grep -q "$i" $EVAL_BIN/result/group1_with_split_16_$DATE/$top_rank$DATE/done_seeds
+                                if grep -q "$i" $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/done_seeds
                                 then
                                         echo $i" has been migrated" 
                                 else
                                         echo "NEW SEED : "$i 
                                         ## 2.2.1 TRIM PDF files : before migrating the pdf_gen/XX.pdf to queue/id:000XX, reduce its size
 
-                                        mkdir $OUT_DIR/pdf_gen_trim_in/
-                                        mkdir $OUT_DIR/pdf_gen_trim_out/
+                                        mkdir $OUT_DIR/pdf_gen/trim/
 
-                                        cp $i $OUT_DIR/pdf_gen_trim_in/
+                                        mv $i $OUT_DIR/pdf_gen/trim/
                                         
-                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen_trim_in/ -b $COMMAND -s $AFL/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen_trim_out/
-					# Compare trimed and untrimed, which one is smaller
-					I=`wc -c $OUT_DIR/pdf_gen_trim_in/* | cut -d ' ' -f 1`
-					O=`wc -c $OUT_DIR/pdf_gen_trim_out/* | cut -d ' ' -f 1`
-					if [ "$I" -gt "$O" ]; then
-                                        	## 3.2.2 RENAMING : rename reduced size PDFs
-						len=${#pre_cnt}
-						bond=`expr 5 - $len` 
-						zero=0 
-						
-						for z in $(seq $bond)
-						do 
-							zero=$zero"0" 
-						done
-			
-						base=`echo $(basename $i) | cut -d . -f 1` 
-	
-						name="id:"$zero$pre_cnt","$base 
+                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen/trim/ -b $COMMAND -s $AFL/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen/ 
+                                        rm -rf $OUT_DIR/pdf_gen/trim/
 
-						mv $OUT_DIR/pdf_gen_trim_out/* $EVAL_BIN/result/group1_with_split_16_$DATE/$top_rank$DATE/queue/$name
                                         ## 2.2.2 RENAME : renaming the reduced size PDFs
                                         len=${#pre_cnt} 
                                         bond=`expr 5 - $len` 
@@ -98,29 +80,8 @@ then
                                         base=`echo $(basename $i) | cut -d . -f 1` 
 
                                         name="id:"$zero$pre_cnt","$base 
-                                        cp $i $EVAL_BIN/result/group1_with_split_16_$DATE/$top_rank$DATE/queue/$name 
-					else 
-                                        	## 3.2.2 RENAMING : rename reduced size PDFs
-						len=${#pre_cnt}
-						bond=`expr 5 - $len` 
-						zero=0 
-						
-						for z in $(seq $bond)
-						do 
-							zero=$zero"0" 
-						done
-			
-						base=`echo $(basename $i) | cut -d . -f 1` 
-	
-						name="id:"$zero$pre_cnt","$base 
-
-						mv $OUT_DIR/pdf_gen_trim_in/* $EVAL_BIN/result/group1_with_split_16_$DATE/$top_rank$DATE/queue/$name
-
-					fi
-					rm -rf $OUT_DIR/pdf_gen_trim_in/
-					rm -rf $OUT_DIR/pdf_gen_trim_out/
-
-                                        echo $i >> $EVAL_BIN/result/group1_with_split_16_$DATE/$top_rank$DATE/done_seeds 
+                                        mv $i $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/queue/$name 
+                                        echo $i >> $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/done_seeds 
                                         let "pre_cnt=pre_cnt+1" 
                                 fi
                         done
@@ -157,8 +118,8 @@ else
 			LD_LIBRARY_PATH=$foxit_loc/Libs/ $AFLpp_loc/afl-fuzz -m none -t 1000000+ -i $AFLpp_loc/testcases/others/pdf/ -o $OUT_DIR/harness$top_rank$DATE -- $OUT_DIR/harness_bin/$top_rank @@ &
 			
 			# 3.2 : while harness is being fuzzing, migrating pdf_gen/XX.pdf to queue/id:0000XX
-			mkdir $EVAL_BIN/result/group1_with_split_16_$DATE/$top_rank$DATE/ 
-			mkdir $EVAL_BIN/result/group1_with_split_16_$DATE/$top_rank$DATE/queue/ 
+			mkdir $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/ 
+			mkdir $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/queue/ 
 			# fuzzing running for 5m, 10m, 15m ...
 			runtime="$TIME minute" 
 			endtime=$(date -ud "$runtime" +%s) 
@@ -172,7 +133,7 @@ else
 				if [[ $increment_bool == 1 ]]; then
 					for i in $OUT_DIR/pdf_gen/* 
 					do 
-						if grep -q "$i" $EVAL_BIN/result/group1_with_split_16_$DATE/$top_rank$DATE/done_seeds
+						if grep -q "$i" $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/done_seeds
 						then
 							echo $i" has been migrated" 
 						else
@@ -180,53 +141,29 @@ else
 
                                                         ## 3.2.1 TRIM PDF files : before migrating the pdf_gen/XX.pdf to queue/id:000XX, reduce its size
 
-                                                        mkdir $OUT_DIR/pdf_gen_trim_in/
-                                                        mkdir $OUT_DIR/pdf_gen_trim_out/
+                                                        mkdir $OUT_DIR/pdf_gen/trim/
 
-                                                        cp $i $OUT_DIR/pdf_gen_trim_in/
+                                                        mv $i $OUT_DIR/pdf_gen/trim/
                                                         
-                                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen_trim_in/ -b $COMMAND -s $AFL/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen_trim_out/
-							I=`wc -c $OUT_DIR/pdf_gen_trim_in/* | cut -d ' ' -f 1`
-							O=`wc -c $OUT_DIR/pdf_gen_trim_out/* | cut -d ' ' -f 1`
-							if [ "$I" -gt "$O" ]; then
-                                                        	## 3.2.2 RENAMING : rename reduced size PDFs
-								len=${#pre_cnt}
-								bond=`expr 5 - $len` 
-								zero=0 
-								
-								for z in $(seq $bond)
-								do 
-									zero=$zero"0" 
-								done
+                                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen/trim/ -b $COMMAND -s $AFL/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen/ 
+                                                        rm -rf $OUT_DIR/pdf_gen/trim/
+
+                                                        ## 3.2.2 RENAMING : rename reduced size PDFs
+
+							len=${#pre_cnt}
+							bond=`expr 5 - $len` 
+							zero=0 
+							
+							for z in $(seq $bond)
+							do 
+								zero=$zero"0" 
+							done
 			
-								base=`echo $(basename $i) | cut -d . -f 1` 
+							base=`echo $(basename $i) | cut -d . -f 1` 
 	
-								name="id:"$zero$pre_cnt","$base 
-
-								mv $OUT_DIR/pdf_gen_trim_out/* $EVAL_BIN/result/group1_with_split_16_$DATE/$top_rank$DATE/queue/$name
-							else 
-                                                        	## 3.2.2 RENAMING : rename reduced size PDFs
-								len=${#pre_cnt}
-								bond=`expr 5 - $len` 
-								zero=0 
-								
-								for z in $(seq $bond)
-								do 
-									zero=$zero"0" 
-								done
-			
-								base=`echo $(basename $i) | cut -d . -f 1` 
-	
-								name="id:"$zero$pre_cnt","$base 
-
-								mv $OUT_DIR/pdf_gen_trim_in/* $EVAL_BIN/result/group1_with_split_16_$DATE/$top_rank$DATE/queue/$name
-
-							fi
-							rm -rf $OUT_DIR/pdf_gen_trim_in/
-							rm -rf $OUT_DIR/pdf_gen_trim_out/
-
-
-							echo $i >> $EVAL_BIN/result/group1_with_split_16_$DATE/$top_rank$DATE/done_seeds 
+							name="id:"$zero$pre_cnt","$base 
+							mv $i $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/queue/$name 
+							echo $i >> $EVAL_BIN/result/test_run_$DATE/$top_rank$DATE/done_seeds 
 							let "pre_cnt=pre_cnt+1" 
 						fi
 					done
