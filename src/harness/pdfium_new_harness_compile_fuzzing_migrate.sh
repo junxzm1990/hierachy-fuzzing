@@ -65,7 +65,7 @@ then
 
                                         cp $i $OUT_DIR/pdf_gen_trim_in/
                                         
-                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen_trim_in/ -b $COMMAND -s $AFL/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen_trim_out/
+                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen_trim_in/ -b $COMMAND -s $AFLpp_loc/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen_trim_out/
 					# Compare trimed and untrimed, which one is smaller
 					I=`wc -c $OUT_DIR/pdf_gen_trim_in/* | cut -d ' ' -f 1`
 					O=`wc -c $OUT_DIR/pdf_gen_trim_out/* | cut -d ' ' -f 1`
@@ -185,7 +185,7 @@ else
 
                                                         cp $i $OUT_DIR/pdf_gen_trim_in/
                                                         
-                                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen_trim_in/ -b $COMMAND -s $AFL/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen_trim_out/
+                                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen_trim_in/ -b $COMMAND -s $AFLpp_loc/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen_trim_out/
 							I=`wc -c $OUT_DIR/pdf_gen_trim_in/* | cut -d ' ' -f 1`
 							O=`wc -c $OUT_DIR/pdf_gen_trim_out/* | cut -d ' ' -f 1`
 							if [ "$I" -gt "$O" ]; then

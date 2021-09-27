@@ -18,10 +18,52 @@ class HTML_PAGE_STRU() :
         self.template = template
         self.tag_cnt = cnt
 
+    def arg_val(self, arg_name, arg_type, constrain, upper, lower):
+        self.template.write(arg_type + " "+ arg_name + "=(" + arg_type + ")0; \n")
+        self.template.write("if (bytes_read - index >= sizeof(" + arg_type + ")) { \n")
+        self.template.write(arg_name + " = *("+arg_type+"*)(buffer+index); \n")
+        self.template.write(constrain)
+        if arg_type == "int" :
+            self.template.write(arg_name+" = random_int((int)"+upper+", (int)"+lower+"); \n")
+        elif arg_type == "double" :
+            self.template.write(arg_name+" = random_double((double)"+upper+", (double)"+lower+"); \n")
+        elif arg_type == "string" :
+            self.template.write(arg_name+" = random_string(uppper); \n") ## Here, upper == name_len
+       # self.template.write("exit(0); \n")
+        self.template.write("}else{ \n")
+        self.template.write("index += sizeof(" + arg_type + ");\n")
+        self.template.write("} \n")
+        self.template.write("}else{ \n")
+        self.template.write("exit(0); \n")
+        self.template.write("} \n")
+
+    # parsing and mapping
     def div_parse(self) :
         # MAPPING DIV API :
+        # API : NewPage 
         self.template.write("FQL->NewPage(); \n")
-        self.template.write("FQL->SetPageBox(1, 50, 50, 50, 50); \n")
+
+        # API : SetPageBox
+        SetPageBox_arg_1 = "SetPageBox_BoxType" + str(self.tag_cnt) 
+        SetPageBox_arg_2 = "SetPageBox_Left" + str(self.tag_cnt) 
+        SetPageBox_arg_3 = "SetPageBox_Top" + str(self.tag_cnt) 
+        SetPageBox_arg_4 = "SetPageBox_Width" + str(self.tag_cnt) 
+        SetPageBox_arg_5 = "SetPageBox_Height" + str(self.tag_cnt) 
+        SetPageBox_constrain_1 = "if("+SetPageBox_arg_1+" < 1 || "+SetPageBox_arg_1+" > 5 ) { \n"
+
+        SetPageBox_constrain_2 = "if("+SetPageBox_arg_2+" < 0.001 || "+SetPageBox_arg_2+" > 800.001 ) { \n"
+        SetPageBox_constrain_3 = "if("+SetPageBox_arg_3+" < 0.001 || "+SetPageBox_arg_3+" > 800.001 ) { \n"
+        SetPageBox_constrain_4 = "if("+SetPageBox_arg_4+" < 0.001 || "+SetPageBox_arg_4+" > 800.001 ) { \n"
+        SetPageBox_constrain_5 = "if("+SetPageBox_arg_5+" < 0.001 || "+SetPageBox_arg_5+" > 800.001 ) { \n"
+ 
+        self.arg_val(SetPageBox_arg_1, "int", SetPageBox_constrain_1, "5", "1")
+        self.arg_val(SetPageBox_arg_2, "double", SetPageBox_constrain_2, "800.001", "0.001")
+        self.arg_val(SetPageBox_arg_3, "double", SetPageBox_constrain_3, "800.001", "0.001")
+        self.arg_val(SetPageBox_arg_4, "double", SetPageBox_constrain_4, "800.001", "0.001")
+        self.arg_val(SetPageBox_arg_5, "double", SetPageBox_constrain_5, "800.001", "0.001")
+
+        self.template.write("FQL->SetPageBox("+SetPageBox_arg_1+", "+SetPageBox_arg_2+", "+SetPageBox_arg_3+", "+SetPageBox_arg_4+", "+SetPageBox_arg_5+"); \n")
+
         # TEXT
         texts = self.div.find_all(['p', 'span', 'br', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'blockquote', 'code', 'ul', 'ol', 'dl', 'mark', 'ins', 'del', 'sup', 'sub', 'i', 'b'])
         # VGs

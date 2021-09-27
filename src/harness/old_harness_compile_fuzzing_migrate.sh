@@ -64,7 +64,7 @@ then
 
                                         mv $i $OUT_DIR/pdf_gen/trim/
                                         
-                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen/trim/ -b $COMMAND -s $AFL/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen/ 
+                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen/trim/ -b $COMMAND -s $AFLpp_loc/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen/ 
                                         rm -rf $OUT_DIR/pdf_gen/trim/
 
                                         ## 2.2.2 RENAME : renaming the reduced size PDFs
@@ -145,7 +145,7 @@ else
 
                                                         mv $i $OUT_DIR/pdf_gen/trim/
                                                         
-                                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen/trim/ -b $COMMAND -s $AFL/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen/ 
+                                                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen/trim/ -b $COMMAND -s $AFLpp_loc/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen/ 
                                                         rm -rf $OUT_DIR/pdf_gen/trim/
 
                                                         ## 3.2.2 RENAMING : rename reduced size PDFs

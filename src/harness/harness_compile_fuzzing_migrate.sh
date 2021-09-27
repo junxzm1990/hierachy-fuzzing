@@ -120,7 +120,7 @@ then
 else
 	while true; do
 	        # harness filtering 
-		bash $SRC/src/harness/filter/filter_shell.sh -c $CONFIG 
+		bash $SRC/src/harness/filter/rm_large_filter_shell.sh -c $CONFIG 
 	
 		# harness compiling, fuzzing, pdf files migration 
 	        while [ -s $OUT_DIR/rank_list ]; do
