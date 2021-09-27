@@ -57,7 +57,7 @@ then
                 if [[ $increment_bool == 1 ]]; then
                         for i in $OUT_DIR/pdf_gen/*
                         do
-                                if grep -q "$i" $EVAL_BIN/result/group3_with_split_16_$DATE/$top_rank$DATE/done_seeds
+                                if grep -q "$i" $EVAL_BIN/result/group3_with_split_16_$DATE/harness_gen/done_seeds
                                 then
                                         echo $i" has been migrated" 
                                 else
