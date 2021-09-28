@@ -74,13 +74,20 @@ if [[ $GO == "" ]]; then
         exit -1
 fi
 
-# run  harness AFL++ fuzzing
-$GO run $MAIN_GO -afl $AFL/afl-fuzz -i $EVAL_BIN/bin/seed/ -no-master -name afl -m none -t 100000 -o $EVAL_BIN/result/test_run_$DATE -n $NUM -- $COMMAND
+while IFS= read -r line; do 
+	echo "$line -c $CONFIG" >> $SRC/src/commands_opt
+done < commands
 
-# run villnia AFL++ fuzzing
-v_NUM=`expr $NUM + 3` # running vanilla with 3 more, since harness
-$GO run $MAIN_GO -afl $AFL/afl-fuzz -i $EVAL_BIN/bin/vanilla_seed/ -no-master -name afl -m none -t 100000 -o $EVAL_BIN/result/vanilla_test_run_$DATE -n $v_NUM -- $COMMAND
+parallel -j0 < $SRC/src/commands_opt
 
+
+## run  harness AFL++ fuzzing
+#$GO run $MAIN_GO -afl $AFL/afl-fuzz -i $EVAL_BIN/bin/seed/ -no-master -name afl -m none -t 100000 -o $EVAL_BIN/result/test_run_$DATE -n $NUM -- $COMMAND
+#
+## run villnia AFL++ fuzzing
+#v_NUM=`expr $NUM + 3` # running vanilla with 3 more, since harness
+#$GO run $MAIN_GO -afl $AFL/afl-fuzz -i $EVAL_BIN/bin/vanilla_seed/ -no-master -name afl -m none -t 100000 -o $EVAL_BIN/result/vanilla_test_run_$DATE -n $v_NUM -- $COMMAND
+#
 # handling harness generating, filtering, compiling, fuzzing and output migration
 #bash $SRC/src/harness/mupdf_new_harness_compile_fuzzing_migrate.sh -c $CONFIG
 
