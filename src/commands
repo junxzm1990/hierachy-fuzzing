@@ -1,0 +1,5 @@
+bash ./src/inst_mult_run.bash
+bash ./src/harness/mupdf_new_harness_compile_fuzzing_migrate.sh
+bash ./src/OBJ_mutation/OBJ_exchange/mupdf_collect_exchange_migrate.sh
+bash ./src/OBJ_mutation/OBJ_exchange/mupdf_new_migration.sh
+bash ./src/OBJ_mutation/OBJ_entry_mutation/mupdf_new_mutation.sh 
