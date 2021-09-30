@@ -17,7 +17,7 @@ fi
 
 
 # filtering harnesses ~~~~~~~~~~~~
-for i in `ls $OUT_DIR | grep -v "harness_bin" | grep -v "pdf_gen"`
+for i in `ls $OUT_DIR | grep -v "harness_bin" | grep -v "pdf_gen" | grep -v "tmp_obj_exchange"`
 do 
 	harness_size=`wc -l $OUT_DIR"/"$i"/"html_to_PDF_harness_template.cpp` 	
 	if [[ $harness_size -lt 60000 ]]; then
