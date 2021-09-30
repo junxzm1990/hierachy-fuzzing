@@ -1,3 +1,22 @@
+while getopts c: option 
+do
+        case "${option}"
+        in
+        c) CONFIG=${OPTARG};;
+        esac
+done
+
+if [[ $CONFIG == "" ]]; then
+        echo "Please provide CONFIG file (-c)"
+        exit -1
+fi
+
+# load config file
+. $CONFIG
+
+pre_cnt=0
+
+# migrating pdf files from pdf_gen/ to harness queue 
 while true
 do
         cur_cnt=`ls $OUT_DIR/pdf_gen/ | wc -l`
@@ -36,32 +55,32 @@ do
                                         base=`echo $(basename $i) | cut -d . -f 1`
 
                                         name="id:"$zero$pre_cnt","$base
-
+					
                                         mv $OUT_DIR/pdf_gen_trim_out/* $EVAL_BIN/result/test_run_$DATE/harness_gen/queue/$name
-                                else
+                                else 
                                         ## 3.2.2 RENAMING : rename reduced size PDFs
                                         len=${#pre_cnt}
-                                        bond=`expr 5 - $len`
-                                        zero=0
+                                        bond=`expr 5 - $len` 
+                                        zero=0 
                                         for z in $(seq $bond)
-                                        do
-                                                zero=$zero"0"
+                                        do 
+                                                zero=$zero"0" 
                                         done
+                
+                                        base=`echo $(basename $i) | cut -d . -f 1` 
 
-                                        base=`echo $(basename $i) | cut -d . -f 1`
-
-                                        name="id:"$zero$pre_cnt","$base
+                                        name="id:"$zero$pre_cnt","$base 
 
                                         mv $OUT_DIR/pdf_gen_trim_in/* $EVAL_BIN/result/test_run_$DATE/harness_gen/queue/$name
 
                                 fi
-				rm -rf $OUT_DIR/pdf_gen_trim_in/
+                                rm -rf $OUT_DIR/pdf_gen_trim_in/
                                 rm -rf $OUT_DIR/pdf_gen_trim_out/
 
-                                echo $i >> $EVAL_BIN/result/test_run_$DATE/harness_gen/done_seeds
-                                let "pre_cnt=pre_cnt+1"
+                                echo $i >> $EVAL_BIN/result/test_run_$DATE/harness_gen/done_seeds 
+                                let "pre_cnt=pre_cnt+1" 
                         fi
                 done
         fi
 done
-
+                  
