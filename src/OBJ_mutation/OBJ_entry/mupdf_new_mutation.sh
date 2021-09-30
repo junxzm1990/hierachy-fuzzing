@@ -46,16 +46,17 @@ fi
 
 
 #sleep 5m
-if  [ -z "$(ls -A $OUT_DIR/pdf_gen/)" ]; then
+while true; do
 
-	echo "NO NEW SEED YET-LET's WAIT"
-
-else
- 
-	mkdir $OUT_DIR/entry_gen/
-
-	while true; do
-
+	if  [ -z "$(ls -A $OUT_DIR/pdf_gen/)" ]; then
+	
+		echo "NO NEW SEED YET-LET's WAIT"
+	
+	else
+	 
+		mkdir $OUT_DIR/entry_gen/
+	
+	
 	        pre_cnt=`ls $EVAL_BIN/result/test_run_$DATE/obj_entry_mutation/queue |wc -l`
 	
 	        for seed in $OUT_DIR/pdf_gen/*; do
@@ -127,5 +128,5 @@ else
 	                rm -rf $OUT_DIR/entry_gen/*
 	
 	        done
-	done
-fi	
+	fi	
+done
