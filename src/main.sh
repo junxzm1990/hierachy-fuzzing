@@ -1,13 +1,19 @@
-while getopts c: option 
+while getopts c:l: option 
 do 
 	case "${option}"
 	in
 	c) CONFIG=${OPTARG};;
+        l) BASH_LIST=${OPTARG};;
 	esac
 done
 
 if [[ $CONFIG == "" ]]; then
         echo "Please provide CONFIG file (-c)"
+        exit -1
+fi
+
+if [[ $BASH_LIST == "" ]]; then
+        echo "Please provide bash list file's name (-l)"
         exit -1
 fi
 
@@ -75,10 +81,10 @@ if [[ $GO == "" ]]; then
 fi
 
 while IFS= read -r line; do 
-	echo "$line -c $CONFIG" >> $SRC/src/commands_opt
-done < $SRC/src/commands
+	echo "$line -c $CONFIG" >> $SRC/src/$BASH_LIST"_opt"
+done < $SRC/src/$BAST_LIST
 
-parallel -j0 < $SRC/src/commands_opt
+parallel -j0 < $SRC/src/$BAHS_LIST"_opt"
 
 
 ## run  harness AFL++ fuzzing
