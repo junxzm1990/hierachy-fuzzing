@@ -76,7 +76,7 @@ fi
 
 while IFS= read -r line; do 
 	echo "$line -c $CONFIG" >> $SRC/src/commands_opt
-done < commands
+done < $SRC/src/commands
 
 parallel -j0 < $SRC/src/commands_opt
 
