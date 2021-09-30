@@ -82,9 +82,9 @@ fi
 
 while IFS= read -r line; do 
 	echo "$line -c $CONFIG" >> $SRC/src/$BASH_LIST"_opt"
-done < $SRC/src/$BAST_LIST
+done < $SRC/src/$BASH_LIST
 
-parallel -j0 < $SRC/src/$BAHS_LIST"_opt"
+parallel -j0 < $SRC/src/$BASH_LIST"_opt"
 
 
 ## run  harness AFL++ fuzzing
