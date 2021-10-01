@@ -54,7 +54,7 @@ while true; do
 	echo `ls $RS_PATH/afl_S_6/queue/|grep obj_en|wc -l` >> $OUT_PATH/hourly_result
 
 	
-	for j in $VS_P/*; do 
+	for j in $VS_PATH/*; do 
 		echo $j >> $OUT_PATH/hourly_result
 		echo `ls $j/queue|wc -l` >> $OUT_PATH/hourly_result
 		cat $j/fuzzer_stats|grep execs_per >> $OUT_PATH/hourly_result
