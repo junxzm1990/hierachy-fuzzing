@@ -80,11 +80,10 @@ while true; do
 
                                          # Compare if new trimed seed is less than 0.6M
                                 	 max_size=500000
-                                	 file_size=$(stat -c%s $OUT_DIR/entry_gen_trim_out/*)
+                                	 file_size=$(stat -c%s $i)
 					 file_size="${file_size//[$'\t\r\n ']}"
 
                                 	 if (( $file_size > $max_size )); then
-
                                 	          # delete the large seed from /entry_gen
                                 	          rm -rf $i
                                 	          # delete the in and out directories
@@ -92,7 +91,6 @@ while true; do
                                 	          rm -rf $OUT_DIR/entry_gen_trim_out/
 
                                 	 else
-
 	                                 	  # RENAMing before migrating
 	                                 	  len=${#pre_cnt}
 	                                 	  bond=`expr 5 - $len`
@@ -109,7 +107,6 @@ while true; do
 	
 	                                 	  mv $i $EVAL_BIN/result/test_run_$DATE/obj_entry_mutation/queue/$name
 					fi
-
 
 	                         else
 
