@@ -160,7 +160,7 @@ while true; do
 
                                                  	  name="id:"$zero$pre_cnt","$base
 
-                                                 	  mv $OUT_DIR/entry_gen_trim_in/* $EVAL_BIN/result/test_run_$DATE/harness_gen/queue/$name
+                                                 	  mv $OUT_DIR/entry_gen_trim_in/* $EVAL_BIN/result/test_run_$DATE/obj_entry_gen/queue/$name
 	
 	                                 	  fi
 					fi
