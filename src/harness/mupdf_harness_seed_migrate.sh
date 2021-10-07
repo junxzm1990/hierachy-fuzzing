@@ -41,7 +41,7 @@ do
 
                                 # Compare if new trimed seed is less than 0.6M
                                 max_size=500000
-                                file_size=$(stat -c%s "$OUT_DIR/pdf_gen_trim_in/*")
+                                file_size=$(stat -c%s "$OUT_DIR/pdf_gen_trim_out/*")
 
                                 if (( $file_size > $max_size )); then
 						

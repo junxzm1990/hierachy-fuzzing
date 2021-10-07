@@ -67,6 +67,7 @@ while true; do
 	
 	                python2.7 $SRC/src/OBJ_mutation/OBJ_entry/grammar_reserved_mutation.py $OUT_DIR/org_diff $seed $OUT_DIR/entry_gen/
 			for i in $OUT_DIR/entry_gen/*; do
+
 	                        # TRIM PDFs : trim PDFs before renaming
 	                        mkdir $OUT_DIR/entry_gen_trim_in/
 	                        mkdir $OUT_DIR/entry_gen_trim_out/
@@ -76,43 +77,93 @@ while true; do
 	                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/entry_gen_trim_in/ -b $COMMAND -s $AFLpp_loc/afl-showmap -m none -t 100000 -o $OUT_DIR/entry_gen_trim_out/
 	
 	                        if [ -z "$(ls -A $OUT_DIR/entry_gen_trim_out/)" ]; then
-	                                 # RENAMing before migrating
-	                                 len=${#pre_cnt}
-	                                 bond=`expr 5 - $len`
-	                                 zero=0
+
+                                         # Compare if new trimed seed is less than 0.6M
+                                	 max_size=500000
+                                	 file_size=$(stat -c%s "$OUT_DIR/entry_gen_trim_out/*")
+
+                                	 if (( $file_size > $max_size )); then
+
+                                	          # delete the large seed from /entry_gen
+                                	          rm -rf $i
+                                	          # delete the in and out directories
+                                	          rm -rf $OUT_DIR/entry_gen_trim_in/
+                                	          rm -rf $OUT_DIR/entry_gen_trim_out/
+
+                                	 else
+
+	                                 	  # RENAMing before migrating
+	                                 	  len=${#pre_cnt}
+	                                 	  bond=`expr 5 - $len`
+	                                 	  zero=0
 	
-	                                 for z in $(seq $bond)
-	                                 do
-	                                         zero=$zero"0"
-	                                 done
-	                                 echo $i
-	                                 base=`echo $(basename $i) | cut -d , -f 2`
+	                                 	  for z in $(seq $bond)
+	                                 	  do
+	                                 	          zero=$zero"0"
+	                                 	  done
+	                                 	  echo $i
+	                                 	  base=`echo $(basename $i) | cut -d , -f 2`
 	
-	                                 name="id:"$zero$pre_cnt","$base
+	                                 	  name="id:"$zero$pre_cnt","$base
 	
-	                                 mv $i $EVAL_BIN/result/test_run_$DATE/obj_entry_mutation/queue/$name
+	                                 	  mv $i $EVAL_BIN/result/test_run_$DATE/obj_entry_mutation/queue/$name
+					fi
+
+
 	                         else
-	                                 # Compare trimed and untrimed, which one is smaller
-	                                 I=`wc -c $OUT_DIR/entry_gen_trim_in/* | cut -d ' ' -f 1`
-	                                 O=`wc -c $OUT_DIR/entry_gen_trim_out/* | cut -d ' ' -f 1`
-	                                 if [ "$I" -gt "$O" ]; then
-	                                         ## 3.2.2 RENAMING : rename reduced size PDFs
-	                                         len=${#pre_cnt}
-	                                         bond=`expr 5 - $len`
-	                                         zero=0
+
+					 # Compare if new trimed seed is less than 0.6M
+                                	 max_size=500000
+                                	 file_size=$(stat -c%s "$OUT_DIR/entry_gen_trim_out/*")
+
+                                	 if (( $file_size > $max_size )); then
+
+                                	          # delete the large seed from /entry_gen
+                                	          rm -rf $i
+                                	          # delete the in and out directories
+                                	          rm -rf $OUT_DIR/entry_gen_trim_in/
+                                	          rm -rf $OUT_DIR/entry_gen_trim_out/
+
+                                	 else
+
+	                                 	  # Compare trimed and untrimed, which one is smaller
+	                                 	  I=`wc -c $OUT_DIR/entry_gen_trim_in/* | cut -d ' ' -f 1`
+	                                 	  O=`wc -c $OUT_DIR/entry_gen_trim_out/* | cut -d ' ' -f 1`
+	                                 	  if [ "$I" -gt "$O" ]; then
+	                                 	          ## 3.2.2 RENAMING : rename reduced size PDFs
+	                                 	          len=${#pre_cnt}
+	                                 	          bond=`expr 5 - $len`
+	                                 	          zero=0
 	
-	                                         for z in $(seq $bond)
-	                                         do
-	                                                 zero=$zero"0"
-	                                         done
+	                                 	          for z in $(seq $bond)
+	                                 	          do
+	                                 	                  zero=$zero"0"
+	                                 	          done
 	
-	                                         base=`echo $(basename $i) | cut -d , -f 2`
+	                                 	          base=`echo $(basename $i) | cut -d , -f 2`
 	
-						 name="id:"$zero$pre_cnt","$base
+					 	          name="id:"$zero$pre_cnt","$base
 	
-	                                         mv $OUT_DIR/entry_gen_trim_in/* $EVAL_BIN/result/test_run_$DATE/obj_entry_mutation/queue/$name
+	                                 	          mv $OUT_DIR/entry_gen_trim_out/* $EVAL_BIN/result/test_run_$DATE/obj_entry_mutation/queue/$name
+
+						  else
+                                                 	  ## 3.2.2 RENAMING : rename reduced size PDFs
+                                                 	  len=${#pre_cnt}
+                                                 	  bond=`expr 5 - $len`
+                                                 	  zero=0
+                                                 	  for z in $(seq $bond)
+                                                 	  do
+                                                 	          zero=$zero"0"
+                                                 	  done
+
+                                                 	  base=`echo $(basename $i) | cut -d , -f 2`
+
+                                                 	  name="id:"$zero$pre_cnt","$base
+
+                                                 	  mv $OUT_DIR/entry_gen_trim_in/* $EVAL_BIN/result/test_run_$DATE/harness_gen/queue/$name
 	
-	                                 fi
+	                                 	  fi
+					fi
 	
 	
 	

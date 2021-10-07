@@ -113,7 +113,7 @@ while true; do
 	                                	                  zero=$zero"0"
 	                                	          done
 	
-	                                	          base=`echo $(basename $new) | cut -d . -f 1` 
+	                                	          base=`echo $(basename $new) | cut -d , -f 2` 
 	
 	                                	          name="id:"$zero$pre_cnt","$base
 	
