@@ -80,7 +80,7 @@ while true; do
 
                                          # Compare if new trimed seed is less than 0.6M
                                 	 max_size=500000
-                                	 file_size=$(stat -c%s "$OUT_DIR/entry_gen_trim_out/*")
+                                	 file_size=$(stat -c%s $OUT_DIR/entry_gen_trim_out/*)
 
                                 	 if (( $file_size > $max_size )); then
 
@@ -114,7 +114,7 @@ while true; do
 
 					 # Compare if new trimed seed is less than 0.6M
                                 	 max_size=500000
-                                	 file_size=$(stat -c%s "$OUT_DIR/entry_gen_trim_out/*")
+                                	 file_size=$(stat -c%s $OUT_DIR/entry_gen_trim_out/*)
 
                                 	 if (( $file_size > $max_size )); then
 

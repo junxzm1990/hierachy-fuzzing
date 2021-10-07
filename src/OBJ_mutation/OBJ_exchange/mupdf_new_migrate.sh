@@ -41,7 +41,7 @@ while true; do
 	                        if [ -z "$(ls -A $OUT_DIR/tmp_obj_exchange_trim_out/)" ]; then
 					 # Compare if new trimed seed is less than 0.5M
                                		 max_size=500000
-                               		 file_size=$(stat -c%s "$new")
+                               		 file_size=$(stat -c%s $new)
 
                                		 if (( $file_size > $max_size )); then
 
@@ -72,7 +72,7 @@ while true; do
 
 					 # Compare if new trimed seed is less than 0.5M
                                		 max_size=500000
-                               		 file_size=$(stat -c%s "$OUT_DIR/tmp_obj_exchange_trim_out/*")
+                               		 file_size=$(stat -c%s $OUT_DIR/tmp_obj_exchange_trim_out/*)
 
                                		 if (( $file_size > $max_size )); then
 
