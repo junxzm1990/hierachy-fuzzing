@@ -42,6 +42,7 @@ while true; do
 					 # Compare if new trimed seed is less than 0.5M
                                		 max_size=500000
                                		 file_size=$(stat -c%s $new)
+                                         file_size="${file_size//[$'\t\r\n ']}"
 
                                		 if (( $file_size > $max_size )); then
 
@@ -73,6 +74,7 @@ while true; do
 					 # Compare if new trimed seed is less than 0.5M
                                		 max_size=500000
                                		 file_size=$(stat -c%s $OUT_DIR/tmp_obj_exchange_trim_out/*)
+                                         file_size="${file_size//[$'\t\r\n ']}"
 
                                		 if (( $file_size > $max_size )); then
 
@@ -86,6 +88,9 @@ while true; do
 	                                	  # Compare trimed and untrimed, which one is smaller
 	                                	  I=`wc -c $OUT_DIR/tmp_obj_exchange_trim_in/* | cut -d ' ' -f 1`
 	                                	  O=`wc -c $OUT_DIR/tmp_obj_exchange_trim_out/* | cut -d ' ' -f 1`
+
+					          I="${I//[$'\t\r\n ']}"
+                                                  O="${O//[$'\t\r\n ']}"		
 		                        	  if [ "$I" -gt "$O" ]; then
 	                                	          ## 3.2.2 RENAMING : rename reduced size PDFs
 	                                	          len=${#pre_cnt}

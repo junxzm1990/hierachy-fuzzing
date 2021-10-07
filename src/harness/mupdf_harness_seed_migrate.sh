@@ -57,6 +57,10 @@ do
                                		 # Compare trimed and untrimed, which one is smaller
                                		 I=`wc -c $OUT_DIR/pdf_gen_trim_in/* | cut -d ' ' -f 1`
                                		 O=`wc -c $OUT_DIR/pdf_gen_trim_out/* | cut -d ' ' -f 1`
+                                         
+                                         I="${I//[$'\t\r\n ']}"
+                                         O="${O//[$'\t\r\n ']}"
+
                                		 if [ "$I" -gt "$O" ]; then
                                		         ## 3.2.2 RENAMING : rename reduced size PDFs
                                		         len=${#pre_cnt}
