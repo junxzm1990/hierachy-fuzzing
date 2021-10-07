@@ -42,16 +42,17 @@ do
                                 # Compare if new trimed seed is less than 0.6M
                                 max_size=500000
                                 file_size=$(stat -c%s $OUT_DIR/pdf_gen_trim_out/*)
+                                file_size="${file_size//[$'\t\r\n ']}"
 
-                                if [ "$file_size" -gt "$max_size" ] ; then \n
+                                if [ "$file_size" -gt "$max_size" ] ; then
 						
  					 # delete the large seed from /pdf_gen
-                                         rm -rf $i \n
+                                         rm -rf $i
                                          # delete the in and out directories
-                               		 rm -rf $OUT_DIR/pdf_gen_trim_in/ \n
-                               		 rm -rf $OUT_DIR/pdf_gen_trim_out/ \n
+                               		 rm -rf $OUT_DIR/pdf_gen_trim_in/ 
+                               		 rm -rf $OUT_DIR/pdf_gen_trim_out/
 
-                                else \n
+                                else
 
                                		 # Compare trimed and untrimed, which one is smaller
                                		 I=`wc -c $OUT_DIR/pdf_gen_trim_in/* | cut -d ' ' -f 1`
