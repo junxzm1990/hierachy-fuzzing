@@ -188,8 +188,6 @@ while true; do
 	
 	                rm -rf $OUT_DIR/org_diff
 	
-	                rm -rf $OUT_DIR/entry_gen/*
-	
 	        done
 	fi	
 done
