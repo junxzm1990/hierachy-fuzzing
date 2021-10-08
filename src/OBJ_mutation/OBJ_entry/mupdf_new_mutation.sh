@@ -132,8 +132,8 @@ while true; do
 	                                	  # Compare trimed and untrimed, which one is smaller
 	                                	  I=`wc -c $OUT_DIR/entry_gen_trim_in/* | cut -d ' ' -f 1`
 	                                	  O=`wc -c $OUT_DIR/entry_gen_trim_out/* | cut -d ' ' -f 1`
-			       		  I="${I//[$'\t\r\n ']}"
-                                                 O="${O//[$'\t\r\n ']}"
+			       		          I="${I//[$'\t\r\n ']}"
+                                                  O="${O//[$'\t\r\n ']}"
 
 	                                	  if [ "$I" -gt "$O" ]; then
 	                                	          ## 3.2.2 RENAMING : rename reduced size PDFs
@@ -152,7 +152,7 @@ while true; do
 	
 	                                	          mv $OUT_DIR/entry_gen_trim_out/* $EVAL_BIN/result/test_run_$DATE/obj_entry_mutation/queue/$name
 	                        			  let "pre_cnt=pre_cnt+1"
-                                                         rm -rf $i
+                                                          rm -rf $i
 
 			       		  else
                                                 	  ## 3.2.2 RENAMING : rename reduced size PDFs
@@ -170,7 +170,7 @@ while true; do
 
                                                 	  mv $OUT_DIR/entry_gen_trim_in/* $EVAL_BIN/result/test_run_$DATE/obj_entry_gen/queue/$name
 	                        			  let "pre_cnt=pre_cnt+1"
-			       			  rm -rf $i
+			       			  	  rm -rf $i
 	
 	                                	  fi
 			       	fi
@@ -181,6 +181,8 @@ while true; do
 	
 	                        rm -rf $OUT_DIR/entry_gen_trim_in/
 	                        rm -rf $OUT_DIR/entry_gen_trim_out/
+
+				rm -rf $OUT_DIR/entry_gen/*
 
 
 	                done
