@@ -25,7 +25,6 @@ while true; do
 		echo "NO NEW SEEDS YET-BE PATIENT"
 	
 	else 
-	        echo ">>>>>>>>>>>>>>>> SCANNING TMP dir <<<<<<<<<<<<<<<<<<<<<<<<"
 	
 	        pre_cnt=`ls $EVAL_BIN/result/test_run_$DATE/obj_exchange/queue/ | wc -l`
 
@@ -37,7 +36,6 @@ while true; do
 	                        	mkdir $OUT_DIR/tmp_obj_exchange_trim_in/
 	                        	mkdir $OUT_DIR/tmp_obj_exchange_trim_out/
 	                        	cp $new $OUT_DIR/tmp_obj_exchange_trim_in/
-                                	echo $new
 	                        	# TRIM PDFs ------------------------------------
 	                        	python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/tmp_obj_exchange_trim_in/ -b $COMMAND -s $AFLpp_loc/afl-showmap -m none -t 100000 -o $OUT_DIR/tmp_obj_exchange_trim_out/
 	                        	if [ -z "$(ls -A $OUT_DIR/tmp_obj_exchange_trim_out/)" ]; then
@@ -45,10 +43,8 @@ while true; do
                                			 max_size=500000
                                			 file_size=$(stat -c%s $new)
                                 	         file_size="${file_size//[$'\t\r\n ']}"
-                                	         echo $file_size
 
                                			 if (( $file_size > $max_size )); then
-                                	                  echo "0"
 
                                			          # delete the large seed from /tmp_obj_exchange
                                			          rm -rf $new
@@ -57,7 +53,7 @@ while true; do
                                			          rm -rf $OUT_DIR/tmp_obj_exchange_trim_out/
 
                                			 else
-                                	                  echo "1"
+
 	                        	               	  # RENAMing before migrating
 	                        	               	  len=${#pre_cnt}
 	                        	               	  bond=`expr 5 - $len`
@@ -67,12 +63,13 @@ while true; do
 	                        	               	  do
 	                        	               	          zero=$zero"0"
 	                        	               	  done
-	                        	               	  echo $new
 	                        	               	  base=`echo $(basename $new) | cut -d , -f 2`
 	
 	                        	               	  name="id:"$zero$pre_cnt","$base
 	
 	                        	               	  mv $new $EVAL_BIN/result/test_run_$DATE/obj_exchange/queue/$name
+	                        			  let "pre_cnt=pre_cnt+1"
+	                                	          rm -rf $new
 						fi
 	                        	else
 
@@ -80,11 +77,8 @@ while true; do
                                			 max_size=500000
                                			 file_size=$(stat -c%s $OUT_DIR/tmp_obj_exchange_trim_out/*)
                                 	         file_size="${file_size//[$'\t\r\n ']}"
-                                	         echo $file_size
 
                                			 if (( $file_size > $max_size )); then
-                                	                  echo "2"
-
                                			          # delete the large seed from /tmp_obj_exchange
                                			          rm -rf $new
                                			          # delete the in and out directories
@@ -92,7 +86,6 @@ while true; do
                                			          rm -rf $OUT_DIR/tmp_obj_exchange_trim_out/
 
                                			 else
-                                	                  echo "3"
 	                        	        	  # Compare trimed and untrimed, which one is smaller
 	                        	        	  I=`wc -c $OUT_DIR/tmp_obj_exchange_trim_in/* | cut -d ' ' -f 1`
 	                        	        	  O=`wc -c $OUT_DIR/tmp_obj_exchange_trim_out/* | cut -d ' ' -f 1`
@@ -100,7 +93,6 @@ while true; do
 						          I="${I//[$'\t\r\n ']}"
                                 	                  O="${O//[$'\t\r\n ']}"		
 		                	        	  if [ "$I" -gt "$O" ]; then
-                                	                          echo "4"
 	                        	        	          ## 3.2.2 RENAMING : rename reduced size PDFs
 	                        	        	          len=${#pre_cnt}
 	                        	        	          bond=`expr 5 - $len`
@@ -116,8 +108,9 @@ while true; do
 	                        	        	          name="id:"$zero$pre_cnt","$base
 	
 	                        	        	          mv $OUT_DIR/tmp_obj_exchange_trim_out/* $EVAL_BIN/result/test_run_$DATE/obj_exchange/queue/$name
+	                        				  let "pre_cnt=pre_cnt+1"
+	                                			  rm -rf $new
 	                        	        	  else
-                                	                          echo "5"
 	                        	        	          ## 3.2.2 RENAMING : rename reduced size PDFs
 	                        	        	          len=${#pre_cnt}
 	                        	        	          bond=`expr 5 - $len`
@@ -133,6 +126,8 @@ while true; do
 	                        	        	          name="id:"$zero$pre_cnt","$base
 	
 	                        	        	          mv $OUT_DIR/tmp_obj_exchange_trim_in/* $EVAL_BIN/result/test_run_$DATE/obj_exchange/queue/$name
+	                                			  rm -rf $new
+	                        				  let "pre_cnt=pre_cnt+1"
 	
 	                        	        	  fi
                                 		fi
@@ -141,11 +136,7 @@ while true; do
 	                        	fi
 	                        	rm -rf $OUT_DIR/tmp_obj_exchange_trim_in/
 	                        	rm -rf $OUT_DIR/tmp_obj_exchange_trim_out/
-	                                rm -rf $new
 	
-	                        	echo "[-] OUTPUT "$new
-	
-	                        	let "pre_cnt=pre_cnt+1"
 
                                  fi
 	                done

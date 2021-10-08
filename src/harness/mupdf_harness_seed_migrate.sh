@@ -25,81 +25,88 @@ do
         if [[ $increment_bool == 1 ]]; then
                 for i in $OUT_DIR/pdf_gen/*
                 do
+                        
+
                         if grep -q "$i" $EVAL_BIN/result/test_run_$DATE/harness_gen/done_seeds
                         then
                                 echo $i" has been migrated" 
                         else
-                                echo "NEW SEED : "$i 
-                                ## 2.2.1 TRIM PDF files : before migrating the pdf_gen/XX.pdf to queue/id:000XX, reduce its size
+                        	if [ "$(( $(date +"%s") - $(stat -c "%Y" $i) ))" -gt "1000" ]; then
+                         
+                                	echo "NEW SEED : "$i 
+                                	## 2.2.1 TRIM PDF files : before migrating the pdf_gen/XX.pdf to queue/id:000XX, reduce its size
 
-                                mkdir $OUT_DIR/pdf_gen_trim_in/
-                                mkdir $OUT_DIR/pdf_gen_trim_out/
+                                	mkdir $OUT_DIR/pdf_gen_trim_in/
+                                	mkdir $OUT_DIR/pdf_gen_trim_out/
 
-                                cp $i $OUT_DIR/pdf_gen_trim_in/
+                                	cp $i $OUT_DIR/pdf_gen_trim_in/
 
-                                python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen_trim_in/ -b $COMMAND -s $AFLpp_loc/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen_trim_out/
+                                	python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/pdf_gen_trim_in/ -b $COMMAND -s $AFLpp_loc/afl-showmap -m none -t 100000 -o $OUT_DIR/pdf_gen_trim_out/
 
-                                # Compare if new trimed seed is less than 0.6M
-                                max_size=500000
-                                file_size=$(stat -c%s $OUT_DIR/pdf_gen_trim_out/*)
-                                file_size="${file_size//[$'\t\r\n ']}"
+                                	# Compare if new trimed seed is less than 0.6M
+                                	max_size=500000
+                                	file_size=$(stat -c%s $OUT_DIR/pdf_gen_trim_out/*)
+                                	file_size="${file_size//[$'\t\r\n ']}"
 
-                                if [ "$file_size" -gt "$max_size" ] ; then
-						
- 					 # delete the large seed from /pdf_gen
-                                         rm -rf $i
-                                         # delete the in and out directories
-                               		 rm -rf $OUT_DIR/pdf_gen_trim_in/ 
-                               		 rm -rf $OUT_DIR/pdf_gen_trim_out/
+                                	if [ "$file_size" -gt "$max_size" ] ; then
+							
+ 						 # delete the large seed from /pdf_gen
+                                	         rm -rf $i
+                                	         # delete the in and out directories
+                               			 rm -rf $OUT_DIR/pdf_gen_trim_in/ 
+                               			 rm -rf $OUT_DIR/pdf_gen_trim_out/
 
-                                else
+                                	else
 
-                               		 # Compare trimed and untrimed, which one is smaller
-                               		 I=`wc -c $OUT_DIR/pdf_gen_trim_in/* | cut -d ' ' -f 1`
-                               		 O=`wc -c $OUT_DIR/pdf_gen_trim_out/* | cut -d ' ' -f 1`
-                                         
-                                         I="${I//[$'\t\r\n ']}"
-                                         O="${O//[$'\t\r\n ']}"
+                               			 # Compare trimed and untrimed, which one is smaller
+                               			 I=`wc -c $OUT_DIR/pdf_gen_trim_in/* | cut -d ' ' -f 1`
+                               			 O=`wc -c $OUT_DIR/pdf_gen_trim_out/* | cut -d ' ' -f 1`
+                                	         
+                                	         I="${I//[$'\t\r\n ']}"
+                                	         O="${O//[$'\t\r\n ']}"
 
-                               		 if [ "$I" -gt "$O" ]; then
-                               		         ## 3.2.2 RENAMING : rename reduced size PDFs
-                               		         len=${#pre_cnt}
-                               		         bond=`expr 5 - $len`
-                               		         zero=0
+                               			 if [ "$I" -gt "$O" ]; then
+                               			         ## 3.2.2 RENAMING : rename reduced size PDFs
+                               			         len=${#pre_cnt}
+                               			         bond=`expr 5 - $len`
+                               			         zero=0
 
-                               		         for z in $(seq $bond)
-                               		         do
-                               		                 zero=$zero"0"
-                               		         done
+                               			         for z in $(seq $bond)
+                               			         do
+                               			                 zero=$zero"0"
+                               			         done
 
-                               		         base=`echo $(basename $i) | cut -d . -f 1`
+                               			         base=`echo $(basename $i) | cut -d . -f 1`
 
-                               		         name="id:"$zero$pre_cnt","$base
-			       		 	
-                               		         mv $OUT_DIR/pdf_gen_trim_out/* $EVAL_BIN/result/test_run_$DATE/harness_gen/queue/$name
-                               		 else 
-                               		         ## 3.2.2 RENAMING : rename reduced size PDFs
-                               		         len=${#pre_cnt}
-                               		         bond=`expr 5 - $len` 
-                               		         zero=0 
-                               		         for z in $(seq $bond)
-                               		         do 
-                               		                 zero=$zero"0" 
-                               		         done
+                               			         name="id:"$zero$pre_cnt","$base
+			       			 	
+                               			         mv $OUT_DIR/pdf_gen_trim_out/* $EVAL_BIN/result/test_run_$DATE/harness_gen/queue/$name
+                               			 else 
+                               			         ## 3.2.2 RENAMING : rename reduced size PDFs
+                               			         len=${#pre_cnt}
+                               			         bond=`expr 5 - $len` 
+                               			         zero=0 
+                               			         for z in $(seq $bond)
+                               			         do 
+                               			                 zero=$zero"0" 
+                               			         done
                 
-                               		         base=`echo $(basename $i) | cut -d . -f 1` 
+                               			         base=`echo $(basename $i) | cut -d . -f 1` 
 
-                               		         name="id:"$zero$pre_cnt","$base 
+                               			         name="id:"$zero$pre_cnt","$base 
 
-                               		         mv $OUT_DIR/pdf_gen_trim_in/* $EVAL_BIN/result/test_run_$DATE/harness_gen/queue/$name
+                               			         mv $OUT_DIR/pdf_gen_trim_in/* $EVAL_BIN/result/test_run_$DATE/harness_gen/queue/$name
 
-                               		 fi
-                               		 rm -rf $OUT_DIR/pdf_gen_trim_in/
-                               		 rm -rf $OUT_DIR/pdf_gen_trim_out/
+                               			 fi
+                               			 rm -rf $OUT_DIR/pdf_gen_trim_in/
+                               			 rm -rf $OUT_DIR/pdf_gen_trim_out/
 
-                               		 echo $i >> $EVAL_BIN/result/test_run_$DATE/harness_gen/done_seeds 
-                               		 let "pre_cnt=pre_cnt+1" 
-                        	fi
+                               			 echo $i >> $EVAL_BIN/result/test_run_$DATE/harness_gen/done_seeds 
+                               			 let "pre_cnt=pre_cnt+1" 
+                        		fi
+				fi
+
+
                         fi
                 done
         fi
