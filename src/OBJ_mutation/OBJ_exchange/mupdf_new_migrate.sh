@@ -17,7 +17,7 @@ fi
 
 # create object exchange mutation queue, parallal with afl_S_X/queue and harness/queue
 
-#sleep 10m
+#sleep 7m
 while true; do
 
 	if [ -z "$(ls -A $OUT_DIR/tmp_obj_exchange/)" ]; then
@@ -36,6 +36,7 @@ while true; do
 	                        mkdir $OUT_DIR/tmp_obj_exchange_trim_in/
 	                        mkdir $OUT_DIR/tmp_obj_exchange_trim_out/
 	                        cp $new $OUT_DIR/tmp_obj_exchange_trim_in/
+                                echo $new
 	                        # TRIM PDFs ------------------------------------
 	                        python3 $SRC/scripts/trim_tool/new_trim_pdf.py -i $OUT_DIR/tmp_obj_exchange_trim_in/ -b $COMMAND -s $AFLpp_loc/afl-showmap -m none -t 100000 -o $OUT_DIR/tmp_obj_exchange_trim_out/
 	                        if [ -z "$(ls -A $OUT_DIR/tmp_obj_exchange_trim_out/)" ]; then
@@ -43,8 +44,10 @@ while true; do
                                		 max_size=500000
                                		 file_size=$(stat -c%s $new)
                                          file_size="${file_size//[$'\t\r\n ']}"
+                                         echo $file_size
 
                                		 if (( $file_size > $max_size )); then
+                                                  echo "0"
 
                                		          # delete the large seed from /tmp_obj_exchange
                                		          rm -rf $new
@@ -53,6 +56,7 @@ while true; do
                                		          rm -rf $OUT_DIR/tmp_obj_exchange_trim_out/
 
                                		 else
+                                                  echo "1"
 	                                       	  # RENAMing before migrating
 	                                       	  len=${#pre_cnt}
 	                                       	  bond=`expr 5 - $len`
@@ -75,8 +79,10 @@ while true; do
                                		 max_size=500000
                                		 file_size=$(stat -c%s $OUT_DIR/tmp_obj_exchange_trim_out/*)
                                          file_size="${file_size//[$'\t\r\n ']}"
+                                         echo $file_size
 
                                		 if (( $file_size > $max_size )); then
+                                                  echo "2"
 
                                		          # delete the large seed from /tmp_obj_exchange
                                		          rm -rf $new
@@ -85,6 +91,7 @@ while true; do
                                		          rm -rf $OUT_DIR/tmp_obj_exchange_trim_out/
 
                                		 else
+                                                  echo "3"
 	                                	  # Compare trimed and untrimed, which one is smaller
 	                                	  I=`wc -c $OUT_DIR/tmp_obj_exchange_trim_in/* | cut -d ' ' -f 1`
 	                                	  O=`wc -c $OUT_DIR/tmp_obj_exchange_trim_out/* | cut -d ' ' -f 1`
@@ -92,6 +99,7 @@ while true; do
 					          I="${I//[$'\t\r\n ']}"
                                                   O="${O//[$'\t\r\n ']}"		
 		                        	  if [ "$I" -gt "$O" ]; then
+                                                          echo "4"
 	                                	          ## 3.2.2 RENAMING : rename reduced size PDFs
 	                                	          len=${#pre_cnt}
 	                                	          bond=`expr 5 - $len`
@@ -108,6 +116,7 @@ while true; do
 	
 	                                	          mv $OUT_DIR/tmp_obj_exchange_trim_out/* $EVAL_BIN/result/test_run_$DATE/obj_exchange/queue/$name
 	                                	  else
+                                                          echo "5"
 	                                	          ## 3.2.2 RENAMING : rename reduced size PDFs
 	                                	          len=${#pre_cnt}
 	                                	          bond=`expr 5 - $len`
