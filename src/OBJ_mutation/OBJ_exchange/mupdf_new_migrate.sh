@@ -17,7 +17,7 @@ fi
 
 # create object exchange mutation queue, parallal with afl_S_X/queue and harness/queue
 
-#sleep 7m
+sleep 7m
 while true; do
 
 	if [ -z "$(ls -A $OUT_DIR/tmp_obj_exchange/)" ]; then
