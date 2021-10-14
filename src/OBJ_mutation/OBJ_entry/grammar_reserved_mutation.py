@@ -134,7 +134,7 @@ def rd_in_digit_and_str_mutation (content, raw_pool) :
             seed(1)
             # generate some random numbers
             content = rand(1)
-            content = 1 - content
+            content = 1 / content
         elif max_flip_reci_reset == 3 : 
             content = 0   
     else :
@@ -335,7 +335,7 @@ def mutation_main (obj_num_entries, class_token_dict) :
                                     ref_op_rs[tag].append(new_content)         
                                 else :
                                     ref_op_rs[tag] = [new_content] 
-                                # TODO : output new_content 
+                                #  output new_content of matrix 
                             elif cls == 'rd_in_mtrx_token' :
                                 if "[" in content or "]" in content :
                                     new_content = rd_in_mtrx_mutation(content, class_token_dict[cls].values())
@@ -344,14 +344,13 @@ def mutation_main (obj_num_entries, class_token_dict) :
                                         mtrx_op_rs[tag].append(new_content) 
                                     else :
                                         mtrx_op_rs[tag] = [new_content] 
-                                    # TODO : output new_content of matrix
+                                    # output new_content string and number
                             if cls == 'rd_in_digit_token' or cls == 'rd_in_str_token' :
                                 new_content = rd_in_digit_and_str_mutation(content, class_token_dict[cls].values())   
                                 if tag in numstr_op_rs :
                                     numstr_op_rs[tag].append(new_content)         
                                 else :
                                     numstr_op_rs[tag] = [new_content] 
-                                # TODO : output new content of striing or digits 
                              
                     tag = str()
                     content = str()
