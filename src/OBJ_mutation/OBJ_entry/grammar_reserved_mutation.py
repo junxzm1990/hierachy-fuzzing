@@ -134,7 +134,7 @@ def rd_in_digit_and_str_mutation (content, raw_pool) :
             seed(1)
             # generate some random numbers
             content = rand(1)
-            content = 1 / content
+            content = float(1) / float(content)
         elif max_flip_reci_reset == 3 : 
             content = 0   
     else :
