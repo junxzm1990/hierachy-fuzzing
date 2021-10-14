@@ -81,99 +81,98 @@ while true; do
 	
 	                        if [ -z "$(ls -A $OUT_DIR/entry_gen_trim_out/)" ]; then
 
-                                        # Compare if new trimed seed is less than 0.6M
-                               	 max_size=500000
-                               	 file_size=$(stat -c%s $i)
-			       	 file_size="${file_size//[$'\t\r\n ']}"
+                                	 # Compare if new trimed seed is less than 0.6M
+                               		 max_size=500000
+                               		 file_size=$(stat -c%s $i)
+			       		 file_size="${file_size//[$'\t\r\n ']}"
 
-                               	 if (( $file_size > $max_size )); then
-                               	          # delete the large seed from /entry_gen
-                               	          rm -rf $i
-                               	          # delete the in and out directories
-                               	          rm -rf $OUT_DIR/entry_gen_trim_in/
-                               	          rm -rf $OUT_DIR/entry_gen_trim_out/
+                               		 if (( $file_size > $max_size )); then
+                               		          # delete the large seed from /entry_gen
+                               		          rm -rf $i
+                               		          # delete the in and out directories
+                               		          rm -rf $OUT_DIR/entry_gen_trim_in/
+                               		          rm -rf $OUT_DIR/entry_gen_trim_out/
 
-                               	 else
-	                                	  # RENAMing before migrating
-	                                	  len=${#pre_cnt}
-	                                	  bond=`expr 5 - $len`
-	                                	  zero=0
+                               		 else
+	                        	          # RENAMing before migrating
+	                        	          len=${#pre_cnt}
+	                        	          bond=`expr 5 - $len`
+	                        	          zero=0
 	
-	                                	  for z in $(seq $bond)
-	                                	  do
-	                                	          zero=$zero"0"
-	                                	  done
-	                                	  echo $i
-	                                	  base=`echo $(basename $i) | cut -d , -f 2`
+	                        	          for z in $(seq $bond)
+	                        	          do
+	                        	                  zero=$zero"0"
+	                        	          done
+	                        	          echo $i
+	                        	          base=`echo $(basename $i) | cut -d , -f 2`
 	
-	                                	  name="id:"$zero$pre_cnt","$base
+	                        	          name="id:"$zero$pre_cnt","$base
 	
-	                                	  mv $i $EVAL_BIN/result/test_run_$DATE/obj_entry_mutation/queue/$name
-	                        	          let "pre_cnt=pre_cnt+1"
-			       	fi
+	                        	          mv $i $EVAL_BIN/result/test_run_$DATE/obj_entry_mutation/queue/$name
+	                        	       	  let "pre_cnt=pre_cnt+1"
+			       		fi
 
 	                        else
 
-			       	 # Compare if new trimed seed is less than 0.6M
-                               	 max_size=500000
-                               	 file_size=$(stat -c%s $OUT_DIR/entry_gen_trim_out/*)
-			       	 file_size="${file_size//[$'\t\r\n ']}"
+			       		 # Compare if new trimed seed is less than 0.6M
+                               		 max_size=500000
+                               		 file_size=$(stat -c%s $OUT_DIR/entry_gen_trim_out/*)
+			       		 file_size="${file_size//[$'\t\r\n ']}"
 
-                               	 if (( $file_size > $max_size )); then
+                               		 if (( $file_size > $max_size )); then
 
-                               	          # delete the large seed from /entry_gen
-                               	          rm -rf $i
-                               	          # delete the in and out directories
-                               	          rm -rf $OUT_DIR/entry_gen_trim_in/
-                               	          rm -rf $OUT_DIR/entry_gen_trim_out/
+                               		          # delete the large seed from /entry_gen
+                               		          rm -rf $i
+                               		          # delete the in and out directories
+                               		          rm -rf $OUT_DIR/entry_gen_trim_in/
+                               		          rm -rf $OUT_DIR/entry_gen_trim_out/
 
-                               	 else
+                               		 else
 
-	                                	  # Compare trimed and untrimed, which one is smaller
-	                                	  I=`wc -c $OUT_DIR/entry_gen_trim_in/* | cut -d ' ' -f 1`
-	                                	  O=`wc -c $OUT_DIR/entry_gen_trim_out/* | cut -d ' ' -f 1`
-			       		          I="${I//[$'\t\r\n ']}"
-                                                  O="${O//[$'\t\r\n ']}"
+	                        	          # Compare trimed and untrimed, which one is smaller
+	                        	          I=`wc -c $OUT_DIR/entry_gen_trim_in/* | cut -d ' ' -f 1`
+	                        	          O=`wc -c $OUT_DIR/entry_gen_trim_out/* | cut -d ' ' -f 1`
+			       			  I="${I//[$'\t\r\n ']}"
+                                	          O="${O//[$'\t\r\n ']}"
 
-	                                	  if [ "$I" -gt "$O" ]; then
-	                                	          ## 3.2.2 RENAMING : rename reduced size PDFs
-	                                	          len=${#pre_cnt}
-	                                	          bond=`expr 5 - $len`
-	                                	          zero=0
+	                        	          if [ "$I" -gt "$O" ]; then
+	                        	                  ## 3.2.2 RENAMING : rename reduced size PDFs
+	                        	                  len=${#pre_cnt}
+	                        	                  bond=`expr 5 - $len`
+	                        	                  zero=0
 	
-	                                	          for z in $(seq $bond)
-	                                	          do
-	                                	                  zero=$zero"0"
-	                                	          done
+	                        	                  for z in $(seq $bond)
+	                        	                  do
+	                        	                          zero=$zero"0"
+	                        	                  done
 	
-	                                	          base=`echo $(basename $i) | cut -d , -f 2`
+	                        	                  base=`echo $(basename $i) | cut -d , -f 2`
 	
-			       	 	          name="id:"$zero$pre_cnt","$base
+			       		 	  	  name="id:"$zero$pre_cnt","$base
 	
-	                                	          mv $OUT_DIR/entry_gen_trim_out/* $EVAL_BIN/result/test_run_$DATE/obj_entry_mutation/queue/$name
+	                        	                  mv $OUT_DIR/entry_gen_trim_out/* $EVAL_BIN/result/test_run_$DATE/obj_entry_mutation/queue/$name
 	                        			  let "pre_cnt=pre_cnt+1"
-                                                          rm -rf $i
+                                	                  rm -rf $i
 
-			       		  else
-                                                	  ## 3.2.2 RENAMING : rename reduced size PDFs
-                                                	  len=${#pre_cnt}
-                                                	  bond=`expr 5 - $len`
-                                                	  zero=0
-                                                	  for z in $(seq $bond)
-                                                	  do
-                                                	          zero=$zero"0"
-                                                	  done
+			       			  else
+                                	        	  ## 3.2.2 RENAMING : rename reduced size PDFs
+                                	        	  len=${#pre_cnt}
+                                	        	  bond=`expr 5 - $len`
+                                	        	  zero=0
+                                	        	  for z in $(seq $bond)
+                                	        	  do
+                                	        	          zero=$zero"0"
+                                	        	  done
 
-                                                	  base=`echo $(basename $i) | cut -d , -f 2`
+                                	        	  base=`echo $(basename $i) | cut -d , -f 2`
 
-                                                	  name="id:"$zero$pre_cnt","$base
+                                	        	  name="id:"$zero$pre_cnt","$base
 
-                                                	  mv $OUT_DIR/entry_gen_trim_in/* $EVAL_BIN/result/test_run_$DATE/obj_entry_gen/queue/$name
+                                	        	  mv $OUT_DIR/entry_gen_trim_in/* $EVAL_BIN/result/test_run_$DATE/obj_entry_gen/queue/$name
 	                        			  let "pre_cnt=pre_cnt+1"
 			       			  	  rm -rf $i
-	
-	                                	  fi
-			       	fi
+	                        	         fi
+			       		fi
 	
 	
 	
@@ -181,10 +180,7 @@ while true; do
 	
 	                        rm -rf $OUT_DIR/entry_gen_trim_in/
 	                        rm -rf $OUT_DIR/entry_gen_trim_out/
-
 				rm -rf $OUT_DIR/entry_gen/*
-
-
 	                done
 	
 	                rm -rf $OUT_DIR/org_diff
