@@ -184,9 +184,9 @@ while true; do
 	
 	                        rm -rf $OUT_DIR/entry_gen_trim_in/
 	                        rm -rf $OUT_DIR/entry_gen_trim_out/
-				rm -rf $OUT_DIR/entry_gen/*
 	                done
 	
+			rm -rf $OUT_DIR/entry_gen/*
 	                rm -rf $OUT_DIR/org_diff
 	
 	        done
