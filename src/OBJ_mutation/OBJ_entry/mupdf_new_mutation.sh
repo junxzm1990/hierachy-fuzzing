@@ -67,12 +67,13 @@ while true; do
 	
 	                python2.7 $SRC/src/OBJ_mutation/OBJ_entry/grammar_reserved_mutation.py $OUT_DIR/org_diff $seed $OUT_DIR/entry_gen/
 
-                        sleep 1m
+                        sleep 5m
 			
+			echo `ls $OUT_DIR/entry_gen/`
+
 			for i in $OUT_DIR/entry_gen/*; do
 
 				echo "This is I : "$i
-				echo `ls $OUT_DIR/entry_gen/`
 	                        
 				# TRIM PDFs : trim PDFs before renaming
 	                        mkdir $OUT_DIR/entry_gen_trim_in/
