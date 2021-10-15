@@ -45,7 +45,7 @@ if [[ $EVAL_BIN == "" ]]; then
 fi
 
 
-sleep 3m
+# sleep 3m
 while true; do
 
 	if  [ -z "$(ls -A $OUT_DIR/pdf_gen/)" ]; then
@@ -67,7 +67,7 @@ while true; do
 	
 	                python2.7 $SRC/src/OBJ_mutation/OBJ_entry/grammar_reserved_mutation.py $OUT_DIR/org_diff $seed $OUT_DIR/entry_gen/
 
-                        sleep 10m
+                        #sleep 10m
 			
 			for i in $OUT_DIR/entry_gen/*; do
 	                        
