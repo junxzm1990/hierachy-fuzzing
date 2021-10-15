@@ -67,7 +67,7 @@ while true; do
 	
 	                python2.7 $SRC/src/OBJ_mutation/OBJ_entry/grammar_reserved_mutation.py $OUT_DIR/org_diff $seed $OUT_DIR/entry_gen/
 
-                        #sleep 10m
+                        sleep 2m
 			
 			for i in $OUT_DIR/entry_gen/*; do
 	                        
