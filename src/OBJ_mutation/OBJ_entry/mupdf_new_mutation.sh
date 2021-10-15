@@ -45,7 +45,8 @@ if [[ $EVAL_BIN == "" ]]; then
 fi
 
 
-# sleep 3m
+sleep 3m
+
 while true; do
 
 	if  [ -z "$(ls -A $OUT_DIR/pdf_gen/)" ]; then
@@ -67,14 +68,10 @@ while true; do
 	
 	                python2.7 $SRC/src/OBJ_mutation/OBJ_entry/grammar_reserved_mutation.py $OUT_DIR/org_diff $seed $OUT_DIR/entry_gen/
 
-                        sleep 5m
+                        sleep 12m
 			
-			echo `ls $OUT_DIR/entry_gen/`
-
 			for i in $OUT_DIR/entry_gen/*; do
 
-				echo "This is I : "$i
-	                        
 				# TRIM PDFs : trim PDFs before renaming
 	                        mkdir $OUT_DIR/entry_gen_trim_in/
 	                        mkdir $OUT_DIR/entry_gen_trim_out/
