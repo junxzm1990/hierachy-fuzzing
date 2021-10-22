@@ -392,6 +392,7 @@ def main (argv) :
     overall_diff_path = argv[0]
     # target one seed pdf file path
     target_path = argv[1]
+    f_name = target_path.split("/")[-1]
     # where the mutated file outputs
     output_path = argv[2]
     # parsing overall entries 
@@ -420,15 +421,15 @@ def main (argv) :
 
     # wirte to file :
     # output ref mutation
-    output_to_file(target_path, output_path+"ref", op_rs[0]) 
+    output_to_file(target_path, output_path+f_name+"ref", op_rs[0]) 
     # output mtrx mutation
-    output_to_file(target_path, output_path+"mtrx", op_rs[1]) 
+    output_to_file(target_path, output_path+f_name+"mtrx", op_rs[1]) 
     # output numstr mutation
-    output_to_file(target_path, output_path+"numstr", op_rs[2])
+    output_to_file(target_path, output_path+f_name+"numstr", op_rs[2])
     # output stream mutation
-    output_to_file(target_path, output_path+"stream", op_rs[3])
+    output_to_file(target_path, output_path+f_name+"stream", op_rs[3])
     # output obj entry mutation
-    output_to_file(target_path, output_path+"entry", op_rs[4])
+    output_to_file(target_path, output_path+f_name+"entry", op_rs[4])
 
 if __name__ == "__main__" :
     main(sys.argv[1:])
