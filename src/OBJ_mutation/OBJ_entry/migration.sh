@@ -44,7 +44,7 @@ if [[ $EVAL_BIN == "" ]]; then
                         exit -1
 fi
 
-sleep 10m
+#sleep 10m
 
 while true; do
 
