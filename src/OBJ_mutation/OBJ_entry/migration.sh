@@ -57,7 +57,7 @@ while true; do
 		pre_cnt=`ls $EVAL_BIN/result/test_run_$DATE/obj_entry_mutation/queue |wc -l`
 		for i in $OUT_DIR/entry_gen/*; do
 
-			if [ "$(( $(date +"%s") - $(stat -c "%Y" $new) ))" -gt "1000" ]; then
+			if [ "$(( $(date +"%s") - $(stat -c "%Y" $i) ))" -gt "1000" ]; then
 
 				# TRIM PDFs : trim PDFs before renaming
                 	        mkdir $OUT_DIR/entry_gen_trim_in/
