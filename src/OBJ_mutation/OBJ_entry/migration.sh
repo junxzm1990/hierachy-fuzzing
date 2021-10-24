@@ -44,8 +44,6 @@ if [[ $EVAL_BIN == "" ]]; then
                         exit -1
 fi
 
-#sleep 10m
-
 while true; do
 
 	if  [ -z "$(ls -A $OUT_DIR/entry_gen/)" ]; then
