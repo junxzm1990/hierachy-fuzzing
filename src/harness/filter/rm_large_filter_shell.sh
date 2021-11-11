@@ -20,7 +20,7 @@ fi
 for i in `ls $OUT_DIR | grep -v "harness_bin" | grep -v "pdf_gen" | grep -v "tmp_obj_exchange"`
 do 
 	harness_size=`wc -l $OUT_DIR"/"$i"/"html_to_PDF_harness_template.cpp` 	
-	if [[ $harness_size -lt 60000 ]]; then
+	if [[ $harness_size -lt 50000 ]]; then
 		# collecting APIs from each harness.cpp file
 	        echo $OUT_DIR"/"$i"/html_to_PDF_harness_template.cpp" >> $OUT_DIR/api_list
 		cat -b $OUT_DIR/$i/html_to_PDF_harness_template.cpp | grep "FQL->" >> $OUT_DIR/api_list
