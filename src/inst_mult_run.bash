@@ -37,11 +37,12 @@ $GO run $MAIN_GO -afl $AFLpp_loc/afl-fuzz -i $EVAL_BIN/bin/vanilla_seed/ -no-mas
 # ----------------------------------  for multiple harness test experiment , please make following code aviliable --------------------------------------------------
 # run MOpt fuzzing 
 m_NUM=`expr $NUM + 3` # running 3 more 
-$GO run $MAIN_GO -afl $MOpt_loc/afl-fuzz -i $EVAL_BIN/bin/vanilla_seed/ -no-master -name afl -m none -t 100000 -o $EVAL_BIN/result/mopt_test_run_$DATE -n $m_NUM -- $M_COMMAND
+$GO run $MAIN_GO -afl $MOpt_loc/afl-fuzz -i $EVAL_BIN/bin/seed_mopt/ -no-master -name afl -m none -t 100000 -o $EVAL_BIN/result/mopt_test_run_$DATE -n $m_NUM -- $M_COMMAND
 
 # run nautilus fuzzing
 n_NUM=`expr $NUM + 2` # running 2 more, since it has 1 object exchange
-$GO run $MAIN_GO -afl $AFLpp_loc/afl-fuzz -i $EVAL_BIN/bin/vanilla_seed/ -no-master -name afl -m none -t 100000 -o $EVAL_BIN/result/nautilus_test_run_$DATE -n $n_NUM -- $COMMAN
+$GO run $MAIN_GO -afl $AFLpp_loc/afl-fuzz -i $EVAL_BIN/bin/vanilla_seed/ -no-master -name afl -m none -t 100000 -o $EVAL_BIN/result/nautilus_test_run_$DATE -n $n_NUM -- $COMMAND
 
 # run Learn&Fuzz
-# TBD waiting for Hongbin
+l_NUM=`expr $NUM + 2` # running 2 more, since it has 1 object exchange
+$GO run $MAIN_GO -afl $AFLpp_loc/afl-fuzz -i $EVAL_BIN/bin/seed_learn/ -no-master -name afl -m none -t 100000 -o $EVAL_BIN/result/learnfuzz_test_run_$DATE -n $l_NUM -- $COMMAND
