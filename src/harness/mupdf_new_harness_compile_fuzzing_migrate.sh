@@ -14,11 +14,11 @@ fi
 # load config file
 . $CONFIG
 
-#mkdir $OUT_DIR
-#
-#mkdir $OUT_DIR/pdf_gen/
-#
-#mkdir $OUT_DIR/harness_bin/
+mkdir $OUT_DIR
+
+mkdir $OUT_DIR/pdf_gen/
+
+mkdir $OUT_DIR/harness_bin/
 
 # --------------- .cpp GENERATION -----------------------------------------------------------
 for h in $IN_DIR/*
