@@ -17,6 +17,7 @@ fi
 runtime="$TIME minute"
 endtime=$(date -ud "$runtime" +%s)
 
+sleep 10m
 
 while true; 
 do
