@@ -73,7 +73,7 @@ else
                         # 3.1 : run harness fuzzing
                         mkdir $OUT_DIR/harness$top_rank$DATE
 
-                        LD_LIBRARY_PATH=$foxit_loc/Libs/ $AFLpp_loc/afl-fuzz -m none -t 1000000+ -i $AFLpp_loc/testcases/others/pdf/ -o $OUT_DIR/harness$top_rank$DATE -- $OUT_DIR/harness_bin/$top_rank @@&
+                        LD_LIBRARY_PATH=$foxit_loc/Libs/ $AFLpp_loc/afl-fuzz -m none -t 1000000+ -i $AFLpp_loc/testcases/others/pdf/ -o $OUT_DIR/harness$top_rank$DATE -- $OUT_DIR/harness_bin/$top_rank @@ &
                         
 			runtime="$TIME minute"
                         endtime=$(date -ud "$runtime" +%s)
