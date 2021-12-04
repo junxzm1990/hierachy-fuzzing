@@ -14,16 +14,20 @@ fi
 # load config file
 . $CONFIG
 
-mkdir $OUT_DIR
-
-mkdir $OUT_DIR/pdf_gen/
-
-mkdir $OUT_DIR/harness_bin/
+#mkdir $OUT_DIR
+#
+#mkdir $OUT_DIR/pdf_gen/
+#
+#mkdir $OUT_DIR/harness_bin/
 
 # --------------- .cpp GENERATION -----------------------------------------------------------
 for h in $IN_DIR/*
 do
-        python2.7 $SRC/src/harness/generator/overall_html_harness_parser.py $h $OUT_DIR $OUT_DIR/pdf_gen/ $foxit_loc $AFLpp_loc
+	if [[ $h == *.html ]]; then 
+        	python2.7 $SRC/src/harness/generator/overall_html_harness_parser.py $h $OUT_DIR $OUT_DIR/pdf_gen/ $foxit_loc $AFLpp_loc
+	elif [[ $h == *.pdf ]]; then
+                python2.7 $SRC/src/PDF2PDFharness/overall.py $h $OUT_DIR $OUT_DIR/pdf_gen/ $foxit_loc $AFLpp_loc
+	fi
 done
 
 # checking how many HTML PROCESSED
