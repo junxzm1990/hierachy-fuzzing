@@ -1,0 +1,11 @@
+<< /Type /FontDescriptor
+/FontName /QMAAAA+TimesNewRomanPSMT
+/Flags 4
+/FontBBox [-568.359375 -422.363281 2000 891.113281 ]
+/ItalicAngle 0
+/Ascent 891.113281
+/Descent -216.308593
+/CapHeight 662.109375
+/StemV 48.8281250
+/FontFile2 13 0 R
+>>
