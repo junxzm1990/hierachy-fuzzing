@@ -21,7 +21,7 @@ sleep 10m
 
 while true; 
 do
- 
+	top_rank=$(head -n 1 $OUT_DIR/rank_list)
 	while [[ $(date -u +%s) -le $endtime ]]; 
 	do
 	        echo "in time"
@@ -34,5 +34,7 @@ do
 	        fi
 	done < $OUT_DIR/harness$top_rank$DATE/default/fuzzer_stats
 	rm -rf $OUT_DIR/harness$top_rank$DATE
+        # remove the best harness from rank_list
+        sed -i 1d $OUT_DIR/rank_list
 
 done

@@ -65,7 +65,7 @@ else
                         $AFLpp_loc/afl-clang++ -g -O3 -funroll-loops -o $OUT_DIR/harness_bin/$top_rank -Wno-format -Wno-pointer-sign -I. -fpermissive -fPIC $OUT_DIR/$top_rank/html_to_PDF_harness_template.cpp $AFLpp_loc/afl-compiler-rt.o $SRC/src/harness/libfrida-gum.a -ldl -lresolv -pthread -std=c++11
 
                         # remove the best harness from rank_list
-                        sed -i 1d $OUT_DIR/rank_list
+                        #sed -i 1d $OUT_DIR/rank_list
                         # remove the best harness's .cpp file
         #               rm -rf $OUT_DIR/$top_rank/ 
 
