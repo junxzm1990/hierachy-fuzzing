@@ -73,23 +73,7 @@ else
                         # 3.1 : run harness fuzzing
                         mkdir $OUT_DIR/harness$top_rank$DATE
 
-                        LD_LIBRARY_PATH=$foxit_loc/Libs/ $AFLpp_loc/afl-fuzz -m none -t 1000000+ -i $AFLpp_loc/testcases/others/pdf/ -o $OUT_DIR/harness$top_rank$DATE -- $OUT_DIR/harness_bin/$top_rank @@ &
-                        
-			runtime="$TIME minute"
-                        endtime=$(date -ud "$runtime" +%s)
-
-                        if [[ $(date -u +%s) -le $endtime ]]; then
-                        	echo "in time"
-                        else 
-				while read line 
-                        	do
-                                	if [[ "$line" == *"fuzzer_pid"* ]]; then
-                                	        PID=`echo $line | cut -d : -f 2`
-                                	        kill $PID
-                                	fi
-                        	done < $OUT_DIR/harness$top_rank$DATE/default/fuzzer_stats
-			fi
-                        rm -rf $OUT_DIR/harness$top_rank$DATE
+                        LD_LIBRARY_PATH=$foxit_loc/Libs/ $AFLpp_loc/afl-fuzz -m none -t 1000000+ -i $AFLpp_loc/testcases/others/pdf/ -o $OUT_DIR/harness$top_rank$DATE -- $OUT_DIR/harness_bin/$top_rank @@
 
                 done
         done
