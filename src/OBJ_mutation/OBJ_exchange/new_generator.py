@@ -3,6 +3,9 @@ import os
 import json
 import sys
 import random 
+from multiprocessing import Process
+from time import sleep
+
 
 def bool_output_to_file(target_path, output_path_in_type, output_path_cross_type, class_obj) :
 
@@ -433,7 +436,14 @@ def obj_classify (all_OBJ) :
     #print (class_obj['Stream'])
     return class_obj    
 
-  
+def run_with_limited_time(func, args, kwargs, time) :
+    p = Process(target=func, args=args, kwargs=kwargs)
+    p.start()
+    p.join(time)
+    if p.is_alive():
+        p.terminate()
+
+
 def main (argv) :
     print sys.getdefaultencoding()
     # global objects collected from shell
@@ -445,6 +455,8 @@ def main (argv) :
     # where to output the files 
     output_path =argv[2]
 
+    time = float(argv[3])
+
     target_path = str()
   
   #  # all overall objs classify in 8 types
@@ -454,25 +466,25 @@ def main (argv) :
         # write to file :
         # output Boolean object exchanged 
         if 'Boolean' in class_obj :
-            bool_output_to_file(target_path, output_path + pdf + 'bool_in', output_path+pdf + 'bool_cross', class_obj)
+            run_with_limited_time(bool_output_to_file, (target_path, output_path + pdf + 'bool_in', output_path+pdf + 'bool_cross', class_obj,), {}, time)
         # output String object exchanged 
         if 'String' in class_obj :
-            string_output_to_file(target_path, output_path+pdf + 'string_in', output_path+pdf + 'string_cross',class_obj)
+            run_with_limited_time(string_output_to_file, (target_path, output_path+pdf + 'string_in', output_path+pdf + 'string_cross',class_obj,), {}, time)
         # output Array object exchanged 
         if 'Array' in class_obj :
-            array_output_to_file(target_path, output_path+pdf + 'array_in', output_path+pdf + 'array_cross', class_obj)
+            run_with_limited_time(array_output_to_file, (target_path, output_path+pdf + 'array_in', output_path+pdf + 'array_cross', class_obj,), {}, time)
         # output Number object exchanged 
         if 'Number' in class_obj :
-            number_output_to_file(target_path, output_path+pdf + 'number_in', output_path+pdf + 'number_cross', class_obj)
+            run_with_limited_time(number_output_to_file, (target_path, output_path+pdf + 'number_in', output_path+pdf + 'number_cross', class_obj, ), {}, time)
         # output Name object exchanged 
         if 'Name' in class_obj :
-            name_output_to_file(target_path, output_path+pdf + 'name_in', output_path+pdf + 'name_cross', class_obj)
+            run_with_limited_time(name_output_to_file, (target_path, output_path+pdf + 'name_in', output_path+pdf + 'name_cross', class_obj, ), {}, time)
         # output Dictionary object exchanged 
         if 'Dictionary' in class_obj :
-            dictionary_output_to_file(target_path, output_path+pdf + 'dictionary_in',output_path+pdf + 'dictionary_cross',  class_obj)
+            run_with_limited_time(dictionary_output_to_file, (target_path, output_path+pdf + 'dictionary_in',output_path+pdf + 'dictionary_cross',  class_obj, ), {}, time)
         # output Stream object exchanged 
         if 'Stream' in class_obj :
-            stream_output_to_file(target_path, output_path+pdf + 'stream_in',output_path+pdf + 'stream_cross',  class_obj)
+            run_with_limited_time(stream_output_to_file, (target_path, output_path+pdf + 'stream_in',output_path+pdf + 'stream_cross',  class_obj, ), {}, time)
    #     if 'Null' in class_obj :
    #         null_output_to_file(target_path, output_path+'null', class_obj)
        
