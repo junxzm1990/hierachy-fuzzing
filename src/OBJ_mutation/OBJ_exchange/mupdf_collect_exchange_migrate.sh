@@ -28,7 +28,8 @@ while true; do
         	pre_cnt=`ls $EVAL_BIN/result/test_run_$DATE/obj_exchange/queue/ | wc -l`
         	mkdir $OUT_DIR/tmp_obj_exchange/
 
-        	python2.7 $SRC/src/OBJ_mutation/OBJ_exchange/new_generator.py $SRC/src/OBJ_mutation/OBJ_exchange/class_obj.json $OUT_DIR/pdf_gen/ $OUT_DIR/tmp_obj_exchange/
+
+        	python2.7 $SRC/src/OBJ_mutation/OBJ_exchange/new_generator.py $SRC/src/OBJ_mutation/OBJ_exchange/class_obj.json $OUT_DIR/pdf_gen/ $OUT_DIR/tmp_obj_exchange/ 15
 		
 		
 	fi 
