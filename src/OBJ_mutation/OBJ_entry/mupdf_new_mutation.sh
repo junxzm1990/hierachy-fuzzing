@@ -54,8 +54,12 @@ while true; do
 		echo "NO NEW SEED YET-LET's WAIT"
 	
 	else
+	
+		if [ ! -d "$OUT_DIR/entry_gen/" ]
+                then
+			mkdir $OUT_DIR/entry_gen/
+                fi
 	 
-		mkdir $OUT_DIR/entry_gen/
 	
 	
 	        pre_cnt=`ls $EVAL_BIN/result/test_run_$DATE/obj_entry_mutation/queue |wc -l`
