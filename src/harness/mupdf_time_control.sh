@@ -15,7 +15,7 @@ fi
 . $CONFIG
 
 
-#sleep 10m
+sleep 10m
 
 runtime="$TIME minute"
 endtime=$(date -ud "$runtime" +%s)
