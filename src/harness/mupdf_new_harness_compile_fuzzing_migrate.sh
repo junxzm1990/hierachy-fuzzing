@@ -59,23 +59,27 @@ else
 
 			# 1. best harness is the first line in "rank_list" 
                         top_rank=$(head -n 1 $OUT_DIR/rank_list)
-                        echo $top_rank 
 
-                        # 2. compile the best harness to binary
-                        $AFLpp_loc/afl-clang++ -g -O3 -funroll-loops -o $OUT_DIR/harness_bin/$top_rank -Wno-format -Wno-pointer-sign -I. -fpermissive -fPIC $OUT_DIR/$top_rank/html_to_PDF_harness_template.cpp $AFLpp_loc/afl-compiler-rt.o $SRC/src/harness/libfrida-gum.a -ldl -lresolv -pthread -std=c++11
+			if [ -f $OUT_DIR/$top_rank/html_to_PDF_harness_template.cpp ]; 
+                        then 
 
-                        # remove the best harness from rank_list
-                        #sed -i 1d $OUT_DIR/rank_list
-                        # remove the best harness's .cpp file
-                        rm -rf $OUT_DIR/$top_rank/ 
+                        	# 2. compile the best harness to binary
+                        	$AFLpp_loc/afl-clang++ -g -O3 -funroll-loops -o $OUT_DIR/harness_bin/$top_rank -Wno-format -Wno-pointer-sign -I. -fpermissive -fPIC $OUT_DIR/$top_rank/html_to_PDF_harness_template.cpp $AFLpp_loc/afl-compiler-rt.o $SRC/src/harness/libfrida-gum.a -ldl -lresolv -pthread -std=c++11 2>> compile_error
 
-                        # 3. run harness mutation fuzzing + PDF seeds migration
-                        # 3.1 : run harness fuzzing
-                        mkdir $OUT_DIR/harness$top_rank$DATE
+                        	# remove the best harness from rank_list
+                        	#sed -i 1d $OUT_DIR/rank_list
+                        	# remove the best harness's .cpp file
+                        	rm -rf $OUT_DIR/$top_rank/ 
 
-                        LD_LIBRARY_PATH=$foxit_loc/Libs/ $AFLpp_loc/afl-fuzz -m none -t 1000000+ -i $AFLpp_loc/testcases/others/pdf/ -o $OUT_DIR/harness$top_rank$DATE -- $OUT_DIR/harness_bin/$top_rank @@
-                        # remove the best harness from rank_list
-                        # sed -i 1d $OUT_DIR/rank_list
+                        	# 3. run harness mutation fuzzing + PDF seeds migration
+                        	# 3.1 : run harness fuzzing
+                        	mkdir $OUT_DIR/harness$top_rank$DATE
+
+                        	LD_LIBRARY_PATH=$foxit_loc/Libs/ $AFLpp_loc/afl-fuzz -m none -t 1000000+ -i $AFLpp_loc/testcases/others/pdf/ -o $OUT_DIR/harness$top_rank$DATE -- $OUT_DIR/harness_bin/$top_rank @@
+			else
+                        	# remove the best harness from rank_list
+                        	sed -i 1d $OUT_DIR/rank_list
+                        fi
 
                 done
         done
