@@ -32,7 +32,6 @@ while true; do
 	                for new in $OUT_DIR/tmp_obj_exchange/*; do
 
                                 if [ "$(( $(date +"%s") - $(stat -c "%Y" $new) ))" -gt "1000" ]; then
-
 	                        	mkdir $OUT_DIR/tmp_obj_exchange_trim_in/
 	                        	mkdir $OUT_DIR/tmp_obj_exchange_trim_out/
 	                        	cp $new $OUT_DIR/tmp_obj_exchange_trim_in/
