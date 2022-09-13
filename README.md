@@ -1,4 +1,4 @@
-# HIERARCHY_FUZZING
+# DIR-BASED FUZZING
 
 ## Overview
 This project focuses on fuzzing document software or precisely, software that processes document files (e.g., HTML,PDF, and DOCX). Document software typically requires highly-structured inputs, which general-purpose fuzzing cannot handle well. Accordingly, past research has explored generation-based fuzzing, which follows the grammar of the target document format to generate structure-correct testcases for fuzzing document software. More recently, people have enhanced generation-based fuzzing with structure-aware, coverage-guided mutations to better test document software. However, the existing solutions have two major limitations. First, they require creating/summarizing a separate grammar model for each document format, incurring extensive labor costs to handle different types of formats. Second, they run mutations at a single level of the structure (e.g., subtree level or attribute level), failing to sufficiently exploit the potential of mutations.
