@@ -14,6 +14,8 @@ fuzzing (NAUTILUS).
 |-- Seeds Generator 
 	|-- harness mutation            # src/harness/
 	|-- OBJ_mutation                # src/OBJ/
+		|-- OBJ_level           # src/OBJ/OBJ_exchange/
+		|-- Instruction_level   # src/OBJ/OBJ_entry/
 |-- Formats Convertor 
 	|-- HTML files-> PDF harness    # src/HTML2PDF/
 	|-- PDF files -> PDF harness    # src/PDF2PDFharness/
