@@ -7,6 +7,7 @@ tion/mutation components.
 To validate the utility of our DIR-based fuzzing, we apply the approach to PDF. We show that with minimal efforts in understanding the PDF grammar and structure, we can effectively fuzz PDF software. In a 48-hour evaluation on 6 mainstream PDF applications, we show that our DIR-based fuzzing can cover 33.87% more code than general-purpose mutation-based fuzzing (AFL++), 127.74% more code than purely generation based PDF fuzzing (Learn&Fuzz), and 25.17% more code than structure-aware mutation-based
 fuzzing (NAUTILUS).
 
+## Code Organization
 
 ```console
 
@@ -17,8 +18,6 @@ fuzzing (NAUTILUS).
 	|-- HTML files-> PDF harness    # src/HTML2PDF/
 	|-- PDF files -> PDF harness    # src/PDF2PDFharness/
 ```
-
-
 
 ## Environment
 - Tested on Ubuntu 16.04 64bit, 18.04 64bit and 20.04 64bit
@@ -71,8 +70,6 @@ $ pip3 install fitz
 $ pip3 install frontend
 ```
 
-
-
 ### Step 1 : create config file
 
 - Please reference ~/hierarchy_fuzzing/src/sample_var.config (each var with comment following)
@@ -102,7 +99,7 @@ $ rm -f  ~/hierarchy_fuzzing/src/commands_opt
 
 ## TIPS + TROUBLE SHOOTING
 
-#### re-using set-up docker image : 
+### re-using set-up docker image : 
 get the docker id :
 ```shell 
 $ docker ps -a
@@ -115,7 +112,7 @@ re-attach on docker :
 ```shell
 $ docker attach <id>
 ```
-#### CPU Core Affinity 
+### CPU Core Affinity 
 - For example, if we want to combine process of new_generator.sh to core 2 :
 ```shell
 $ pid=`ps -h | grep "new_generator"`
@@ -124,7 +121,7 @@ $ taskset -p $pid
 $ taskset -pc 1 $pid
 $ taskset -p $pid
 ```
-#### Trouble Shooting
+### Trouble Shooting
 - trim_py.py ERROR complaining "static/ does not exist"
   This means fitz does not recognize static/ path. The easiest way to fix this is 
 ```shell
