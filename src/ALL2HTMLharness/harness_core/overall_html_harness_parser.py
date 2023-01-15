@@ -50,6 +50,8 @@ class GENERAL_API():
 
         ############# RANDOM STRING ############################
 
+        self.template.write("using namespace Wt;\n")
+        self.template.write("using namespace std; \n")
         self.template.write("std::string random_string(std::size_t length){ \n")
         self.template.write("const std::string CHARACTERS = \"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\"; \n")
         self.template.write("std::random_device random_device; \n")
@@ -140,7 +142,6 @@ class GENERAL_API():
 
 
 ############################ START Wt ###############################
-        self.template.write("using namespace Wt;\n")
         self.template.write("class HelloApplication : public Wt::WApplication \n")
 
 
@@ -165,7 +166,6 @@ class GENERAL_API():
     def end_line(self, pdf_opt_dir) :
   ################## MAIN FUNCTION #####################################
         self.template.write("} \n" )
-        self.template.write("using namespace std; \n")
         self.template.write("int main(int argc, char** argv) { \n")
         self.template.write("if (!getenv(\"AFL_FRIDA_TEST_INPUT\")) { \n")
         self.template.write("gum_init_embedded(); \n")
@@ -298,26 +298,26 @@ def iter_tree(soup,stru,cur_root,out_f,cnt) :
                   #         if len(maga_info_style) > 0 :
                   #              VG.PDF_STYLEs_API_MAP(maga_info_style, out_f, cnt).api_order()
                   #     STYLEs.decompose()
-                  # elif i == 'form' :
-                  #     forms = soup.find(i)
-                  #     if len(forms) != 0 :
-                  #         maga_info = FM.HTML_FORM_STRU(forms).form_parse()
-                  #         if len(maga_info) > 0 :
-                  #             FM.PDF_FORM_API_MAP(maga_info, out_f, cnt).api_order()
-                  #     forms.decompose()
-                   elif i == 'table' :
-                       tables = soup.find(i)
-                       styles = soup.find('style')
-                       if len(tables) > 0 :
-                           maga_info = TAB.HTML_TAB_STRU(tables, styles).tab_parse()
-                           if len(maga_info) > 0 and len(maga_info) < 20:
-                               tableID = 0
-                               for tab in maga_info:
-                               
-                                   # if file contains table, map its structure to PDF API
-                                   TAB.PDF_TAB_API_MAP(maga_info, out_f, tableID, cnt).api_order()
-                                   tableID += 1
-                       tables.decompose()
+                   elif i == 'form' :
+                       forms = soup.find(i)
+                       if len(forms) != 0 :
+                           maga_info = FM.HTML_FORM_STRU(forms).form_parse()
+                           if len(maga_info) > 0 :
+                               FM.PDF_FORM_API_MAP(maga_info, out_f, cnt).api_order()
+                       forms.decompose()
+                  # elif i == 'table' :
+                  #     tables = soup.find(i)
+                  #     styles = soup.find('style')
+                  #     if len(tables) > 0 :
+                  #         maga_info = TAB.HTML_TAB_STRU(tables, styles).tab_parse()
+                  #         if len(maga_info) > 0 and len(maga_info) < 20:
+                  #             tableID = 0
+                  #             for tab in maga_info:
+                  #             
+                  #                 # if file contains table, map its structure to PDF API
+                  #                 TAB.PDF_TAB_API_MAP(maga_info, out_f, tableID, cnt).api_order()
+                  #                 tableID += 1
+                  #     tables.decompose()
             cnt += 1
             cur_root = stru[0]
 

@@ -65,7 +65,6 @@ class HTML_PAGE_STRU() :
 
         if len(VGs) != 0 or len(IMGs) != 0 or len(STYLEs) != 0 or len(texts) != 0 or len(forms) != 0 or len(tables) != 0 or len(styles) != 0 :
 
-            print ("HELLO!!!!!!!!!!!!!!!!!!!!")
 #            # TEXT 
 #            if len(texts) != 0 :
 #                maga_info = TX.HTML_TEXT_STRU(texts).text_parse()
@@ -86,21 +85,21 @@ class HTML_PAGE_STRU() :
 #                maga_info_style = VG.HTML_STYLEs_STRU(STYLEs).STYLE_parse()
 #                if len(maga_info_style) > 0 :
 #                     VG.PDF_STYLEs_API_MAP(maga_info_style, self.template, self.tag_cnt).api_order()
-#            # FORM
-#            if len(forms) != 0 :
-#                maga_info = FM.HTML_FORM_STRU(forms).form_parse()
-#                if len(maga_info) > 0 :
-#                    FM.PDF_FORM_API_MAP(maga_info, self.template, self.tag_cnt).api_order()
-            # TABLE
-            if len(tables) > 0 :
-                maga_info = TAB.HTML_TAB_STRU(tables, styles).tab_parse()
-                if len(maga_info) > 0 and len(maga_info) < 20:
-                    tableID = 0
-                    for tab in maga_info:
-
-                        # if file contains table, map its structure to PDF API
-                        TAB.PDF_TAB_API_MAP(maga_info, self.template, tableID, self.tag_cnt).api_order()
-                        tableID += 1
+            # FORM
+            if len(forms) != 0 :
+                maga_info = FM.HTML_FORM_STRU(forms).form_parse()
+                if len(maga_info) > 0 :
+                    FM.PDF_FORM_API_MAP(maga_info, self.template, self.tag_cnt).api_order()
+#            # TABLE
+#            if len(tables) > 0 :
+#                maga_info = TAB.HTML_TAB_STRU(tables, styles).tab_parse()
+#                if len(maga_info) > 0 and len(maga_info) < 20:
+#                    tableID = 0
+#                    for tab in maga_info:
+#
+#                        # if file contains table, map its structure to PDF API
+#                        TAB.PDF_TAB_API_MAP(maga_info, self.template, tableID, self.tag_cnt).api_order()
+#                        tableID += 1
         # API : to show the layout arrangement
         self.template.write("w" + str(self.tag_cnt) + "->setLayout(std::move(layout" + str(self.tag_cnt) + "));\n") 
 
