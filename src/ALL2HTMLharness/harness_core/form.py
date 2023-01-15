@@ -134,9 +134,9 @@ class PDF_FORM_API_MAP() :
             if FieldType == "1":
                 self.template.write("Wt::WContainerWidget *lineEdit_container" + str(formID) + str(cnt) + " = root()->addWidget(std::make_unique<Wt::WContainerWidget>());\n")
                 self.template.write("Wt::WLabel *label" + str(formID) + str(cnt) + " = lineEdit_container" + str(formID) + str(cnt) + "->addWidget(std::make_unique<Wt::WLabel>(random_string(50)));\n")
-                self.template.write("Wt::WLineEdit *edit" + str(formID) + str(cnt) + " = lineEdit_container" + str(formID) + str(cnt) + "->addWidget(std::make_unique<Wt::WLineEdit>(random_string(50)));\n")
-                self.template.write("edit" + str(formID) + str(cnt) + "->setValidator(std::make_shared<Wt::WIntValidator>(random_int(-10000, 10000), random_int(-10000, 10000)));\n")
-                self.template.write("label" + str(formID) + str(cnt) + "->setBuddy(edit" + str(formID) + str(cnt) + ");\n")
+                self.template.write("Wt::WLineEdit *edit_text" + str(formID) + str(cnt) + " = lineEdit_container" + str(formID) + str(cnt) + "->addWidget(std::make_unique<Wt::WLineEdit>(random_string(50)));\n")
+                self.template.write("edit_text" + str(formID) + str(cnt) + "->setValidator(std::make_shared<Wt::WIntValidator>(random_int(-10000, 10000), random_int(-10000, 10000)));\n")
+                self.template.write("label" + str(formID) + str(cnt) + "->setBuddy(edit_text" + str(formID) + str(cnt) + ");\n")
                 self.template.write("std::move(lineEdit_container" + str(formID) + str(cnt) + ");\n")
 
             # Push Button
@@ -152,161 +152,237 @@ class PDF_FORM_API_MAP() :
                 self.template.write("pb" + str(formID) + str(cnt) + "->setEnabled(static_cast<bool>(rand() % 2));\n")
                 
                 self.template.write("std::move(pushButton_template" + str(formID) + str(cnt) + ");\n")
-                #self.template.write("int formID" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) + " = FQL->NewFormField( L\""+Title_rand +"\", " + FieldType + "); \n")
-        #elif len(FieldType) != 0 :
-        #    self.template.write("int formID" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) + " = FQL->NewFormField( L\""+Title_rand +"\", " + FieldType[0] + "); \n")
-        #    # API SetFormFieldChoiceType(formID, ChoiceType(0-4))
-        #    SetFormFieldChoiceType_arg_1 = "SetFormFieldChoiceType_ChoiceType" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
-        #    SetFormFieldChoiceType_constrain_1 = "if ("+ SetFormFieldChoiceType_arg_1 + " < 0 || "+ SetFormFieldChoiceType_arg_1 + " > 4) { \n"  
-        #    self.arg_val(SetFormFieldChoiceType_arg_1, "double", SetFormFieldChoiceType_constrain_1, "4", "0")
-        #    self.template.write("FQL-> SetFormFieldChoiceType(formID"+str(formID)+"_"+str(cnt)+"_"+str(self.tag_cnt) + ", " + SetFormFieldChoiceType_arg_1 + ");\n")
-        #return FieldType
-    #def #set_form_chk_style(self, formID, cnt) :
-        ## API SetFormFieldCheckStyle(formID, CheckStyle(0-7), Position(0-2))
-        #SetFormFieldCheckStyle_arg_1 = "SetFormFieldCheckStyle_CheckStyle" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
-        #SetFormFieldCheckStyle_arg_2 = "SetFormFieldCheckStyle_Position" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
-        #SetFormFieldCheckStyle_constrain_1 = "if ("+ SetFormFieldCheckStyle_arg_1 + " < 0 || "+ SetFormFieldCheckStyle_arg_1 + " > 7) { \n"
-        #SetFormFieldCheckStyle_constrain_2 = "if ("+ SetFormFieldCheckStyle_arg_2 + " < 0 || "+ SetFormFieldCheckStyle_arg_2 + " > 2) { \n"
-        #self.arg_val(SetFormFieldCheckStyle_arg_1, "int", SetFormFieldCheckStyle_constrain_1, "7", "0")
-        #self.arg_val(SetFormFieldCheckStyle_arg_2, "int", SetFormFieldCheckStyle_constrain_2, "2", "0")
-        #self.template.write("FQL->SetFormFieldCheckStyle(formID"+str(formID)+"_"+str(cnt)+"_"+str(self.tag_cnt) + ", " + SetFormFieldCheckStyle_arg_1 + ", " +  SetFormFieldCheckStyle_arg_2 + "); \n")
-    #def set_form_choice_sub (self, formID, cnt, sub_cnt) :
-    #    for i in range(0, int(sub_cnt)) : 
-    #        letters = string.ascii_lowercase
-    #        Title_rand = ''.join(random.choice(letters) for i in range(5))
-    #        self.template.write("int formID" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) +"_"+ str(i) + "choice = FQL -> AddFormFieldChoiceSub(formID" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) + ", L\""+Title_rand+"\", L\"" +Title_rand+"\"); \n")
-    #def set_form_format_mode(self) :
-    #    # API SetFormFieldFormatMode(NewFormatMode)
-    #    self.template.write("int SetFormFieldFormatMode_NewFormatMode"+str(self.tag_cnt)+"=(int)0; \n")
-    #    self.template.write("if (bytes_read - index >= sizeof(int)) { \n")
-    #    self.template.write("SetFormFieldFormatMode_NewFormatMode"+str(self.tag_cnt)+" = *(int*)(buffer+index); \n")
-    #    self.template.write("if (SetFormFieldFormatMode_NewFormatMode"+str(self.tag_cnt)+" != 0 || SetFormFieldFormatMode_NewFormatMode"+str(self.tag_cnt)+"!= 15 ) {\n")
-    #    self.template.write("SetFormFieldFormatMode_NewFormatMode"+str(self.tag_cnt)+"= (rand() > RAND_MAX/2) ? 0 : 15; \n")
-    #    self.template.write("}else{ \n")
-    #    self.template.write("index += sizeof(int);\n")
-    #    self.template.write("} \n")
-    #    self.template.write("}else{ \n")
-    #    self.template.write("exit(0); \n")
-    #    self.template.write("} \n")
-    #    self.template.write("FQL->SetFormFieldFormatMode(SetFormFieldFormatMode_NewFormatMode"+str(self.tag_cnt)+"); \n") 
-    ## 2nd Necessay -------------------------------------------
-    #def set_form_visibility(self,formID, cnt) : 
-    ## API SetFormFieldVisible(formID, Visible(0-1))
-    #    SetFormFieldVisible_arg_1 = "SetFormFieldVisible_Visible" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) 
-    #    SetFormFieldVisible_constrain_1 = "if ("+ SetFormFieldVisible_arg_1 + " < 0 || " + SetFormFieldVisible_arg_1 + " > 1 ) { \n"
-    #    self.arg_val(SetFormFieldVisible_arg_1, "int", SetFormFieldVisible_constrain_1, "1", "0")
-    #    self.template.write("FQL->SetFormFieldVisible(formID"+str(formID)+"_"+str(cnt)+"_"+str(self.tag_cnt) + ", "+ SetFormFieldVisible_arg_1 + "); \n") 
-    #def add_set_form_font(self, formID, cnt) :
-    #    # API AddStandardFont(StandardFontID(0-13))
-    #    AddStandardFont_arg_1 = "AddStandardFont_StandardFontID" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) 
-    #    AddStandardFont_constrain_1 = "if ("+ AddStandardFont_arg_1 + " < 0 || " + AddStandardFont_arg_1 + " > 13 ) { \n" 
-    #    self.arg_val(AddStandardFont_arg_1, "int", AddStandardFont_constrain_1, "13", "0") 
-    #    self.template.write("int FontID"+str(formID)+"_"+str(cnt)+"_"+str(self.tag_cnt) + "=FQL->AddStandardFont(" + AddStandardFont_arg_1 + "); \n")
-    #    # API SetTextSize(TextSize(double))
-    #    SetTextSize_arg_1 = "SetTextSize_TextSize" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) 
-    #    SetTextSize_constrain_1 = "if (" + SetTextSize_arg_1 + "< 0.001 || " + SetTextSize_arg_1 + " > 50.001) { \n"
-    #    self.arg_val(SetTextSize_arg_1, "double", SetTextSize_constrain_1, "50.001", "0.001") 
-    #    self.template.write("FQL->SetTextSize(" + SetTextSize_arg_1 + "); \n")
-    #    self.template.write("FQL->AddFormFont(FontID"+str(formID)+"_"+str(cnt)+"_"+str(self.tag_cnt) + "); \n")
-    #    self.template.write("FQL->SetFormFieldFont(formID"+str(formID)+"_"+str(cnt)+"_"+str(self.tag_cnt) + ", FQL->GetFormFontCount()); \n")
-    #    # API SetFormFieldTextSize(formID, NewTextSize(double))
-    #    SetFormFieldTextSize_arg_1 = "SetFormFieldTextSize_NewTextSize" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
-    #    SetFormFieldTextSize_constrain_1 = "if (" + SetFormFieldTextSize_arg_1 + "< 0.001 || " + SetFormFieldTextSize_arg_1 + " > 50.001) { \n"
-    #    self.arg_val(SetFormFieldTextSize_arg_1, "double", SetFormFieldTextSize_constrain_1, "50.001", "0.001") 
-    #    self.template.write("FQL->SetFormFieldTextSize(formID"+str(formID)+"_"+str(cnt)+"_"+str(self.tag_cnt) + ", " + SetFormFieldTextSize_arg_1 + "); \n")
-    #def set_form_value(self, formID, cnt) :
-    #    letters = string.ascii_lowercase
-    #    Title_rand = ''.join(random.choice(letters) for i in range(5))
-    #    self.template.write("FQL->SetFormFieldValue(formID"+str(formID)+"_"+str(cnt)+"_"+str(self.tag_cnt) + ",  L\""+Title_rand +"\"); \n")
-    #def set_form_bounds(self, formID, cnt) :
-    #    # API SetFormFieldBounds(formID, Left, Top, Width, Height)
-    #    SetFormFieldBounds_arg_1 = "SetFormFieldBounds_Left" + str(formID) + "_"  + str(cnt) +"_" + str(self.tag_cnt)
-    #    SetFormFieldBounds_arg_2 = "SetFormFieldBounds_Top" + str(formID) + "_" + str(cnt) + "_" + str(self.tag_cnt)
-    #    SetFormFieldBounds_arg_3 = "SetFormFieldBounds_Width" + str(formID) + "_" + str(cnt) + "_" + str(self.tag_cnt)
-    #    SetFormFieldBounds_arg_4 = "SetFormFieldBounds_Height" + str(formID) + "_" + str(cnt) + "_" + str(self.tag_cnt)
-    #    SetFormFieldBounds_constrain_1 = "if (" + SetFormFieldBounds_arg_1 + "< 0.001 || " + SetFormFieldBounds_arg_1 + " > 200.001) { \n"
-    #    SetFormFieldBounds_constrain_2 = "if (" + SetFormFieldBounds_arg_2 + "< 0.001 || " + SetFormFieldBounds_arg_2 + " > 200.001) { \n"
-    #    SetFormFieldBounds_constrain_3 = "if (" + SetFormFieldBounds_arg_3 + "< 0.001 || " + SetFormFieldBounds_arg_3 + " > 200.001) { \n"
-    #    SetFormFieldBounds_constrain_4 = "if (" + SetFormFieldBounds_arg_4 + "< 0.001 || " + SetFormFieldBounds_arg_4 + " > 200.001) { \n"
-    #    self.arg_val(SetFormFieldBounds_arg_1, "double", SetFormFieldBounds_constrain_1, "200.001", "0.001")
-    #    self.arg_val(SetFormFieldBounds_arg_2, "double", SetFormFieldBounds_constrain_2, "200.001", "0.001")
-    #    self.arg_val(SetFormFieldBounds_arg_3, "double", SetFormFieldBounds_constrain_3, "200.001", "0.001")
-    #    self.arg_val(SetFormFieldBounds_arg_4, "double", SetFormFieldBounds_constrain_4, "200.001", "0.001")
-    #    self.template.write("FQL->SetFormFieldBounds(formID"+str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) + "," +  SetFormFieldBounds_arg_1 + " ,"+ SetFormFieldBounds_arg_2 +", " +  SetFormFieldBounds_arg_3 + ", " + SetFormFieldBounds_arg_4  + "); \n")
-    #def set_form_align(self, formID, cnt) :
-    #    # API SetFormFieldAlignment(formID, Alignment(0-2))
-    #    SetFormFieldAlignment_arg_1 = "SetFormFieldAlignment_Alignment" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
-    #    SetFormFieldAlignment_constrain_1 = "if ("+ SetFormFieldAlignment_arg_1 + " < 0 || "+ SetFormFieldAlignment_arg_1 + " > 2) { \n"
-    #    self.arg_val(SetFormFieldAlignment_arg_1, "int", SetFormFieldAlignment_constrain_1, "2", "0")
-    #    self.template.write("FQL->SetFormFieldAlignment(formID"+str(formID)+"_"+str(cnt)+"_"+str(self.tag_cnt) + ", " + SetFormFieldAlignment_arg_1 + " ); \n")
 
-    ## 3rd Necessay ----------------------------------------------
-    #def set_form_color(self, formID, cnt) :
-    #    # border
-    #    # API SetFormFieldBorderColor(formID, Red, Green, Blue)
-    #    SetFormFieldBorderColor_arg_1 = "SetFormFieldBorderColor_Red" + str(formID) +"_"+ str(cnt) +"_"+  str(self.tag_cnt)
-    #    SetFormFieldBorderColor_arg_2 = "SetFormFieldBorderColor_Green" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
-    #    SetFormFieldBorderColor_arg_3 = "SetFormFieldBorderColor_Blue" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
-    #    SetFormFieldBorderColor_constrain_1 = "if (" + SetFormFieldBorderColor_arg_1 + "< 0.001 || " + SetFormFieldBorderColor_arg_1 + " > 0.999) { \n"
-    #    SetFormFieldBorderColor_constrain_2 = "if (" + SetFormFieldBorderColor_arg_2 + "< 0.001 || " + SetFormFieldBorderColor_arg_2 + " > 0.999) { \n"
-    #    SetFormFieldBorderColor_constrain_3 = "if (" + SetFormFieldBorderColor_arg_3 + "< 0.001 || " + SetFormFieldBorderColor_arg_3 + " > 0.999) { \n"
-    #    self.arg_val(SetFormFieldBorderColor_arg_1, "double", SetFormFieldBorderColor_constrain_1, "0.999", "0.001")
-    #    self.arg_val(SetFormFieldBorderColor_arg_2, "double", SetFormFieldBorderColor_constrain_2, "0.999", "0.001")
-    #    self.arg_val(SetFormFieldBorderColor_arg_3, "double", SetFormFieldBorderColor_constrain_3, "0.999", "0.001")
-    #    
-    #    self.template.write("FQL->SetFormFieldBorderColor(formID" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) + ", " + SetFormFieldBorderColor_arg_1 + ", " + SetFormFieldBorderColor_arg_2  +  ", " +  SetFormFieldBorderColor_arg_3 +  "); \n")
-    #    # background
-    #    # API SetFormFieldBackgroundColor(formID, Red, Green, Blue)
-    #    SetFormFieldBackgroundColor_arg_1 = "SetFormFieldBackgroundColor_Red" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
-    #    SetFormFieldBackgroundColor_arg_2 = "SetFormFieldBackgroundColor_Green" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
-    #    SetFormFieldBackgroundColor_arg_3 = "SetFormFieldBackgroundColor_Blue" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
-    #    SetFormFieldBackgroundColor_constrain_1 = "if (" + SetFormFieldBackgroundColor_arg_1 + "< 0.001 || " + SetFormFieldBackgroundColor_arg_1 + " > 0.999) { \n"
-    #    SetFormFieldBackgroundColor_constrain_2 = "if (" + SetFormFieldBackgroundColor_arg_2 + "< 0.001 || " + SetFormFieldBackgroundColor_arg_2 + " > 0.999) { \n"
-    #    SetFormFieldBackgroundColor_constrain_3 = "if (" + SetFormFieldBackgroundColor_arg_3 + "< 0.001 || " + SetFormFieldBackgroundColor_arg_3 + " > 0.999) { \n"
-    #    self.arg_val(SetFormFieldBackgroundColor_arg_1, "double", SetFormFieldBackgroundColor_constrain_1, "0.999", "0.001")
-    #    self.arg_val(SetFormFieldBackgroundColor_arg_2, "double", SetFormFieldBackgroundColor_constrain_2, "0.999", "0.001")
-    #    self.arg_val(SetFormFieldBackgroundColor_arg_3, "double", SetFormFieldBackgroundColor_constrain_3, "0.999", "0.001")
-    #    
-    #    self.template.write("FQL->SetFormFieldBackgroundColor(formID" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) + "," + SetFormFieldBackgroundColor_arg_1 +  ", "  +  SetFormFieldBackgroundColor_arg_2  + ", " +  SetFormFieldBackgroundColor_arg_3 + "); \n")
-    #def set_form_border_style(self, formID, cnt) :
-    #    # API SetFormFieldBorderStyle(formID, Width(int), Style(0-3), DashOn(double), DashOff(double))
-    #    SetFormFieldBorderStyle_arg_1 = "SetFormFieldBorderStyle_Width" + str(formID) + "_" + str(cnt) + "_" + str(self.tag_cnt)
-    #    SetFormFieldBorderStyle_arg_2 = "SetFormFieldBorderStyle_Style" + str(formID) + "_" + str(cnt) + "_" + str(self.tag_cnt)
-    #    SetFormFieldBorderStyle_arg_3 = "SetFormFieldBorderStyle_DashOn" + str(formID) + "_" + str(cnt) + "_" + str(self.tag_cnt)
-    #    SetFormFieldBorderStyle_arg_4 = "SetFormFieldBorderStyle_DashOff" + str(formID) + "_" + str(cnt) + "_" + str(self.tag_cnt)
-    #    SetFormFieldBorderStyle_constrain_1 = "if ("+ SetFormFieldBorderStyle_arg_1 + " < 0.001 || "+ SetFormFieldBorderStyle_arg_1 + " > 50.001) { \n"
-    #    SetFormFieldBorderStyle_constrain_2 = "if ("+ SetFormFieldBorderStyle_arg_2 + " < 0 || "+ SetFormFieldBorderStyle_arg_2 + " > 3) { \n"
-    #    SetFormFieldBorderStyle_constrain_3 = "if ("+ SetFormFieldBorderStyle_arg_3 + " < 0.001 || "+ SetFormFieldBorderStyle_arg_3 + " > 50.001) { \n"
-    #    SetFormFieldBorderStyle_constrain_4 = "if ("+ SetFormFieldBorderStyle_arg_4 + " < 0.001 || "+ SetFormFieldBorderStyle_arg_4 + " > 50.001) { \n"
-    #    self.arg_val(SetFormFieldBorderStyle_arg_1, "double", SetFormFieldBorderStyle_constrain_1, "50.001", "0.001")
-    #    self.arg_val(SetFormFieldBorderStyle_arg_2, "int", SetFormFieldBorderStyle_constrain_2, "3", "0")
-    #    self.arg_val(SetFormFieldBorderStyle_arg_3, "double", SetFormFieldBorderStyle_constrain_3, "50.001", "0.001")
-    #    self.arg_val(SetFormFieldBorderStyle_arg_4, "double", SetFormFieldBorderStyle_constrain_4, "50.001", "0.001")
-    #    self.template.write("FQL->SetFormFieldBorderStyle(formID" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) +  "," + SetFormFieldBorderStyle_arg_1 + ", "+SetFormFieldBorderStyle_arg_2 +","+ SetFormFieldBorderStyle_arg_3 +", " + SetFormFieldBorderStyle_arg_4 + " ); \n")
-    #def set_form_hlight(self, formID, cnt) :
-    #    # API SetFormFieldHighlightMode(formID, newMode(0-3))
-    #    SetFormFieldHighlightMode_arg_1 = "SetFormFieldHighlightMode_NewMode" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
-    #    SetFormFieldHighlightMode_constrain_1 = "if (" + SetFormFieldHighlightMode_arg_1 + " < 0 || " + SetFormFieldHighlightMode_arg_1 + " > 3) { \n" 
-    #    self.arg_val(SetFormFieldHighlightMode_arg_1, "int", SetFormFieldHighlightMode_constrain_1, "3", "0")
-    #    self.template.write("FQL->SetFormFieldHighlightMode(formID" + str(formID)+"_"+str(cnt) +"_"+ str(self.tag_cnt) + ", " + SetFormFieldHighlightMode_arg_1  + "); \n")
-    #def set_form_icon(self, formID, cnt) :
-    #    # API SetFormFieldIcon(formID, IconType(0-2), CaptureID(int))
-    #    SetFormFieldIcon_arg_1 = "SetFormFieldIcon_IconType" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
-    #    SetFormFieldIcon_constrain_1 = "if (" + SetFormFieldIcon_arg_1 + " < 0 || " + SetFormFieldIcon_arg_1 + " > 2 ) { \n"
-    #    self.arg_val(SetFormFieldIcon_arg_1, "int", SetFormFieldIcon_constrain_1, "2", "0")
-    #    self.template.write("FQL->SetFormFieldIcon(formID" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) + ", "+SetFormFieldIcon_arg_1+", FQL->CapturePage(1)) ; \n" ) 
-    #def form_jsa_weblk(self, formID, cnt) :
-    #    letters = string.ascii_lowercase
-    #    JS_rand = ''.join(random.choice(letters) for i in range(5))
-    #    self.template.write("FQL->FormFieldJavaScriptAction(formID"+str(formID)+"_"+str(cnt)+"_"+str(self.tag_cnt) + ", L\"U\",L\""+JS_rand+"\" ); \n")
-    #def set_form_caption(self, formID, cnt) :
-    #    letters = string.ascii_lowercase
-    #    CP_rand = ''.join(random.choice(letters) for i in range(5))
-    #    self.template.write("FQL->SetFormFieldCaption(formID" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) + ", L\""+ CP_rand +"\" ); \n")
+            # Radio Button in group
+            if FieldType == "3":
+                self.template.write("Wt::WContainerWidget *radioButton_container" + str(formID) + str(cnt) + " = root()->addWidget(std::make_unique<Wt::WContainerWidget>());\n")
+                self.template.write("auto group" + str(formID) + str(cnt) + " = std::make_shared<Wt::WButtonGroup>();\n")
+                self.template.write("Wt::WRadioButton *button" + str(formID) + str(cnt) + ";\n")
+                self.template.write("int row_radio" + str(formID) + str(cnt) + " = random_int(0,100);\n")	
+                self.template.write("for (unsigned i = 0; i < row_radio" + str(formID) + str(cnt) + " ; ++i) { \n")
+                self.template.write("button" + str(formID) + str(cnt) + " = radioButton_container" + str(formID) + str(cnt) + "->addNew<Wt::WRadioButton>(random_string(30));\n")
+                self.template.write("button" + str(formID) + str(cnt) + "->setInline(static_cast<bool>(rand() % 2));\n")
+                self.template.write("group" + str(formID) + str(cnt) + "->addButton(button" + str(formID) + str(cnt) + ");\n")
+                self.template.write("}")
+                self.template.write("group" + str(formID) + str(cnt) + "->setSelectedButtonIndex(0);\n")
+                self.template.write("std::move(radioButton_container" + str(formID) + str(cnt) + ");\n")
 
-    ## *** important dependencies -------------------------------------
-    #def set_form_radio_dependency (self) : 
-    #    if len(self.radio_sub_group) > 0 :
+            # Select Form  
+            if FieldType == "4":
+                self.template.write("Wt::WContainerWidget *select_container" + str(formID) + str(cnt) + " = root()->addWidget(std::make_unique<Wt::WContainerWidget>());\n")
+                self.template.write("Wt::WSelectionBox *sb2" + str(formID) + str(cnt) + " = select_container" + str(formID) + str(cnt) + "->addNew<Wt::WSelectionBox>(); \n")
+                self.template.write("int row_select" + str(formID) + str(cnt) + " = random_int(0,100);\n")
+                self.template.write("for (unsigned i = 0; i < row_select" + str(formID) + str(cnt) + " ; ++i){ \n")
+                self.template.write("sb2" + str(formID) + str(cnt) + "->addItem(random_string(30));\n")
+                self.template.write("sb2" + str(formID) + str(cnt) + "->setSelectionMode(static_cast<Wt::SelectionMode>(rand() % 3));\n")
+                self.template.write("}\n")
+                #self.template.write("std::set<int> selection" + str(formID) + str(cnt) + ";\n")
+                #self.template.write("selection" + str(formID) + str(cnt) + ".insert(1);\n")
+                #self.template.write("selection" + str(formID) + str(cnt) + ".insert(4);\n")
+                #self.template.write("sb2" + str(formID) + str(cnt) + "->setSelectedIndexes(selection" + str(formID) + str(cnt) + ");\n")
+                self.template.write("sb2" + str(formID) + str(cnt) + "->setMargin(random_int(-10000, 10000), static_cast<Wt::Side>(rand()%6));\n")
+                self.template.write("Wt::WText *out" + str(formID) + str(cnt) + " = select_container" + str(formID) + str(cnt) + "->addNew<Wt::WText>();\n")
+                self.template.write("out" + str(formID) + str(cnt) + "->addStyleClass(random_string(20));\n")
+                self.template.write("sb2" + str(formID) + str(cnt) + "->activated().connect([=] {\n")
+                self.template.write("Wt::WString selected" + str(formID) + str(cnt) + ";\n")
+                self.template.write("std::set<int> newSelection" + str(formID) + str(cnt) + " = sb2" + str(formID) + str(cnt) + "->selectedIndexes();\n")
+                self.template.write("for (std::set<int>::iterator it_select" + str(formID) + str(cnt) + " = newSelection" + str(formID) + str(cnt) + ".begin();\n")
+                self.template.write("it_select" + str(formID) + str(cnt) + " != newSelection" + str(formID) + str(cnt) + ".end(); ++it_select" + str(formID) + str(cnt) + ") {\n")
+                self.template.write("if (!selected" + str(formID) + str(cnt) + ".empty())\n")
+                self.template.write("selected" + str(formID) + str(cnt) + " += \", \";\n")
+                self.template.write("selected" + str(formID) + str(cnt) + " += sb2" + str(formID) + str(cnt) + "->itemText(*it_select" + str(formID) + str(cnt) + ");\n")
+                self.template.write("}\n")
+                self.template.write("out" + str(formID) + str(cnt) + "->setText(Wt::WString(random_string(30)).arg(selected" + str(formID) + str(cnt) + "));\n")
+                self.template.write("});\n")
+
+
+            # Combo Box
+            if FieldType[0] == "5":
+                self.template.write("WContainerWidget *comboBox_container" + str(formID) + str(cnt) + " = root()->addWidget(std::make_unique<Wt::WContainerWidget>());\n")
+                self.template.write("auto cb_cmb" + str(formID) + str(cnt) + " = comboBox_container" + str(formID) + str(cnt) + "->addNew<Wt::WComboBox>();\n")
+                self.template.write("cb_cmb" + str(formID) + str(cnt) + "->setMargin(random_int(-10000, 10000), static_cast<Wt::Side>(rand()%6));\n")
+                self.template.write("auto model" + str(formID) + str(cnt) + " = std::make_shared<Wt::WStringListModel>();\n")
+                self.template.write("int row_cmb" + str(formID) + str(cnt) + " = random_int(0,100);\n")
+                self.template.write("for (unsigned i = 0; i < row_cmb" + str(formID) + str(cnt) + " ; ++i){ \n")
+                self.template.write("model" + str(formID) + str(cnt) + "->addString(random_string(30));\n")
+                self.template.write("model" + str(formID) + str(cnt) + "->setData(i, 0, std::string(random_string(30)), Wt::ItemDataRole::User);\n")
+                self.template.write("model" + str(formID) + str(cnt) + "->setFlags(i, static_cast<Wt::ItemFlag>(rand()%9));\n")
+                self.template.write("}\n");
+                self.template.write("cb_cmb" + str(formID) + str(cnt) + "->setNoSelectionEnabled(static_cast<bool>(rand()%2));\n")
+                self.template.write("cb_cmb" + str(formID) + str(cnt) + "->setModel(model" + str(formID) + str(cnt) + ");\n")
+                self.template.write("auto out_cmb" + str(formID) + str(cnt) + " = comboBox_container" + str(formID) + str(cnt) + "->addNew<Wt::WText>();\n")
+                self.template.write("out_cmb" + str(formID) + str(cnt) + "->addStyleClass(random_string(20));\n")
+                self.template.write("cb_cmb" + str(formID) + str(cnt) + "->changed().connect([=] {\n")
+                self.template.write("Wt::WString countryName = cb_cmb" + str(formID) + str(cnt) + "->currentText();\n")
+                self.template.write("int row_cmb" + str(formID) + str(cnt) + " = cb_cmb" + str(formID) + str(cnt) + "->currentIndex();\n")
+                self.template.write("Wt::WString countryCode = Wt::asString(model" + str(formID) + str(cnt) + "->data(model" + str(formID) + str(cnt) + "->index(row_cmb" + str(formID) + str(cnt) + ",0), Wt::ItemDataRole::User));\n")
+                self.template.write("out_cmb" + str(formID) + str(cnt) + "->setText(Wt::WString(random_string(30)).\n")
+                self.template.write("arg(countryName).arg(countryCode));\n")
+                self.template.write("});\n")
+                self.template.write("std::move(comboBox_container" + str(formID) + str(cnt) + ");\n")
+
+
+
+
+
+
+
+
+                    #self.template.write("int formID" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) + " = FQL->NewFormField( L\""+Title_rand +"\", " + FieldType + "); \n")
+            #elif len(FieldType) != 0 :
+            #    self.template.write("int formID" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) + " = FQL->NewFormField( L\""+Title_rand +"\", " + FieldType[0] + "); \n")
+            #    # API SetFormFieldChoiceType(formID, ChoiceType(0-4))
+            #    SetFormFieldChoiceType_arg_1 = "SetFormFieldChoiceType_ChoiceType" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
+            #    SetFormFieldChoiceType_constrain_1 = "if ("+ SetFormFieldChoiceType_arg_1 + " < 0 || "+ SetFormFieldChoiceType_arg_1 + " > 4) { \n"  
+            #    self.arg_val(SetFormFieldChoiceType_arg_1, "double", SetFormFieldChoiceType_constrain_1, "4", "0")
+            #    self.template.write("FQL-> SetFormFieldChoiceType(formID"+str(formID)+"_"+str(cnt)+"_"+str(self.tag_cnt) + ", " + SetFormFieldChoiceType_arg_1 + ");\n")
+            #return FieldType
+        #def #set_form_chk_style(self, formID, cnt) :
+            ## API SetFormFieldCheckStyle(formID, CheckStyle(0-7), Position(0-2))
+            #SetFormFieldCheckStyle_arg_1 = "SetFormFieldCheckStyle_CheckStyle" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
+            #SetFormFieldCheckStyle_arg_2 = "SetFormFieldCheckStyle_Position" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
+            #SetFormFieldCheckStyle_constrain_1 = "if ("+ SetFormFieldCheckStyle_arg_1 + " < 0 || "+ SetFormFieldCheckStyle_arg_1 + " > 7) { \n"
+            #SetFormFieldCheckStyle_constrain_2 = "if ("+ SetFormFieldCheckStyle_arg_2 + " < 0 || "+ SetFormFieldCheckStyle_arg_2 + " > 2) { \n"
+            #self.arg_val(SetFormFieldCheckStyle_arg_1, "int", SetFormFieldCheckStyle_constrain_1, "7", "0")
+            #self.arg_val(SetFormFieldCheckStyle_arg_2, "int", SetFormFieldCheckStyle_constrain_2, "2", "0")
+            #self.template.write("FQL->SetFormFieldCheckStyle(formID"+str(formID)+"_"+str(cnt)+"_"+str(self.tag_cnt) + ", " + SetFormFieldCheckStyle_arg_1 + ", " +  SetFormFieldCheckStyle_arg_2 + "); \n")
+        #def set_form_choice_sub (self, formID, cnt, sub_cnt) :
+        #    for i in range(0, int(sub_cnt)) : 
+        #        letters = string.ascii_lowercase
+        #        Title_rand = ''.join(random.choice(letters) for i in range(5))
+        #        self.template.write("int formID" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) +"_"+ str(i) + "choice = FQL -> AddFormFieldChoiceSub(formID" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) + ", L\""+Title_rand+"\", L\"" +Title_rand+"\"); \n")
+        #def set_form_format_mode(self) :
+        #    # API SetFormFieldFormatMode(NewFormatMode)
+        #    self.template.write("int SetFormFieldFormatMode_NewFormatMode"+str(self.tag_cnt)+"=(int)0; \n")
+        #    self.template.write("if (bytes_read - index >= sizeof(int)) { \n")
+        #    self.template.write("SetFormFieldFormatMode_NewFormatMode"+str(self.tag_cnt)+" = *(int*)(buffer+index); \n")
+        #    self.template.write("if (SetFormFieldFormatMode_NewFormatMode"+str(self.tag_cnt)+" != 0 || SetFormFieldFormatMode_NewFormatMode"+str(self.tag_cnt)+"!= 15 ) {\n")
+        #    self.template.write("SetFormFieldFormatMode_NewFormatMode"+str(self.tag_cnt)+"= (rand() > RAND_MAX/2) ? 0 : 15; \n")
+        #    self.template.write("}else{ \n")
+        #    self.template.write("index += sizeof(int);\n")
+        #    self.template.write("} \n")
+        #    self.template.write("}else{ \n")
+        #    self.template.write("exit(0); \n")
+        #    self.template.write("} \n")
+        #    self.template.write("FQL->SetFormFieldFormatMode(SetFormFieldFormatMode_NewFormatMode"+str(self.tag_cnt)+"); \n") 
+        ## 2nd Necessay -------------------------------------------
+        #def set_form_visibility(self,formID, cnt) : 
+        ## API SetFormFieldVisible(formID, Visible(0-1))
+        #    SetFormFieldVisible_arg_1 = "SetFormFieldVisible_Visible" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) 
+        #    SetFormFieldVisible_constrain_1 = "if ("+ SetFormFieldVisible_arg_1 + " < 0 || " + SetFormFieldVisible_arg_1 + " > 1 ) { \n"
+        #    self.arg_val(SetFormFieldVisible_arg_1, "int", SetFormFieldVisible_constrain_1, "1", "0")
+        #    self.template.write("FQL->SetFormFieldVisible(formID"+str(formID)+"_"+str(cnt)+"_"+str(self.tag_cnt) + ", "+ SetFormFieldVisible_arg_1 + "); \n") 
+        #def add_set_form_font(self, formID, cnt) :
+        #    # API AddStandardFont(StandardFontID(0-13))
+        #    AddStandardFont_arg_1 = "AddStandardFont_StandardFontID" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) 
+        #    AddStandardFont_constrain_1 = "if ("+ AddStandardFont_arg_1 + " < 0 || " + AddStandardFont_arg_1 + " > 13 ) { \n" 
+        #    self.arg_val(AddStandardFont_arg_1, "int", AddStandardFont_constrain_1, "13", "0") 
+        #    self.template.write("int FontID"+str(formID)+"_"+str(cnt)+"_"+str(self.tag_cnt) + "=FQL->AddStandardFont(" + AddStandardFont_arg_1 + "); \n")
+        #    # API SetTextSize(TextSize(double))
+        #    SetTextSize_arg_1 = "SetTextSize_TextSize" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) 
+        #    SetTextSize_constrain_1 = "if (" + SetTextSize_arg_1 + "< 0.001 || " + SetTextSize_arg_1 + " > 50.001) { \n"
+        #    self.arg_val(SetTextSize_arg_1, "double", SetTextSize_constrain_1, "50.001", "0.001") 
+        #    self.template.write("FQL->SetTextSize(" + SetTextSize_arg_1 + "); \n")
+        #    self.template.write("FQL->AddFormFont(FontID"+str(formID)+"_"+str(cnt)+"_"+str(self.tag_cnt) + "); \n")
+        #    self.template.write("FQL->SetFormFieldFont(formID"+str(formID)+"_"+str(cnt)+"_"+str(self.tag_cnt) + ", FQL->GetFormFontCount()); \n")
+        #    # API SetFormFieldTextSize(formID, NewTextSize(double))
+        #    SetFormFieldTextSize_arg_1 = "SetFormFieldTextSize_NewTextSize" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
+        #    SetFormFieldTextSize_constrain_1 = "if (" + SetFormFieldTextSize_arg_1 + "< 0.001 || " + SetFormFieldTextSize_arg_1 + " > 50.001) { \n"
+        #    self.arg_val(SetFormFieldTextSize_arg_1, "double", SetFormFieldTextSize_constrain_1, "50.001", "0.001") 
+        #    self.template.write("FQL->SetFormFieldTextSize(formID"+str(formID)+"_"+str(cnt)+"_"+str(self.tag_cnt) + ", " + SetFormFieldTextSize_arg_1 + "); \n")
+        #def set_form_value(self, formID, cnt) :
+        #    letters = string.ascii_lowercase
+        #    Title_rand = ''.join(random.choice(letters) for i in range(5))
+        #    self.template.write("FQL->SetFormFieldValue(formID"+str(formID)+"_"+str(cnt)+"_"+str(self.tag_cnt) + ",  L\""+Title_rand +"\"); \n")
+        #def set_form_bounds(self, formID, cnt) :
+        #    # API SetFormFieldBounds(formID, Left, Top, Width, Height)
+        #    SetFormFieldBounds_arg_1 = "SetFormFieldBounds_Left" + str(formID) + "_"  + str(cnt) +"_" + str(self.tag_cnt)
+        #    SetFormFieldBounds_arg_2 = "SetFormFieldBounds_Top" + str(formID) + "_" + str(cnt) + "_" + str(self.tag_cnt)
+        #    SetFormFieldBounds_arg_3 = "SetFormFieldBounds_Width" + str(formID) + "_" + str(cnt) + "_" + str(self.tag_cnt)
+        #    SetFormFieldBounds_arg_4 = "SetFormFieldBounds_Height" + str(formID) + "_" + str(cnt) + "_" + str(self.tag_cnt)
+        #    SetFormFieldBounds_constrain_1 = "if (" + SetFormFieldBounds_arg_1 + "< 0.001 || " + SetFormFieldBounds_arg_1 + " > 200.001) { \n"
+        #    SetFormFieldBounds_constrain_2 = "if (" + SetFormFieldBounds_arg_2 + "< 0.001 || " + SetFormFieldBounds_arg_2 + " > 200.001) { \n"
+        #    SetFormFieldBounds_constrain_3 = "if (" + SetFormFieldBounds_arg_3 + "< 0.001 || " + SetFormFieldBounds_arg_3 + " > 200.001) { \n"
+        #    SetFormFieldBounds_constrain_4 = "if (" + SetFormFieldBounds_arg_4 + "< 0.001 || " + SetFormFieldBounds_arg_4 + " > 200.001) { \n"
+        #    self.arg_val(SetFormFieldBounds_arg_1, "double", SetFormFieldBounds_constrain_1, "200.001", "0.001")
+        #    self.arg_val(SetFormFieldBounds_arg_2, "double", SetFormFieldBounds_constrain_2, "200.001", "0.001")
+        #    self.arg_val(SetFormFieldBounds_arg_3, "double", SetFormFieldBounds_constrain_3, "200.001", "0.001")
+        #    self.arg_val(SetFormFieldBounds_arg_4, "double", SetFormFieldBounds_constrain_4, "200.001", "0.001")
+        #    self.template.write("FQL->SetFormFieldBounds(formID"+str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) + "," +  SetFormFieldBounds_arg_1 + " ,"+ SetFormFieldBounds_arg_2 +", " +  SetFormFieldBounds_arg_3 + ", " + SetFormFieldBounds_arg_4  + "); \n")
+        #def set_form_align(self, formID, cnt) :
+        #    # API SetFormFieldAlignment(formID, Alignment(0-2))
+        #    SetFormFieldAlignment_arg_1 = "SetFormFieldAlignment_Alignment" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
+        #    SetFormFieldAlignment_constrain_1 = "if ("+ SetFormFieldAlignment_arg_1 + " < 0 || "+ SetFormFieldAlignment_arg_1 + " > 2) { \n"
+        #    self.arg_val(SetFormFieldAlignment_arg_1, "int", SetFormFieldAlignment_constrain_1, "2", "0")
+        #    self.template.write("FQL->SetFormFieldAlignment(formID"+str(formID)+"_"+str(cnt)+"_"+str(self.tag_cnt) + ", " + SetFormFieldAlignment_arg_1 + " ); \n")
+
+        ## 3rd Necessay ----------------------------------------------
+        #def set_form_color(self, formID, cnt) :
+        #    # border
+        #    # API SetFormFieldBorderColor(formID, Red, Green, Blue)
+        #    SetFormFieldBorderColor_arg_1 = "SetFormFieldBorderColor_Red" + str(formID) +"_"+ str(cnt) +"_"+  str(self.tag_cnt)
+        #    SetFormFieldBorderColor_arg_2 = "SetFormFieldBorderColor_Green" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
+        #    SetFormFieldBorderColor_arg_3 = "SetFormFieldBorderColor_Blue" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
+        #    SetFormFieldBorderColor_constrain_1 = "if (" + SetFormFieldBorderColor_arg_1 + "< 0.001 || " + SetFormFieldBorderColor_arg_1 + " > 0.999) { \n"
+        #    SetFormFieldBorderColor_constrain_2 = "if (" + SetFormFieldBorderColor_arg_2 + "< 0.001 || " + SetFormFieldBorderColor_arg_2 + " > 0.999) { \n"
+        #    SetFormFieldBorderColor_constrain_3 = "if (" + SetFormFieldBorderColor_arg_3 + "< 0.001 || " + SetFormFieldBorderColor_arg_3 + " > 0.999) { \n"
+        #    self.arg_val(SetFormFieldBorderColor_arg_1, "double", SetFormFieldBorderColor_constrain_1, "0.999", "0.001")
+        #    self.arg_val(SetFormFieldBorderColor_arg_2, "double", SetFormFieldBorderColor_constrain_2, "0.999", "0.001")
+        #    self.arg_val(SetFormFieldBorderColor_arg_3, "double", SetFormFieldBorderColor_constrain_3, "0.999", "0.001")
+        #    
+        #    self.template.write("FQL->SetFormFieldBorderColor(formID" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) + ", " + SetFormFieldBorderColor_arg_1 + ", " + SetFormFieldBorderColor_arg_2  +  ", " +  SetFormFieldBorderColor_arg_3 +  "); \n")
+        #    # background
+        #    # API SetFormFieldBackgroundColor(formID, Red, Green, Blue)
+        #    SetFormFieldBackgroundColor_arg_1 = "SetFormFieldBackgroundColor_Red" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
+        #    SetFormFieldBackgroundColor_arg_2 = "SetFormFieldBackgroundColor_Green" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
+        #    SetFormFieldBackgroundColor_arg_3 = "SetFormFieldBackgroundColor_Blue" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
+        #    SetFormFieldBackgroundColor_constrain_1 = "if (" + SetFormFieldBackgroundColor_arg_1 + "< 0.001 || " + SetFormFieldBackgroundColor_arg_1 + " > 0.999) { \n"
+        #    SetFormFieldBackgroundColor_constrain_2 = "if (" + SetFormFieldBackgroundColor_arg_2 + "< 0.001 || " + SetFormFieldBackgroundColor_arg_2 + " > 0.999) { \n"
+        #    SetFormFieldBackgroundColor_constrain_3 = "if (" + SetFormFieldBackgroundColor_arg_3 + "< 0.001 || " + SetFormFieldBackgroundColor_arg_3 + " > 0.999) { \n"
+        #    self.arg_val(SetFormFieldBackgroundColor_arg_1, "double", SetFormFieldBackgroundColor_constrain_1, "0.999", "0.001")
+        #    self.arg_val(SetFormFieldBackgroundColor_arg_2, "double", SetFormFieldBackgroundColor_constrain_2, "0.999", "0.001")
+        #    self.arg_val(SetFormFieldBackgroundColor_arg_3, "double", SetFormFieldBackgroundColor_constrain_3, "0.999", "0.001")
+        #    
+        #    self.template.write("FQL->SetFormFieldBackgroundColor(formID" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) + "," + SetFormFieldBackgroundColor_arg_1 +  ", "  +  SetFormFieldBackgroundColor_arg_2  + ", " +  SetFormFieldBackgroundColor_arg_3 + "); \n")
+        #def set_form_border_style(self, formID, cnt) :
+        #    # API SetFormFieldBorderStyle(formID, Width(int), Style(0-3), DashOn(double), DashOff(double))
+        #    SetFormFieldBorderStyle_arg_1 = "SetFormFieldBorderStyle_Width" + str(formID) + "_" + str(cnt) + "_" + str(self.tag_cnt)
+        #    SetFormFieldBorderStyle_arg_2 = "SetFormFieldBorderStyle_Style" + str(formID) + "_" + str(cnt) + "_" + str(self.tag_cnt)
+        #    SetFormFieldBorderStyle_arg_3 = "SetFormFieldBorderStyle_DashOn" + str(formID) + "_" + str(cnt) + "_" + str(self.tag_cnt)
+        #    SetFormFieldBorderStyle_arg_4 = "SetFormFieldBorderStyle_DashOff" + str(formID) + "_" + str(cnt) + "_" + str(self.tag_cnt)
+        #    SetFormFieldBorderStyle_constrain_1 = "if ("+ SetFormFieldBorderStyle_arg_1 + " < 0.001 || "+ SetFormFieldBorderStyle_arg_1 + " > 50.001) { \n"
+        #    SetFormFieldBorderStyle_constrain_2 = "if ("+ SetFormFieldBorderStyle_arg_2 + " < 0 || "+ SetFormFieldBorderStyle_arg_2 + " > 3) { \n"
+        #    SetFormFieldBorderStyle_constrain_3 = "if ("+ SetFormFieldBorderStyle_arg_3 + " < 0.001 || "+ SetFormFieldBorderStyle_arg_3 + " > 50.001) { \n"
+        #    SetFormFieldBorderStyle_constrain_4 = "if ("+ SetFormFieldBorderStyle_arg_4 + " < 0.001 || "+ SetFormFieldBorderStyle_arg_4 + " > 50.001) { \n"
+        #    self.arg_val(SetFormFieldBorderStyle_arg_1, "double", SetFormFieldBorderStyle_constrain_1, "50.001", "0.001")
+        #    self.arg_val(SetFormFieldBorderStyle_arg_2, "int", SetFormFieldBorderStyle_constrain_2, "3", "0")
+        #    self.arg_val(SetFormFieldBorderStyle_arg_3, "double", SetFormFieldBorderStyle_constrain_3, "50.001", "0.001")
+        #    self.arg_val(SetFormFieldBorderStyle_arg_4, "double", SetFormFieldBorderStyle_constrain_4, "50.001", "0.001")
+        #    self.template.write("FQL->SetFormFieldBorderStyle(formID" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) +  "," + SetFormFieldBorderStyle_arg_1 + ", "+SetFormFieldBorderStyle_arg_2 +","+ SetFormFieldBorderStyle_arg_3 +", " + SetFormFieldBorderStyle_arg_4 + " ); \n")
+        #def set_form_hlight(self, formID, cnt) :
+        #    # API SetFormFieldHighlightMode(formID, newMode(0-3))
+        #    SetFormFieldHighlightMode_arg_1 = "SetFormFieldHighlightMode_NewMode" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
+        #    SetFormFieldHighlightMode_constrain_1 = "if (" + SetFormFieldHighlightMode_arg_1 + " < 0 || " + SetFormFieldHighlightMode_arg_1 + " > 3) { \n" 
+        #    self.arg_val(SetFormFieldHighlightMode_arg_1, "int", SetFormFieldHighlightMode_constrain_1, "3", "0")
+        #    self.template.write("FQL->SetFormFieldHighlightMode(formID" + str(formID)+"_"+str(cnt) +"_"+ str(self.tag_cnt) + ", " + SetFormFieldHighlightMode_arg_1  + "); \n")
+        #def set_form_icon(self, formID, cnt) :
+        #    # API SetFormFieldIcon(formID, IconType(0-2), CaptureID(int))
+        #    SetFormFieldIcon_arg_1 = "SetFormFieldIcon_IconType" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt)
+        #    SetFormFieldIcon_constrain_1 = "if (" + SetFormFieldIcon_arg_1 + " < 0 || " + SetFormFieldIcon_arg_1 + " > 2 ) { \n"
+        #    self.arg_val(SetFormFieldIcon_arg_1, "int", SetFormFieldIcon_constrain_1, "2", "0")
+        #    self.template.write("FQL->SetFormFieldIcon(formID" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) + ", "+SetFormFieldIcon_arg_1+", FQL->CapturePage(1)) ; \n" ) 
+        #def form_jsa_weblk(self, formID, cnt) :
+        #    letters = string.ascii_lowercase
+        #    JS_rand = ''.join(random.choice(letters) for i in range(5))
+        #    self.template.write("FQL->FormFieldJavaScriptAction(formID"+str(formID)+"_"+str(cnt)+"_"+str(self.tag_cnt) + ", L\"U\",L\""+JS_rand+"\" ); \n")
+        #def set_form_caption(self, formID, cnt) :
+        #    letters = string.ascii_lowercase
+        #    CP_rand = ''.join(random.choice(letters) for i in range(5))
+        #    self.template.write("FQL->SetFormFieldCaption(formID" + str(formID) +"_"+ str(cnt) +"_"+ str(self.tag_cnt) + ", L\""+ CP_rand +"\" ); \n")
+
+        ## *** important dependencies -------------------------------------
+        #def set_form_radio_dependency (self) : 
+        #    if len(self.radio_sub_group) > 0 :
     #        for i in self.radio_sub_group.items() : 
     #            # how many sub-form we need to create
     #            sub_cnt = int(i[1])

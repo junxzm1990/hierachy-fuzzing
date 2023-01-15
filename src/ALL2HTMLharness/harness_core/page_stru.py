@@ -90,16 +90,16 @@ class HTML_PAGE_STRU() :
                 maga_info = FM.HTML_FORM_STRU(forms).form_parse()
                 if len(maga_info) > 0 :
                     FM.PDF_FORM_API_MAP(maga_info, self.template, self.tag_cnt).api_order()
-#            # TABLE
-#            if len(tables) > 0 :
-#                maga_info = TAB.HTML_TAB_STRU(tables, styles).tab_parse()
-#                if len(maga_info) > 0 and len(maga_info) < 20:
-#                    tableID = 0
-#                    for tab in maga_info:
-#
-#                        # if file contains table, map its structure to PDF API
-#                        TAB.PDF_TAB_API_MAP(maga_info, self.template, tableID, self.tag_cnt).api_order()
-#                        tableID += 1
+            # TABLE
+            if len(tables) > 0 :
+                maga_info = TAB.HTML_TAB_STRU(tables, styles).tab_parse()
+                if len(maga_info) > 0 and len(maga_info) < 20:
+                    tableID = 0
+                    for tab in maga_info:
+
+                        # if file contains table, map its structure to PDF API
+                        TAB.PDF_TAB_API_MAP(maga_info, self.template, tableID, self.tag_cnt).api_order()
+                        tableID += 1
         # API : to show the layout arrangement
         self.template.write("w" + str(self.tag_cnt) + "->setLayout(std::move(layout" + str(self.tag_cnt) + "));\n") 
 

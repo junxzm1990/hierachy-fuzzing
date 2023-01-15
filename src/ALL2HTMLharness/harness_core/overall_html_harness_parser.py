@@ -305,19 +305,19 @@ def iter_tree(soup,stru,cur_root,out_f,cnt) :
                            if len(maga_info) > 0 :
                                FM.PDF_FORM_API_MAP(maga_info, out_f, cnt).api_order()
                        forms.decompose()
-                  # elif i == 'table' :
-                  #     tables = soup.find(i)
-                  #     styles = soup.find('style')
-                  #     if len(tables) > 0 :
-                  #         maga_info = TAB.HTML_TAB_STRU(tables, styles).tab_parse()
-                  #         if len(maga_info) > 0 and len(maga_info) < 20:
-                  #             tableID = 0
-                  #             for tab in maga_info:
-                  #             
-                  #                 # if file contains table, map its structure to PDF API
-                  #                 TAB.PDF_TAB_API_MAP(maga_info, out_f, tableID, cnt).api_order()
-                  #                 tableID += 1
-                  #     tables.decompose()
+                   elif i == 'table' :
+                       tables = soup.find(i)
+                       styles = soup.find('style')
+                       if len(tables) > 0 :
+                           maga_info = TAB.HTML_TAB_STRU(tables, styles).tab_parse()
+                           if len(maga_info) > 0 and len(maga_info) < 20:
+                               tableID = 0
+                               for tab in maga_info:
+                               
+                                   # if file contains table, map its structure to PDF API
+                                   TAB.PDF_TAB_API_MAP(maga_info, out_f, tableID, cnt).api_order()
+                                   tableID += 1
+                       tables.decompose()
             cnt += 1
             cur_root = stru[0]
 
