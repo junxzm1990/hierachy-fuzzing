@@ -148,13 +148,80 @@ class GENERAL_API():
         self.template.write("{\n")
         self.template.write("public:\n")
         self.template.write("HelloApplication(const Wt::WEnvironment& env);\n")
-#        self.template.write("private:\n")
-#        self.template.write("Wt::WLineEdit *nameEdit_;\n")
-#        self.template.write("Wt::WText     *greeting_;\n")
-#        self.template.write("void greet();\n")
+        self.template.write("};\n")
+##############------ Vector Graphic needed Class ----###########
+        self.template.write("class ShapesWidget : public Wt::WPaintedWidget\n")
+        self.template.write("{\n")
+        self.template.write("public:\n")
+        self.template.write("ShapesWidget()\n")
+        self.template.write(": WPaintedWidget()\n")
+        self.template.write("{\n")
+        self.template.write("resize(310, 400);\n")
+        self.template.write("}\n")
+        self.template.write("protected:\n")
+        self.template.write("void paintEvent(Wt::WPaintDevice *paintDevice) {\n")
+        self.template.write("Wt::WPainter painter(paintDevice);\n")
+        self.template.write("painter.setPen(Wt::WColor(Wt::StandardColor::Red));\n")
+        self.template.write("painter.drawLine(0, 0, 200, 0);\n")
+        self.template.write("painter.drawLine(200, 0, 200, 30);\n")
+        self.template.write("painter.drawRect(0, 25, 80, 50);\n")
+        self.template.write("painter.setBrush(Wt::WBrush(Wt::WColor(Wt::StandardColor::Green)));\n")
+        self.template.write("painter.drawRect(100, 25, 80, 50);\n")
+        self.template.write("painter.fillRect(220, 25, 80, 50, Wt::WBrush(Wt::WColor(0, 255, 0, 64)));\n")
+        self.template.write("painter.drawEllipse(0, 100, 80, 50);\n")
+        self.template.write("painter.drawChord(100, 100, 80, 50, 0, 180*16);\n")
+        self.template.write("painter.drawArc(220, 100, 50, 50, 90*16, 90*16);\n")
+        self.template.write("painter.drawArc(240, 100, 50, 50, 0, 90*16);\n")
+        self.template.write("painter.drawLine(265, 100, 265, 125);\n")
+        self.template.write("painter.drawLine(265, 125, 290, 125);\n")
+        self.template.write("const Wt::WPointF points[]\n")
+        self.template.write("= { Wt::WPointF(120, 170),   Wt::WPointF(160, 170),\n")
+        self.template.write("Wt::WPointF(180, 204.6), Wt::WPointF(160, 239.2),\n")
+        self.template.write("Wt::WPointF(120, 239.2), Wt::WPointF(100, 204.6) };\n")
+        self.template.write("painter.drawPolygon(points, 6);\n")
+        self.template.write("Wt::WPainterPath filledEllipsePath = Wt::WPainterPath();\n")
+        self.template.write("filledEllipsePath.addEllipse(0, 180, 80, 50);\n")
+        self.template.write("filledEllipsePath.closeSubPath();\n")
+        self.template.write("painter.drawPath(filledEllipsePath);\n")
+        self.template.write("Wt::WPainterPath filledTrianglePath = Wt::WPainterPath();\n")
+        self.template.write("filledTrianglePath.moveTo(0, 270);\n")
+        self.template.write("filledTrianglePath.lineTo(80,270);\n")
+        self.template.write("filledTrianglePath.lineTo(0, 350);\n")
+        self.template.write("filledTrianglePath.closeSubPath();\n")
+        self.template.write("painter.drawPath(filledTrianglePath);\n")
+        self.template.write("Wt::WPainterPath strokedTrianglePath = Wt::WPainterPath();\n")
+        self.template.write("strokedTrianglePath.moveTo(100,270);\n")
+        self.template.write("strokedTrianglePath.lineTo(100,350);\n")
+        self.template.write("strokedTrianglePath.lineTo(20, 350);\n")
+        self.template.write("strokedTrianglePath.closeSubPath();\n")
+        self.template.write("Wt::WPen pen = Wt::WPen();\n")
+        self.template.write("pen.setWidth(3);\n")
+        self.template.write("painter.strokePath(strokedTrianglePath, pen);\n")
+        self.template.write("Wt::WPainterPath quadraticCurvePath = Wt::WPainterPath();\n")
+        self.template.write("quadraticCurvePath.moveTo(250,150);\n")
+        self.template.write("quadraticCurvePath.quadTo(200,150, 200,187.5);\n")
+        self.template.write("quadraticCurvePath.quadTo(200,225, 225,225);\n")
+        self.template.write("quadraticCurvePath.quadTo(225,245, 205,250);\n")
+        self.template.write("quadraticCurvePath.quadTo(235,245, 240,225);\n")
+        self.template.write("quadraticCurvePath.quadTo(300,225, 300,187.5);\n")
+        self.template.write("quadraticCurvePath.quadTo(300,150, 250,150);\n")
+        self.template.write("painter.strokePath(quadraticCurvePath, pen);\n")
+        self.template.write("Wt::WPainterPath bezierCurvePath = Wt::WPainterPath();\n")
+        self.template.write("bezierCurvePath.moveTo( 255,285);\n")
+        self.template.write("bezierCurvePath.cubicTo(255,282,  250,270,  230,270);\n")
+        self.template.write("bezierCurvePath.cubicTo(200,270,  200,307.5,200,307.5);\n")
+        self.template.write("bezierCurvePath.cubicTo(200,325,  220,357,  255,365);\n")
+        self.template.write("bezierCurvePath.cubicTo(290,347,  310,325,  310,307.5);\n")
+        self.template.write("bezierCurvePath.cubicTo(310,307.5,310,270,  290,270);\n")
+        self.template.write("bezierCurvePath.cubicTo(265,270,  255,282,  255,285);\n")
+        self.template.write("painter.setBrush(Wt::WBrush(Wt::WColor(Wt::StandardColor::Red)));\n")
+        self.template.write("painter.drawPath(bezierCurvePath);\n")
+        self.template.write("}\n")
         self.template.write("};\n")
 
 
+
+###############------ end Vector Graphic needed Class ----#####
         self.template.write("HelloApplication::HelloApplication(const Wt::WEnvironment& env) \n" )
         self.template.write(": WApplication(env) \n" )
         self.template.write("{ \n" )
@@ -277,27 +344,27 @@ def iter_tree(soup,stru,cur_root,out_f,cnt) :
                   #          if len(maga_info) > 0 :
                   #              TX.PDF_TEXT_API_MAP(maga_info, out_f, cnt).api_order()
                   #     texts.decompose()
-                  # elif i == 'svg' :
-                  #     VGs = soup.find(i)
-                  #     if len(VGs) != 0 :
-                  #         maga_info_vg = VG.HTML_VGs_STRU(VGs).VG_parse()
-                  #         if len(maga_info_vg) > 0 :
-                  #             VG.PDF_VGs_API_MAP(maga_info_vg, out_f, cnt).api_order()
-                  #     VGs.decompose()
-                  # elif i == 'img' :
-                  #     IMGs = soup.find(i)
-                  #     if len(IMGs) != 0 :
-                  #         maga_info_img = VG.HTML_IMGs_STRU(IMGs).IMG_parse()
-                  #         if len(maga_info_img) > 0 :
-                  #             VG.PDF_IMGs_API_MAP(maga_info_img, out_f, cnt).api_order()
-                  #     IMGs.decompose()
-                  # elif i == 'style' :
-                  #     STYLEs = soup.find(i)
-                  #     if len(STYLEs) != 0 :
-                  #         maga_info_style = VG.HTML_STYLEs_STRU(STYLEs).STYLE_parse()
-                  #         if len(maga_info_style) > 0 :
-                  #              VG.PDF_STYLEs_API_MAP(maga_info_style, out_f, cnt).api_order()
-                  #     STYLEs.decompose()
+                   elif i == 'svg' :
+                       VGs = soup.find(i)
+                       if len(VGs) != 0 :
+                           maga_info_vg = VG.HTML_VGs_STRU(VGs).VG_parse()
+                           if len(maga_info_vg) > 0 :
+                               VG.PDF_VGs_API_MAP(maga_info_vg, out_f, cnt).api_order()
+                       VGs.decompose()
+                   elif i == 'img' :
+                       IMGs = soup.find(i)
+                       if len(IMGs) != 0 :
+                           maga_info_img = VG.HTML_IMGs_STRU(IMGs).IMG_parse()
+                           if len(maga_info_img) > 0 :
+                               VG.PDF_IMGs_API_MAP(maga_info_img, out_f, cnt).api_order()
+                       IMGs.decompose()
+                   elif i == 'style' :
+                       STYLEs = soup.find(i)
+                       if len(STYLEs) != 0 :
+                           maga_info_style = VG.HTML_STYLEs_STRU(STYLEs).STYLE_parse()
+                           if len(maga_info_style) > 0 :
+                                VG.PDF_STYLEs_API_MAP(maga_info_style, out_f, cnt).api_order()
+                       STYLEs.decompose()
                    elif i == 'form' :
                        forms = soup.find(i)
                        if len(forms) != 0 :
