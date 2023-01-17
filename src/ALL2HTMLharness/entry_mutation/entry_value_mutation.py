@@ -20,29 +20,30 @@ def findTag (code, code_len, idx) :
 def html_to_tree (inner_html_str) : 
     tag, tag_len = findTag(inner_html_str, len(inner_html_str), 0)
     stack = [(tag,0)]
-    subTrees = []
+    leaves = []
     i = tag_len + 2
     while i < len(inner_html_str) :
         if inner_html_str[i] == "<" :
             tag, tag_len = findTag(inner_html_str, len(inner_html_str), i)
             i += tag_len + 1
-            if tag[0] == "/" :
-                subTrees.append(inner_html_str[stack[-1][1]:i+1])
+            if tag[0] == "/":
+                if "/>" not in inner_html_str[stack[-1][1]:(i-tag_len-1)] :
+                    leaves.append(inner_html_str[stack[-1][1]:i+1])
                 stack.pop()
             else :
                 stack.append((tag,i-tag_len-1))
         i += 1
-    return subTrees
+    return leaves
 
-def exchange_rules (treeA, treeB) :
-    A_idx = random.randint(0, len(treeA)-1)
-    B_idx = random.randint(0, len(treeB)-1)
-    return treeA[A_idx], treeB[B_idx]
+def exchange_rules (leaves_A, leaves_B) :
+    A_idx = random.randint(0, len(leaves_A)-1)
+    B_idx = random.randint(0, len(leaves_B)-1)
+    return leaves_A[A_idx], leaves_B[B_idx]
 
 def mutation_rules (swap_A, swap_B) :
-    mul_times_a = random.randint(2, 500)
+    mul_times_a = random.randint(1, 500)
     swap_A *= mul_times_a 
-    mul_times_b = random.randint(2, 500)
+    mul_times_b = random.randint(1, 500)
     swap_B *= mul_times_b
     return swap_A, swap_B
 
@@ -66,27 +67,27 @@ def main (argv) :
     with open(f_in_B, 'r') as file:
             inner_html_str_B = file.read().replace('\n', '')
     
-    # Step 1 : parse two inner HTMLs as two tree structures
-    subTrees_A = html_to_tree(inner_html_str_A)
-    subTrees_B = html_to_tree(inner_html_str_B)
-    
-    # Step 2 : collect all the 1 layer tags and their content value
-    # Step 3 : exchange and mutate them with blending with values from other files 
+    # Step 1 : parse two inner HTMLs as two tree structures collect all the 1 layer tags and their content value
+    leaves_A = html_to_tree(inner_html_str_A)
+    leaves_B = html_to_tree(inner_html_str_B)
 
-    # Step 4 : recover the mutated part and write back to the file
+    # Step 2 : exchange and mutate them with blending with values from other files 
+    swaped = exchange_rules(leaves_A, leaves_B)
+    mutated = mutation_rules(swaped[0], swaped[1])
+
+    # Step 3 : recover the mutated part and write back to the file
+    outs = f_out(inner_html_str_A, inner_html_str_B, swaped, mutated)
+    fw_out_a = open(d_out_path+"/" +''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase) for i in range(10)), "w")
+    fw_out_b = open(d_out_path+"/" +''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase) for i in range(10)), "w")
+    fw_out_a.write(outs[0])
+    fw_out_b.write(outs[1])
 # ------------------------------------------------------------
     # Step 2 : exchange subtrees between tree A and tree B
    # swaped = exchange_rules(subTrees_A, subTrees_B)
    # mutated = mutation_rules(swaped[0], swaped[1])
 
-   # # Step 3 : recover the mutated tree to the inner HTMLs
-   # outs = f_out(inner_html_str_A, inner_html_str_B, swaped, mutated)
-   # fw_out_a = open(d_out_path+"/" +''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase) for i in range(10)), "w")
-   # fw_out_b = open(d_out_path+"/" +''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase) for i in range(10)), "w")
-   # fw_out_a.write(outs[0])
-   # fw_out_b.write(outs[1])
-
-
+    # Step 3 : recover the mutated tree to the inner HTMLs
+    outs = f_out(inner_html_str_A, inner_html_str_B, swaped, mutated)
 
 if __name__ == "__main__" :
     main(sys.argv[1:])
