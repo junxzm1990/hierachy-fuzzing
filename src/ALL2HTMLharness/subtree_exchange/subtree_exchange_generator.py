@@ -4,6 +4,7 @@ import sys
 import random 
 from multiprocessing import Process
 from time import sleep
+import string
 
 def findTag (code, code_len, idx) :
     tag = None
@@ -34,15 +35,25 @@ def html_to_tree (inner_html_str) :
     return subTrees
 
 def exchange_rules (treeA, treeB) :
-    A_idx_l = random.randint(0, len(treeA)-2)
-    A_idx_r = random.randint(A_idx_l+1, len(treeA)-1)
-    B_idx_l = random.randint(0, len(treeB)-2)
-    B_idx_r = random.randint(B_idx_l+1, len(treeB)-1)
-    return treeA[A_idx_l:A_idx_r], treeB[B_idx_l : B_idx_r]
+    A_idx = random.randint(0, len(treeA)-1)
+    B_idx = random.randint(0, len(treeB)-1)
+    return treeA[A_idx], treeB[B_idx]
 
 def mutation_rules (swap_A, swap_B) :
-    new_swap_A =  
+    mul_times_a = random.randint(2, 500)
+    swap_A *= mul_times_a 
+    mul_times_b = random.randint(2, 500)
+    swap_B *= mul_times_b
+    return swap_A, swap_B
 
+def f_out (inner_html_str_A, inner_html_str_B, swaped, mutated) :
+    loc_a_l = inner_html_str_A.index(swaped[0])
+    loc_a_r = loc_a_l + len(swaped[0])
+    out_a = inner_html_str_A[:loc_a_l] + mutated[1] + inner_html_str_A[loc_a_r:]
+    loc_b_l = inner_html_str_B.index(swaped[1])
+    loc_b_r = loc_b_l + len(swaped[1])
+    out_b = inner_html_str_B[:loc_b_l] + mutated[0] + inner_html_str_B[loc_b_r:]
+    return out_a, out_b
     
 def main (argv) : 
     f_in_A = argv[0] # the testcase file you want to mutate
@@ -60,10 +71,17 @@ def main (argv) :
     subTrees_B = html_to_tree(inner_html_str_B)
     
     # Step 2 : exchange subtrees between tree A and tree B
-    swaped = exchange_rules(subTrees_A, sbuTrees_B)
-    mutated = mutation_rules(swaped)
+    swaped = exchange_rules(subTrees_A, subTrees_B)
+    mutated = mutation_rules(swaped[0], swaped[1])
 
     # Step 3 : recover the mutated tree to the inner HTMLs
+    outs = f_out(inner_html_str_A, inner_html_str_B, swaped, mutated)
+    fw_out_a = open(d_out_path+"/" +''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase) for i in range(10)), "w")
+    fw_out_b = open(d_out_path+"/" +''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase) for i in range(10)), "w")
+    fw_out_a.write(outs[0])
+    fw_out_b.write(outs[1])
+
+
 
 if __name__ == "__main__" :
     main(sys.argv[1:])
