@@ -45,7 +45,7 @@ while true; do
 
 	name="id:"$zero$pre_cnt","$base
 
-	mv $HARNESS_OUT/tmp.html $EVAL_BIN/queue/$name
+	mv $HARNESS_OUT/tmp.html $HARNESS_OUT/queue/$name
 
 	let "pre_cnt++"
 
