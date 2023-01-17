@@ -65,26 +65,26 @@ class HTML_PAGE_STRU() :
 
         if len(VGs) != 0 or len(IMGs) != 0 or len(STYLEs) != 0 or len(texts) != 0 or len(forms) != 0 or len(tables) != 0 or len(styles) != 0 :
 
-#            # TEXT 
-#            if len(texts) != 0 :
-#                maga_info = TX.HTML_TEXT_STRU(texts).text_parse()
-#                if len(maga_info) > 0 :
-#                    TX.PDF_TEXT_API_MAP(maga_info, self.template, self.tag_cnt).api_order()
-#            # VG  
-#            if len(VGs) != 0 :
-#                maga_info_vg = VG.HTML_VGs_STRU(VGs).VG_parse()
-#                if len(maga_info_vg) > 0 :
-#                    VG.PDF_VGs_API_MAP(maga_info_vg, self.template, self.tag_cnt).api_order()
-#            # IMG 
-#            if len(IMGs) != 0:
-#                maga_info_img = VG.HTML_IMGs_STRU(IMGs).IMG_parse()
-#                if len(maga_info_img) > 0 :
-#                    VG.PDF_IMGs_API_MAP(maga_info_img, self.template, self.tag_cnt).api_order()
-#            # STYLE
-#            if len(STYLEs) != 0:
-#                maga_info_style = VG.HTML_STYLEs_STRU(STYLEs).STYLE_parse()
-#                if len(maga_info_style) > 0 :
-#                     VG.PDF_STYLEs_API_MAP(maga_info_style, self.template, self.tag_cnt).api_order()
+            # TEXT 
+            if len(texts) != 0 :
+                maga_info = TX.HTML_TEXT_STRU(texts).text_parse()
+                if len(maga_info) > 0 :
+                    TX.PDF_TEXT_API_MAP(maga_info, self.template, self.tag_cnt).api_order()
+            # VG  
+            if len(VGs) != 0 :
+                maga_info_vg = VG.HTML_VGs_STRU(VGs).VG_parse()
+                if len(maga_info_vg) > 0 :
+                    VG.PDF_VGs_API_MAP(maga_info_vg, self.template, self.tag_cnt).api_order()
+            # IMG 
+            if len(IMGs) != 0:
+                maga_info_img = VG.HTML_IMGs_STRU(IMGs).IMG_parse()
+                if len(maga_info_img) > 0 :
+                    VG.PDF_IMGs_API_MAP(maga_info_img, self.template, self.tag_cnt).api_order()
+            # STYLE
+            if len(STYLEs) != 0:
+                maga_info_style = VG.HTML_STYLEs_STRU(STYLEs).STYLE_parse()
+                if len(maga_info_style) > 0 :
+                     VG.PDF_STYLEs_API_MAP(maga_info_style, self.template, self.tag_cnt).api_order()
             # FORM
             if len(forms) != 0 :
                 maga_info = FM.HTML_FORM_STRU(forms).form_parse()

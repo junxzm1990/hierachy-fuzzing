@@ -288,8 +288,10 @@ class PDF_VGs_API_MAP() :
     def api_order(self) :
         for svg in self.maga_info : 
             for shape in self.maga_info[svg] :
-                self.template.write("Wt::WContainerWidget *container" +str(svg) +str(shape) + str(self.tag_cnt) + " = root()->addWidget(std::make_unique<Wt::WContainerWidget>());\n")
-                self.template.write("container" +str(svg) +str(shape) + str(self.tag_cnt) + "->addNew<ShapesWidget>();\n")
+                self.template.write("Wt::WContainerWidget *container_Shape" +str(svg) +str(shape) + str(self.tag_cnt) + " = root()->addWidget(std::make_unique<Wt::WContainerWidget>());\n")
+                self.template.write("container_Shape" +str(svg) +str(shape) + str(self.tag_cnt) + "->addNew<ShapesWidget>();\n")
+                self.template.write("Wt::WContainerWidget *container_Style" +str(svg) +str(shape) + str(self.tag_cnt) + " = root()->addWidget(std::make_unique<Wt::WContainerWidget>());\n")
+                self.template.write("container_Style" +str(svg) +str(shape) + str(self.tag_cnt) + "->addNew<StyleWidget>();\n")
 
 class PDF_IMGs_API_MAP() : 
     def __init__(self, maga_info, template, tag_cnt) :
@@ -340,8 +342,10 @@ class PDF_IMGs_API_MAP() :
     def api_order(self) : 
         for img_id in self.maga_info :
             if self.maga_info[img_id].keys() == ["QR"] :
-                self.template.write("Wt::WContainerWidget *container" +str(img_id) + str(self.tag_cnt) + " = root()->addWidget(std::make_unique<Wt::WContainerWidget>());\n")
-                self.template.write("container" +str(img_id) + str(self.tag_cnt) + "->addNew<ShapesWidget>();\n")
+                self.template.write("Wt::WContainerWidget *container_Shape" +str(img_id) + str(self.tag_cnt) + " = root()->addWidget(std::make_unique<Wt::WContainerWidget>());\n")
+                self.template.write("container_Shape" +str(img_id) + str(self.tag_cnt) + "->addNew<ShapesWidget>();\n")
+                self.template.write("Wt::WContainerWidget *container_Style" +str(img_id) + str(self.tag_cnt) + " = root()->addWidget(std::make_unique<Wt::WContainerWidget>());\n")
+                self.template.write("container_Style" +str(img_id) + str(self.tag_cnt) + "->addNew<StyleWidget>();\n")
 
 class PDF_STYLEs_API_MAP() :
     def __init__(self, maga_info, template, tag_cnt) :
@@ -393,5 +397,7 @@ class PDF_STYLEs_API_MAP() :
     def api_order(self) :
         for style_id in self.maga_info :
             if self.maga_info[style_id] == "BC" : 
-                self.template.write("Wt::WContainerWidget *container" +str(style_id) + str(self.tag_cnt) + " = root()->addWidget(std::make_unique<Wt::WContainerWidget>());\n")
-                self.template.write("container" +str(style_id) + str(self.tag_cnt) + "->addNew<ShapesWidget>();\n")
+                self.template.write("Wt::WContainerWidget *container_Shape" +str(style_id) + str(self.tag_cnt) + " = root()->addWidget(std::make_unique<Wt::WContainerWidget>());\n")
+                self.template.write("container_Shape" +str(style_id) + str(self.tag_cnt) + "->addNew<ShapesWidget>();\n")
+                self.template.write("Wt::WContainerWidget *container_Style" +str(style_id) + str(self.tag_cnt) + " = root()->addWidget(std::make_unique<Wt::WContainerWidget>());\n")
+                self.template.write("container_Style" +str(style_id) + str(self.tag_cnt) + "->addNew<StyleWidget>();\n")

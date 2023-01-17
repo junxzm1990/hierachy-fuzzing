@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup, NavigableString, Tag
+import re
 import sys
 import os
 import string
@@ -524,159 +525,198 @@ class PDF_TEXT_API_MAP() :
         self.template.write("FQL->SetTextSize(" + SetTextSize_arg_1 + "); \n")
     def api_order(self) :
         for text_id in self.maga_info :
-            self.adding_all_fonts(text_id)
-           # self.set_text_size(text_id
-            self.set_text_mode(text_id)
+            #self.adding_all_fonts(text_id)
+           ## self.set_text_size(text_id
+            #self.set_text_mode(text_id)
             for tag in self.maga_info[text_id] :
-                if tag == '<p>' :
-                    self.set_text_size(text_id,"0")
-                    self.style_checking(text_id, '<p>', self.maga_info[text_id]['<p>']['text_len'], "0")
-                    self.draw_text(self.maga_info[text_id]['<p>']['text_len'], text_id, "0")
-                    self.append_space(text_id, "0")
-                    self.set_text_char_spacing(text_id, "0")
-                elif tag == '<span>' :
-                    self.set_text_size(text_id, "0")
-                    self.style_checking(text_id, '<span>',self.maga_info[text_id]['<span>']['text_len'], "0")
-                    self.draw_text(self.maga_info[text_id]['<span>']['text_len'], text_id, "0")
-                    self.append_space(text_id, "0")
-                    self.set_text_char_spacing(text_id, "0")
-                elif tag == '<h1>' :
-                    self.set_text_size(text_id, "0")
-                    self.style_checking(text_id, '<h1>', self.maga_info[text_id]['<h1>']['text_len'], "0")
-                    self.draw_text(self.maga_info[text_id]['<h1>']['text_len'], text_id, "0")
-                    self.append_space(text_id, "0")
-                    self.set_text_char_spacing(text_id, "0")
-                elif tag == '<h2>' :
-                    self.set_text_size(text_id, "0")
-                    self.style_checking(text_id, '<h2>', self.maga_info[text_id]['<h2>']['text_len'], "0")
-                    self.draw_text(self.maga_info[text_id]['<h2>']['text_len'], text_id, "0")
-                    self.append_space(text_id, "0")
-                    self.set_text_char_spacing(text_id, "0")
-                elif tag == '<h3>' :
-                    self.set_text_size(text_id, "0")
-                    self.style_checking(text_id, '<h3>', self.maga_info[text_id]['<h3>']['text_len'], "0")
-                    self.draw_text(self.maga_info[text_id]['<h3>']['text_len'], text_id, "0")
-                    self.append_space(text_id, "0")
-                    self.set_text_char_spacing(text_id, "0")
-                elif tag == '<h4>' :
-                    self.set_text_size(text_id, "0")
-                    self.style_checking(text_id, '<h4>', self.maga_info[text_id]['<h4>']['text_len'], "0")
-                    self.draw_text(self.maga_info[text_id]['<h4>']['text_len'], text_id, "0")
-                    self.append_space(text_id, "0")
-                    self.set_text_char_spacing(text_id, "0")
-                elif tag == '<h5>' :
-                    self.set_text_size(text_id, "0")
-                    self.style_checking(text_id, '<h5>', self.maga_info[text_id]['<h5>']['text_len'], "0")
-                    self.draw_text(self.maga_info[text_id]['<h5>']['text_len'], text_id, "0")
-                    self.append_space(text_id, "0")
-                    self.set_text_char_spacing(text_id, "0")
-                elif tag == '<h6>' :
-                    self.set_text_size(text_id, "0")
-                    self.style_checking(text_id, '<h6>', self.maga_info[text_id]['<h6>']['text_len'], "0")
-                    self.draw_text(self.maga_info[text_id]['<h6>']['text_len'], text_id, "0")
-                    self.append_space(text_id, "0")
-                    self.set_text_char_spacing(text_id, "0")
-                elif tag == '<strong>' :
-                    self.set_text_size(text_id, "0")
-                    self.style_checking(text_id, '<strong>', self.maga_info[text_id]['<strong>']['text_len'], "0")
-                    self.draw_html_text(self.maga_info[text_id]['<strong>']['text_len'],text_id,"0")
-                    self.set_html_bold_font(text_id,"0")
-                    self.append_space(text_id,"0")
-                    self.set_text_char_spacing(text_id,"0")
-                elif tag == '<em>' :
-                    self.set_text_size(text_id,"0")
-                    self.style_checking(text_id, '<em>', self.maga_info[text_id]['<em>']['text_len'], "0")
-                    self.draw_html_text(self.maga_info[text_id]['<em>']['text_len'], text_id,"0")
-                    self.set_html_italic_font(text_id,"0")
-                    self.append_space(text_id,"0")
-                    self.set_text_char_spacing(text_id,"0")
-                elif tag == '<blockquote>' :
-                    self.set_text_size(text_id,"0")
-                    self.style_checking(text_id, '<blockquote>', self.maga_info[text_id]['<blockquote>']['text_len'], "0")
-                    self.draw_text(self.maga_info[text_id]['<blockquote>']['text_len'], text_id,"0")
-                    self.append_space(text_id,"0")
-                    self.set_text_char_spacing(text_id,"0")
-                elif tag == '<code>' :
-                    self.set_text_size(text_id,"0")
-                    self.style_checking(text_id, '<code>', self.maga_info[text_id]['<code>']['text_len'], "0")
-                    self.draw_text(self.maga_info[text_id]['<code>']['text_len'], text_id, "0")
-                    self.append_space(text_id,"0")
-                    self.set_text_char_spacing(text_id,"0")
-                elif tag == '<ul>' :
-                    self.set_text_size(text_id,"0")
-                    for li_tag in self.maga_info[text_id]['<ul>'] :
-                        if li_tag[0:4] == '<li>' :
-                            self.style_checking(text_id, '<ul>', self.maga_info[text_id]['<ul>'][li_tag]['text_len'], li_tag)
-                            self.draw_text(self.maga_info[text_id]['<ul>'][li_tag]['text_len'], str(text_id), li_tag)
-                            self.append_space(str(text_id), li_tag)
-                            self.set_text_char_spacing(str(text_id), li_tag)
-                elif tag == '<ol>' :
-                    self.set_text_size(text_id, "0")
-                    for li_tag in self.maga_info[text_id]['<ol>'] :
-                        if li_tag[0:4] == '<li>' :
-                            self.style_checking(text_id, '<ol>', self.maga_info[text_id]['<ol>'][li_tag]['text_len'], li_tag)
-                            self.draw_text(self.maga_info[text_id]['<ol>'][li_tag]['text_len'], str(text_id), li_tag)
-                            self.append_space(str(text_id), li_tag)
-                            self.set_text_char_spacing(str(text_id), li_tag)
-                elif tag == '<dl>' :
-                    self.set_text_size(text_id, "0")
-                    for li_tag in self.maga_info[text_id]['<dl>'] :
-                        if li_tag[0:4] == '<dt>' :
-                            self.style_checking(text_id, '<dl>', self.maga_info[text_id]['<dl>'][li_tag]['text_len'], li_tag)
-                            self.draw_text(self.maga_info[text_id]['<dl>'][li_tag]['text_len'], str(text_id),li_tag)
-                            self.append_space(str(text_id), li_tag)
-                            self.set_text_char_spacing(str(text_id), li_tag)
-                        if li_tag[0:4] == '<dd>' :
-                            self.style_checking(text_id, '<dl>', self.maga_info[text_id]['<dl>'][li_tag]['text_len'], li_tag)
-                            self.draw_text(self.maga_info[text_id]['<dl>'][li_tag]['text_len'], str(text_id), li_tag)
-                            self.append_space(str(text_id), li_tag)
-                            self.set_text_char_spacing(str(text_id), li_tag)
-                elif tag == '<mark>' :
-                    self.set_text_size(text_id, "0")
-                    self.style_checking(text_id, '<mark>', self.maga_info[text_id]['<mark>']['text_len'], "0")
-                    self.draw_text(self.maga_info[text_id]['<mark>']['text_len'], text_id, "0")
-                    self.append_space(text_id,"0" )
-                    self.set_text_char_spacing(text_id, "0")
-                elif tag == '<ins>' :
-                    self.set_text_size(text_id, "0")
-                    self.style_checking(text_id, '<ins>', self.maga_info[text_id]['<ins>']['text_len'], "0")
-                    self.draw_text(self.maga_info[text_id]['<ins>']['text_len'], text_id, "0")
-                    self.append_space(text_id, "0")
-                    self.set_text_char_spacing(text_id, "0")
-                elif tag == '<del>' :
-                    self.set_text_size(text_id, "0")
-                    self.set_text_underline(text_id, "0")
-                    self.style_checking(text_id, '<del>', self.maga_info[text_id]['<del>']['text_len'], "0")
-                    self.draw_text(self.maga_info[text_id]['<del>']['text_len'], text_id, "0")
-                    self.append_space(text_id, "0")
-                    self.set_text_char_spacing(text_id, "0")
-                elif tag == '<sup>' :
-                    self.set_text_size(text_id, "0")
-                    self.set_text_rise_sup(text_id, "0")
-                    self.style_checking(text_id, '<sup>', self.maga_info[text_id]['<sup>']['text_len'], "0")
-                    self.draw_text(self.maga_info[text_id]['<sup>']['text_len'], text_id, "0")
-                    self.append_space(text_id, "0")
-                    self.set_text_char_spacing(text_id, "0")
-                elif tag == '<sub>' :
-                    self.set_text_size(text_id, "0")
-                    self.set_text_rise_sub(text_id, "0")
-                    self.style_checking(text_id, '<sub>', self.maga_info[text_id]['<sub>']['text_len'], "0")
-                    self.draw_text(self.maga_info[text_id]['<sub>']['text_len'], text_id, "0")
-                    self.append_space(text_id, "0")
-                    self.set_text_char_spacing(text_id, "0")
-                elif tag == '<i>' :
-                    self.set_text_size(text_id, "0")
-                    self.style_checking(text_id, '<i>', self.maga_info[text_id]['<i>']['text_len'], "0")
-                    self.set_html_italic_font(text_id, "0")
-                    self.draw_text(self.maga_info[text_id]['<i>']['text_len'], text_id, "0")
-                    self.append_space(text_id, "0")
-                    self.set_text_char_spacing(text_id, "0")
-                elif tag == '<b>' :
-                    self.set_text_size(text_id, "0")
-                    self.style_checking(text_id, '<b>', self.maga_info[text_id]['<b>']['text_len'], "0")
-                    self.set_html_bold_font(text_id, "0")
-                    self.draw_html_text(self.maga_info[text_id]['<b>']['text_len'], text_id, "0")
-                    self.append_space(text_id, "0")
-                    self.set_text_char_spacing(text_id, "0")
+                self.template.write("auto container_ta" + str(text_id) + str(tag[1]) + " = root()->addWidget(std::make_unique<Wt::WContainerWidget>()); \n")
+                self.template.write("Wt::WTextArea *ta" + str(text_id) + str(tag[1]) + " = \n")
+                self.template.write("container_ta" + str(text_id) + str(tag[1]) + "->addNew<Wt::WTextArea>(); \n")
+                self.template.write("ta" + str(text_id) + str(tag[1]) + "->setColumns(random_int(0, 10000)); \n")
+                self.template.write("ta" + str(text_id) + str(tag[1]) + "->setRows(random_int(0, 10000)); \n")
+                self.template.write("ta" + str(text_id) + str(tag[1]) + "->setText(random_string(500)); \n")
+                self.template.write("Wt::WText *out_ta" + str(text_id) + str(tag[1]) + " = container_ta" + str(text_id) + str(tag[1]) + "->addNew<Wt::WText>(\"<p></p>\"); \n")
+                self.template.write("out_ta" + str(text_id) + str(tag[1]) + "->addStyleClass(random_string(30)); \n")
+                self.template.write("ta" + str(text_id) + str(tag[1]) + "->changed().connect([=] { \n")
+                self.template.write("out_ta" + str(text_id) + str(tag[1]) + "->setText(\"<p>Text area changed at \" + \n")
+                self.template.write("Wt::WDateTime::currentDateTime().toString() + \".</p>\"); \n")
+                self.template.write("}); \n")
+                self.template.write("std::move(container_ta" + str(text_id) + str(tag)[1] + "); \n")
+                self.template.write("auto *container_edit"+str(text_id)+str(tag[1])+" = root()->addWidget(std::make_unique<Wt::WContainerWidget>());\n")
+                self.template.write("Wt::WTextEdit *edit_edit"+str(text_id)+str(tag[1])+" = container_edit"+str(text_id)+str(tag[1])+"->addNew<Wt::WTextEdit>();\n")
+                self.template.write("edit_edit"+str(text_id)+str(tag[1])+"->setHeight(random_double(-1000, 1000));\n")
+                self.template.write("edit_edit"+str(text_id)+str(tag[1])+"->setText(\"<p>\"\n")
+                self.template.write("\"<span style=\\\"font-family: \'courier new\', courier; font-size: medium;\\\">\"\n")
+                self.template.write("\"<strong>WTextEdit</strong></span></p>\"\n")
+                self.template.write("\"<p>Hey, I'm a <strong>WTextEdit</strong> and you can make me\"\n")
+                self.template.write("\" <span style=\\\"text-decoration: underline;\\\"><em>rich</em></span>\"\n")
+                self.template.write("\" by adding your <span style=\\\"color: #ff0000;\\\"><em>style</em>\"\n")
+                self.template.write("\"</span>!</p>\"\n")
+                self.template.write("\"<p>Other widgets like...</p>\"\n")
+                self.template.write("\"<ul style=\\\"padding: 0px; margin: 0px 0px 10px 25px;\\\">\"\n")
+                self.template.write("\"<li>WLineEdit</li>\"\n")
+                self.template.write("\"<li>WTextArea</li>\"\n")
+                self.template.write("\"<li>WSpinBox</li>\"\n")
+                self.template.write("\"</ul>\"\n")
+                self.template.write("\"<p>don't have style.</p>\");\n")
+                self.template.write("Wt::WPushButton *button_edit"+str(text_id)+str(tag[1])+" = container_edit"+str(text_id)+str(tag[1])+"->addNew<Wt::WPushButton>(random_string(50));\n")
+                self.template.write("button_edit"+str(text_id)+str(tag[1])+"->setMargin(random_int(-1000, 1000), static_cast<Wt::Side>(rand()%6) |static_cast<Wt::Side>(rand()%6));\n")
+                self.template.write("Wt::WText *out_edit"+str(text_id)+str(tag[1])+" = container_edit"+str(text_id)+str(tag[1])+"->addNew<Wt::WText>();\n")
+                self.template.write("out_edit"+str(text_id)+str(tag[1])+"->setStyleClass(\"xhtml-output\");\n")
+                self.template.write("button_edit"+str(text_id)+str(tag[1])+"->clicked().connect([=] {\n")
+                self.template.write("out_edit"+str(text_id)+str(tag[1])+"->setText(\"<pre>\" + Wt::Utils::htmlEncode(edit_edit"+str(text_id)+str(tag[1])+"->text()) + \"</pre>\");\n")
+                self.template.write("});\n")
+                self.template.write("std::move(container_edit"+str(text_id)+str(tag[1])+");\n")
+###########------------------ OLD ----------------------##########
+                #if tag == '<p>' :
+                #    self.set_text_size(text_id,"0")
+                #    self.style_checking(text_id, '<p>', self.maga_info[text_id]['<p>']['text_len'], "0")
+                #    self.draw_text(self.maga_info[text_id]['<p>']['text_len'], text_id, "0")
+                #    self.append_space(text_id, "0")
+                #    self.set_text_char_spacing(text_id, "0")
+                #elif tag == '<span>' :
+                #    self.set_text_size(text_id, "0")
+                #    self.style_checking(text_id, '<span>',self.maga_info[text_id]['<span>']['text_len'], "0")
+                #    self.draw_text(self.maga_info[text_id]['<span>']['text_len'], text_id, "0")
+                #    self.append_space(text_id, "0")
+                #    self.set_text_char_spacing(text_id, "0")
+                #elif tag == '<h1>' :
+                #    self.set_text_size(text_id, "0")
+                #    self.style_checking(text_id, '<h1>', self.maga_info[text_id]['<h1>']['text_len'], "0")
+                #    self.draw_text(self.maga_info[text_id]['<h1>']['text_len'], text_id, "0")
+                #    self.append_space(text_id, "0")
+                #    self.set_text_char_spacing(text_id, "0")
+                #elif tag == '<h2>' :
+                #    self.set_text_size(text_id, "0")
+                #    self.style_checking(text_id, '<h2>', self.maga_info[text_id]['<h2>']['text_len'], "0")
+                #    self.draw_text(self.maga_info[text_id]['<h2>']['text_len'], text_id, "0")
+                #    self.append_space(text_id, "0")
+                #    self.set_text_char_spacing(text_id, "0")
+                #elif tag == '<h3>' :
+                #    self.set_text_size(text_id, "0")
+                #    self.style_checking(text_id, '<h3>', self.maga_info[text_id]['<h3>']['text_len'], "0")
+                #    self.draw_text(self.maga_info[text_id]['<h3>']['text_len'], text_id, "0")
+                #    self.append_space(text_id, "0")
+                #    self.set_text_char_spacing(text_id, "0")
+                #elif tag == '<h4>' :
+                #    self.set_text_size(text_id, "0")
+                #    self.style_checking(text_id, '<h4>', self.maga_info[text_id]['<h4>']['text_len'], "0")
+                #    self.draw_text(self.maga_info[text_id]['<h4>']['text_len'], text_id, "0")
+                #    self.append_space(text_id, "0")
+                #    self.set_text_char_spacing(text_id, "0")
+                #elif tag == '<h5>' :
+                #    self.set_text_size(text_id, "0")
+                #    self.style_checking(text_id, '<h5>', self.maga_info[text_id]['<h5>']['text_len'], "0")
+                #    self.draw_text(self.maga_info[text_id]['<h5>']['text_len'], text_id, "0")
+                #    self.append_space(text_id, "0")
+                #    self.set_text_char_spacing(text_id, "0")
+                #elif tag == '<h6>' :
+                #    self.set_text_size(text_id, "0")
+                #    self.style_checking(text_id, '<h6>', self.maga_info[text_id]['<h6>']['text_len'], "0")
+                #    self.draw_text(self.maga_info[text_id]['<h6>']['text_len'], text_id, "0")
+                #    self.append_space(text_id, "0")
+                #    self.set_text_char_spacing(text_id, "0")
+                #elif tag == '<strong>' :
+                #    self.set_text_size(text_id, "0")
+                #    self.style_checking(text_id, '<strong>', self.maga_info[text_id]['<strong>']['text_len'], "0")
+                #    self.draw_html_text(self.maga_info[text_id]['<strong>']['text_len'],text_id,"0")
+                #    self.set_html_bold_font(text_id,"0")
+                #    self.append_space(text_id,"0")
+                #    self.set_text_char_spacing(text_id,"0")
+                #elif tag == '<em>' :
+                #    self.set_text_size(text_id,"0")
+                #    self.style_checking(text_id, '<em>', self.maga_info[text_id]['<em>']['text_len'], "0")
+                #    self.draw_html_text(self.maga_info[text_id]['<em>']['text_len'], text_id,"0")
+                #    self.set_html_italic_font(text_id,"0")
+                #    self.append_space(text_id,"0")
+                #    self.set_text_char_spacing(text_id,"0")
+                #elif tag == '<blockquote>' :
+                #    self.set_text_size(text_id,"0")
+                #    self.style_checking(text_id, '<blockquote>', self.maga_info[text_id]['<blockquote>']['text_len'], "0")
+                #    self.draw_text(self.maga_info[text_id]['<blockquote>']['text_len'], text_id,"0")
+                #    self.append_space(text_id,"0")
+                #    self.set_text_char_spacing(text_id,"0")
+                #elif tag == '<code>' :
+                #    self.set_text_size(text_id,"0")
+                #    self.style_checking(text_id, '<code>', self.maga_info[text_id]['<code>']['text_len'], "0")
+                #    self.draw_text(self.maga_info[text_id]['<code>']['text_len'], text_id, "0")
+                #    self.append_space(text_id,"0")
+                #    self.set_text_char_spacing(text_id,"0")
+                #elif tag == '<ul>' :
+                #    self.set_text_size(text_id,"0")
+                #    for li_tag in self.maga_info[text_id]['<ul>'] :
+                #        if li_tag[0:4] == '<li>' :
+                #            self.style_checking(text_id, '<ul>', self.maga_info[text_id]['<ul>'][li_tag]['text_len'], li_tag)
+                #            self.draw_text(self.maga_info[text_id]['<ul>'][li_tag]['text_len'], str(text_id), li_tag)
+                #            self.append_space(str(text_id), li_tag)
+                #            self.set_text_char_spacing(str(text_id), li_tag)
+                #elif tag == '<ol>' :
+                #    self.set_text_size(text_id, "0")
+                #    for li_tag in self.maga_info[text_id]['<ol>'] :
+                #        if li_tag[0:4] == '<li>' :
+                #            self.style_checking(text_id, '<ol>', self.maga_info[text_id]['<ol>'][li_tag]['text_len'], li_tag)
+                #            self.draw_text(self.maga_info[text_id]['<ol>'][li_tag]['text_len'], str(text_id), li_tag)
+                #            self.append_space(str(text_id), li_tag)
+                #            self.set_text_char_spacing(str(text_id), li_tag)
+                #elif tag == '<dl>' :
+                #    self.set_text_size(text_id, "0")
+                #    for li_tag in self.maga_info[text_id]['<dl>'] :
+                #        if li_tag[0:4] == '<dt>' :
+                #            self.style_checking(text_id, '<dl>', self.maga_info[text_id]['<dl>'][li_tag]['text_len'], li_tag)
+                #            self.draw_text(self.maga_info[text_id]['<dl>'][li_tag]['text_len'], str(text_id),li_tag)
+                #            self.append_space(str(text_id), li_tag)
+                #            self.set_text_char_spacing(str(text_id), li_tag)
+                #        if li_tag[0:4] == '<dd>' :
+                #            self.style_checking(text_id, '<dl>', self.maga_info[text_id]['<dl>'][li_tag]['text_len'], li_tag)
+                #            self.draw_text(self.maga_info[text_id]['<dl>'][li_tag]['text_len'], str(text_id), li_tag)
+                #            self.append_space(str(text_id), li_tag)
+                #            self.set_text_char_spacing(str(text_id), li_tag)
+                #elif tag == '<mark>' :
+                #    self.set_text_size(text_id, "0")
+                #    self.style_checking(text_id, '<mark>', self.maga_info[text_id]['<mark>']['text_len'], "0")
+                #    self.draw_text(self.maga_info[text_id]['<mark>']['text_len'], text_id, "0")
+                #    self.append_space(text_id,"0" )
+                #    self.set_text_char_spacing(text_id, "0")
+                #elif tag == '<ins>' :
+                #    self.set_text_size(text_id, "0")
+                #    self.style_checking(text_id, '<ins>', self.maga_info[text_id]['<ins>']['text_len'], "0")
+                #    self.draw_text(self.maga_info[text_id]['<ins>']['text_len'], text_id, "0")
+                #    self.append_space(text_id, "0")
+                #    self.set_text_char_spacing(text_id, "0")
+                #elif tag == '<del>' :
+                #    self.set_text_size(text_id, "0")
+                #    self.set_text_underline(text_id, "0")
+                #    self.style_checking(text_id, '<del>', self.maga_info[text_id]['<del>']['text_len'], "0")
+                #    self.draw_text(self.maga_info[text_id]['<del>']['text_len'], text_id, "0")
+                #    self.append_space(text_id, "0")
+                #    self.set_text_char_spacing(text_id, "0")
+                #elif tag == '<sup>' :
+                #    self.set_text_size(text_id, "0")
+                #    self.set_text_rise_sup(text_id, "0")
+                #    self.style_checking(text_id, '<sup>', self.maga_info[text_id]['<sup>']['text_len'], "0")
+                #    self.draw_text(self.maga_info[text_id]['<sup>']['text_len'], text_id, "0")
+                #    self.append_space(text_id, "0")
+                #    self.set_text_char_spacing(text_id, "0")
+                #elif tag == '<sub>' :
+                #    self.set_text_size(text_id, "0")
+                #    self.set_text_rise_sub(text_id, "0")
+                #    self.style_checking(text_id, '<sub>', self.maga_info[text_id]['<sub>']['text_len'], "0")
+                #    self.draw_text(self.maga_info[text_id]['<sub>']['text_len'], text_id, "0")
+                #    self.append_space(text_id, "0")
+                #    self.set_text_char_spacing(text_id, "0")
+                #elif tag == '<i>' :
+                #    self.set_text_size(text_id, "0")
+                #    self.style_checking(text_id, '<i>', self.maga_info[text_id]['<i>']['text_len'], "0")
+                #    self.set_html_italic_font(text_id, "0")
+                #    self.draw_text(self.maga_info[text_id]['<i>']['text_len'], text_id, "0")
+                #    self.append_space(text_id, "0")
+                #    self.set_text_char_spacing(text_id, "0")
+                #elif tag == '<b>' :
+                #    self.set_text_size(text_id, "0")
+                #    self.style_checking(text_id, '<b>', self.maga_info[text_id]['<b>']['text_len'], "0")
+                #    self.set_html_bold_font(text_id, "0")
+                #    self.draw_html_text(self.maga_info[text_id]['<b>']['text_len'], text_id, "0")
+                #    self.append_space(text_id, "0")
+                #    self.set_text_char_spacing(text_id, "0")
 
                
