@@ -1,12 +1,5 @@
 # DIR-BASED FUZZING
 
-## Overview
-This project focuses on fuzzing document software or precisely, software that processes document files (e.g., HTML,PDF, and DOCX). Document software typically requires highly-structured inputs, which general-purpose fuzzing cannot handle well. Accordingly, past research has explored generation-based fuzzing, which follows the grammar of the target document format to generate structure-correct testcases for fuzzing document software. More recently, people have enhanced generation-based fuzzing with structure-aware, coverage-guided mutations to better test document software. However, the existing solutions have two major limitations. First, they require creating/summarizing a separate grammar model for each document format, incurring extensive labor costs to handle different types of formats. Second, they run mutations at a single level of the structure (e.g., subtree level or attribute level), failing to sufficiently exploit the potential of mutations.
-In this project, we propose two techniques to facilitate fuzzing on document software. First, we design an intermediate document representation, called DIR, for document files. DIR describes a document file in an abstract way that is independent of the underlying format. Reusing common SDKs, a DIR document can be lowered into any desired format without a deep understanding of the grammar of the format. Second, we propose multi-level mutations to directly operate on a DIR document. Our multi-level mutations can more thoroughly explore the searching space than existing single-level mutations. Combining these two techniques, we can reuse the same DIR-based generations and mutations to fuzz any document format, without the need to separately summarize the target grammar and re-engineer the genera-
-tion/mutation components.
-To validate the utility of our DIR-based fuzzing, we apply the approach to PDF. We show that with minimal efforts in understanding the PDF grammar and structure, we can effectively fuzz PDF software. In a 48-hour evaluation on 6 mainstream PDF applications, we show that our DIR-based fuzzing can cover 33.87% more code than general-purpose mutation-based fuzzing (AFL++), 127.74% more code than purely generation based PDF fuzzing (Learn&Fuzz), and 25.17% more code than structure-aware mutation-based
-fuzzing (NAUTILUS).
-
 ## Code Organization
 
 ```console
